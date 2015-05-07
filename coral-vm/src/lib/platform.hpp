@@ -2,6 +2,7 @@
  * Copyright (C) 2006-2009, 2013-2015 Apple Inc. All rights reserved.
  * Copyright (C) 2007-2009 Torch Mobile, Inc.
  * Copyright (C) 2010, 2011 Research In Motion Limited. All rights reserved.
+ * Copyright (C) 2013 Patrick Gansterer <paroga@paroga.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,8 +26,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef coral_vm_platform_hpp
-#define coral_vm_platform_hpp
+#ifndef __coral_vm__platform__
+#define __coral_vm__platform__
 
 /* common platform adaptation macros */
 
@@ -400,6 +401,29 @@
 #    define CVM_USE_CVALUE32_64 1
 #  endif
 #endif
+
+/* bitwise_cast */
+
+namespace CVM {
+
+	/*
+	 * C++'s idea of a reinterpret_cast lacks sufficient cojones.
+	 */
+	template<typename ToType, typename FromType>
+	inline
+	ToType
+	bitwise_cast(FromType from) {
+		static_assert(sizeof(FromType) == sizeof(ToType), "bitwise_cast size of FromType and ToType must be equal!");
+		union {
+			FromType from;
+			ToType to;
+		} u;
+		u.from = from;
+		return u.to;
+	}
+}
+
+using CVM::bitwise_cast;
 
 #endif
 

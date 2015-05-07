@@ -30,23 +30,24 @@
 
 namespace CVM {
 	typedef int64_t CValueLink;
+	union CReferenceValue;
 
 	union EncodedValueDescriptor {
 		int64_t as_int_64;
 # if USE(CVALUE32_64)
 		double as_double;
 # elif USE(CVALUE64)
-		void *as_pointer;
+		CReferenceValue *as_pointer;
 # endif
 # if CPU(BIG_ENDIAN)
 		struct {
-			int32_t tag;
+			uint32_t tag;
 			int32_t payload;
 		} as_bits;
 # else
 		struct {
 			int32_t payload;
-			int32_t tag;
+			uint32_t tag;
 		} as_bits;
 # endif
 	};
@@ -76,15 +77,20 @@ namespace CVM {
 		enum CYesTag { CYes };
 		enum CNoTag { CNo };
 		enum CUnitTag { CUnit };
+		enum EncodeAsFloat64Tag { EncodeAsFloat64 };
 
+		/* non-numeric values */
 		CValue();
 		CValue(CNilTag);
 		CValue(CUndefinedTag);
 		CValue(CYesTag);
 		CValue(CNoTag);
 		CValue(CUnitTag);
-		CValue(void* ptr);
-		CValue(const void* ptr);
+		CValue(CReferenceValue *ptr);
+		CValue(const CReferenceValue *ptr);
+
+		/* numeric values */
+		CValue(EncodeAsFloat64Tag, float_64);
 
 		// TODO: add more constructors, per each reference subtype
 
@@ -93,6 +99,12 @@ namespace CVM {
 
 		bool
 		operator!=(const CValue &other) const;
+
+		bool
+		is_number() const;
+
+		float_64
+		as_number() const;
 
 		bool
 		is_integer_32() const;
@@ -119,6 +131,9 @@ namespace CVM {
 		is_a_no() const;
 
 		bool
+		is_boolean() const;
+
+		bool
 		as_boolean() const;
 
 		bool
@@ -136,7 +151,7 @@ namespace CVM {
 		bool
 		is_reference() const;
 
-		void *
+		CReferenceValue *
 		as_reference() const;
 
 #  if USE(CVALUE32_64)
@@ -225,8 +240,8 @@ namespace CVM {
 #    define TagBitBoolean   0x4ll
 #    define TagBitUndefined 0x8ll
 		// Combined integer value for non-numeric immediates.
-#    define ValueNo        (TagBitTypeOther | TagBitBool | false)
-#    define ValueYes       (TagBitTypeOther | TagBitBool | true)
+#    define ValueNo        (TagBitTypeOther | TagBitBoolean | false)
+#    define ValueYes       (TagBitTypeOther | TagBitBoolean | true)
 #    define ValueUndefined (TagBitTypeOther | TagBitUndefined)
 #    define ValueNil       (TagBitTypeOther)
 #    define ValueUnit      0x0ll
@@ -237,6 +252,10 @@ namespace CVM {
 #  endif
 
 	private:
+		inline const CValue as_value() const {
+			return *this;
+		}
+
 		EncodedValueDescriptor evd;
 
 	public:

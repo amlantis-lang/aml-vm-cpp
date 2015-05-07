@@ -1,11 +1,20 @@
 #ifndef __coral_vm__variable__
 #define __coral_vm__variable__
 
-#include <memory>
 #include "value.hpp"
 
-namespace CVM {
+#include <atomic>
 
+namespace CVM {
+	typedef struct std::atomic<CValue> CVariable;
+
+	struct CTypedVariable {
+	public:
+		CVariable value;
+		void *const psi_type;
+
+		CTypedVariable(CVariable, void * /* psi_type */);
+	};
 }
 
 #endif /* defined(__coral_vm__variable__) */

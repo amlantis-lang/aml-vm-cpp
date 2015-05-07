@@ -1,5 +1,5 @@
-#ifndef coral_vm_predef_h
-#define coral_vm_predef_h
+#ifndef __coral_vm__predef__
+#define __coral_vm__predef__
 
 #include "platform.hpp"
 
@@ -13,6 +13,7 @@ typedef unsigned int unsigned_integer_32;
 typedef signed long integer_64;
 typedef unsigned long unsigned_integer_64;
 #ifdef __int128
+#  define CVM_USE_INT128 1
 typedef signed __int128 integer_128;
 typedef unsigned __int128 unsigned_integer_128;
 #else
@@ -27,6 +28,7 @@ typedef double float_64;
 #ifndef __float128
 typedef unsigned_integer_128 float_128;
 #else
+#  define CVM_USE_FLOAT128 1
 typedef __float128 float_128;
 #endif
 
