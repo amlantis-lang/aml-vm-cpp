@@ -4,20 +4,16 @@
 #include "argv_input.hpp"
 #include "input_definition.hpp"
 
-namespace cvm {
-	namespace cli {
+namespace CVM {
+	class Cli {
+		Argv_Input *input;
 
-		class Cli {
-			Argv_Input *input;
+	public:
+		Cli(const int argc, const char **argv);
+		~Cli(void);
 
-		public:
-			Cli(const int argc, const char **argv);
-			~Cli(void);
-
-			int run(void);
-		};
-
-	}
+		int run(void);
+	};
 }
 
 #endif /* defined(__coral_vm__cli__) */

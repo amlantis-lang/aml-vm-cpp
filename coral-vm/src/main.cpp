@@ -2,14 +2,9 @@
 
 #include <iostream>
 
-using cvm::cli::Cli;
+using CVM::Cli;
 
 int
 main(const int argc, const char **argv) {
-	try {
-		return (new Cli(argc, argv))->run();
-	} catch (const char *exception) {
-		std::cout << exception << std::endl;
-		return 1;
-	}
+	return (new Cli(argc, argv))->run();
 }

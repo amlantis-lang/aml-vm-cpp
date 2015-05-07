@@ -1,136 +1,121 @@
-#include <unordered_map>
-#include <limits>
-#include <iostream>
+/*
+ * Copyright (C) 2011, 2012 Apple Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY APPLE INC. ``AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE INC. OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 #include "value.hpp"
 #include "../../lib/predef.hpp"
 
-using cvm::vm::memory::value_link;
-using cvm::vm::memory::value_type_nil;
-using cvm::vm::memory::value_type_integer_8;
-using cvm::vm::memory::nil_or_undefined;
-using cvm::vm::memory::integer_8_type;
+namespace CVM {
 
-const value_link *const Const_nil_value = (value_link *) new nil_or_undefined {
-	.value_type_tag = value_type_nil,
-	.nil_value = 0
-};
+	inline
+	CValueLink
+	CValue::encode(CValue value) {
+		return value.evd.as_int_64;
+	};
 
-const value_link *const Const_undefined_value = (value_link *) new nil_or_undefined {
-	.value_type_tag = value_type_nil,
-	.nil_value = 1
-};
+	inline
+	CValue
+	CValue::decode(CValueLink encoded) {
+		CValue decoded;
+		decoded.evd.as_int_64 = encoded;
+		return decoded;
+	};
 
-void
-cvm::vm::memory::reference_counting_aware_deleter::operator()(const value_link *value_link) {
-	if (value_link) {
-		if (value_link->value_type_tag == value_type_reference) {
-			const reference_type *object_value = reinterpret_cast<const reference_type *>(value_link);
-			if (object_value->reference_value->reference_count == 0) {
-				delete object_value->reference_value;
-				delete value_link;
-			} else {
-				std::cerr << "Attempted to delete an unreleased object @ "
-					<< value_link
-					<< " @@ "
-					<< object_value->reference_value
-					<< std::endl;
-			}
+#if USE(CVALUE32_64)
+
+	inline
+	CValue::CValue() {
+		evd.as_bits.tag = UnitValueTag;
+		evd.as_bits.payload = 0;
+	}
+
+	inline
+	CValue::CValue(CNilTag) {
+		evd.as_bits.tag = NilTag;
+		evd.as_bits.payload = 0;
+	}
+
+	inline
+	CValue::CValue(CUndefinedTag) {
+		evd.as_bits.tag = UndefinedTag;
+		evd.as_bits.payload = 0;
+	}
+
+	inline
+	CValue::CValue(CYesTag) {
+		evd.as_bits.tag = BooleanTag;
+		evd.as_bits.payload = 1;
+	}
+
+	inline
+	CValue::CValue(CNoTag) {
+		evd.as_bits.tag = BooleanTag;
+		evd.as_bits.payload = 1;
+	}
+
+	inline
+	CValue::CValue(CUnitTag) {
+		evd.as_bits.tag = UnitValueTag;
+		evd.as_bits.payload = 0;
+	}
+
+	inline
+	CValue::CValue(void* ptr) {
+		if (ptr) {
+			evd.as_bits.tag = ReferenceTag;
+			evd.as_bits.payload = reinterpret_cast<int32_t>(ptr);
 		} else {
-			delete value_link;
+			evd.as_bits.tag = NilTag;
+			evd.as_bits.payload = 0;
 		}
 	}
-}
 
-void
-cvm::vm::memory::thread_aware_deleter::operator()(const value_link *value_link) {
-	if (value_link) {
-		if (value_link->value_type_tag == value_type_thread) {
-			const thread_type *thread_object = reinterpret_cast<const thread_type *>(value_link);
-			if (thread_object->thread_value) {
-				if (thread_object->thread_value->joinable()) {
-					thread_object->thread_value->join();
-					delete thread_object->thread_value;
-				}
-				delete thread_object;
-			}
+	inline
+	CValue::CValue(const void* ptr) {
+		if (ptr) {
+			evd.as_bits.tag = ReferenceTag;
+			evd.as_bits.payload = reinterpret_cast<int32_t>(const_cast<void *>(ptr));
 		} else {
-			delete value_link;
+			evd.as_bits.tag = NilTag;
+			evd.as_bits.payload = 0;
 		}
 	}
-}
 
-static std::unordered_map<integer_8, std::shared_ptr<const value_link>>
-initialize_small_integral_links() {
-	std::unordered_map<
-		integer_8,
-		std::shared_ptr<const value_link>
-	> map;
-
-	integer_8 i = std::numeric_limits<integer_8>::min();
-	const integer_8 N = std::numeric_limits<integer_8>::max();
-
-	for (; i <= N; i += 1) {
-		map.insert({
-			i,
-			std::shared_ptr<const value_link>((const value_link *) new integer_8_type {
-				.value_type_tag = value_type_integer_8,
-				.integer_8_value = i })
-		});
-		if (i == N) break;
+	inline
+	bool
+	CValue::operator==(const CValue &other) const {
+		return evd.as_int_64 == other.evd.as_int_64;
 	}
-	return map;
-}
 
-std::unordered_map<
-	integer_8,
-	std::shared_ptr<const value_link>
-> Const_small_integral_links = initialize_small_integral_links();
-
-std::shared_ptr<const value_link>
-cvm::vm::memory::get_link_for_number(integer_8 number) {
-	return std::shared_ptr<const value_link>(Const_small_integral_links[number]);
-};
-
-std::shared_ptr<const value_link>
-cvm::vm::memory::get_link_for_number(unsigned_integer_8 number) {
-	if (number <= std::numeric_limits<integer_8>::max()) {
-		return std::shared_ptr<const value_link>(Const_small_integral_links[static_cast<integer_8>(number)]);
-	} else {
-		return std::shared_ptr<const value_link>((const value_link *) new integer_8_unsigned_type {
-			.value_type_tag = value_type_unsigned_integer_8,
-			.integer_8_unsigned_value = number });
+	inline
+	bool
+	CValue::operator!=(const CValue &other) const {
+		return evd.as_int_64 != other.evd.as_int_64;
 	}
-};
 
-std::shared_ptr<const value_link>
-cvm::vm::memory::get_link_for_number(integer_16 number) {
-	if (number <= std::numeric_limits<integer_8>::max()
-			&& number >= std::numeric_limits<integer_8>::min()) {
-		return std::shared_ptr<const value_link>(Const_small_integral_links[static_cast<integer_8>(number)]);
-	} else {
-		return std::shared_ptr<const value_link>((const value_link *) new integer_16_type {
-			.value_type_tag = value_type_integer_16,
-			.integer_16_value = number });
-	}
-};
+#elif USE(CVALUE64)
 
-std::shared_ptr<const value_link>
-cvm::vm::memory::get_link_for_number(unsigned_integer_16 number) {
-	if (number <= std::numeric_limits<integer_8>::max()) {
-		return std::shared_ptr<const value_link>(Const_small_integral_links[static_cast<integer_8>(number)]);
-	} else {
-		return std::shared_ptr<const value_link>((const value_link *) new integer_16_unsigned_type {
-			.value_type_tag = value_type_unsigned_integer_16,
-			.integer_16_unsigned_value = number });
-	}
-};
+#endif
 
-cvm::vm::memory::object::object() {
-	reference_count = 1;
-	ivars_count = 0;
-	dynamic_ivars = nullptr;
 }
-
-cvm::vm::memory::object::~object() {
-}
-

@@ -1,8 +1,6 @@
 #include "argv_input.hpp"
 
-cvm::cli::Argv_Input::Argv_Input(const int argc,
-																 const char **argv,
-																 Input_Definition *input_definition)
-: input_definition(input_definition) {
+CVM::Argv_Input::Argv_Input(const int argc, const char **argv, Input_Definition *input_definition)
+  : input_definition(input_definition) {
 
 }

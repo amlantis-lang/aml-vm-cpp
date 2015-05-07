@@ -1,240 +1,257 @@
+/*
+ *  Copyright (C) 1999-2001 Harri Porten (porten@kde.org)
+ *  Copyright (C) 2001 Peter Kelly (pmk@post.com)
+ *  Copyright (C) 2003, 2004, 2005, 2007, 2008, 2009, 2012 Apple Inc. All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public License
+ *  along with this library; see the file COPYING.LIB.  If not, write to
+ *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *  Boston, MA 02110-1301, USA.
+ *
+ */
+
 #ifndef __coral_vm__value__
 #define __coral_vm__value__
 
-#include <memory>
-#include <thread>
-#include <bitset>
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include <cstdint>
+#include <cstddef>
+
 #include "../../lib/predef.hpp"
-#include "variable.hpp"
 
-namespace cvm {
-	namespace vm {
-		namespace memory {
-			union value_link;
-			union integral_number_value_link;
-			union any_real_number_value_link;
-			class object;
-			struct variable;
+namespace CVM {
+	typedef int64_t CValueLink;
 
-			enum value_type : unsigned_integer_8 {
-				value_type_nil = 0x00,
-				value_type_reference = 0x01,
-				value_type_integer_8 = 0x02,
-				value_type_unsigned_integer_8 = 0x03,
-				value_type_integer_16 = 0x04,
-				value_type_unsigned_integer_16 = 0x05,
-				value_type_integer_32 = 0x06,
-				value_type_unsigned_integer_32 = 0x07,
-				value_type_integer_64 = 0x08,
-				value_type_unsigned_integer_64 = 0x09,
-				value_type_float_16 = 0x10,
-				value_type_float_32 = 0x11,
-				value_type_float_64 = 0x12,
-				value_type_float_128 = 0x13,
-				value_type_rational = 0x14,
-				value_type_complex = 0x15,
-				value_type_decimal_limited = 0x16,
-				value_type_decimal_unlimited = 0x17,
-				value_type_thread = 0x18
-			};
+	union EncodedValueDescriptor {
+		int64_t as_int_64;
+# if USE(CVALUE32_64)
+		double as_double;
+# elif USE(CVALUE64)
+		void *as_pointer;
+# endif
+# if CPU(BIG_ENDIAN)
+		struct {
+			int32_t tag;
+			int32_t payload;
+		} as_bits;
+# else
+		struct {
+			int32_t payload;
+			int32_t tag;
+		} as_bits;
+# endif
+	};
 
-			/**
-			 * nil_value of 0 = nil
-			 * nil_value of 1 = undefined
-			 */
-			struct nil_or_undefined {
-				enum value_type const value_type_tag;
-				unsigned int const nil_value:1;
-			};
+	class CValue {
+	public:
 
-#     pragma pack(1)
-			struct reference_type {
-				enum value_type const value_type_tag;
-				class object *const reference_value;
-			};
+#  if USE(CVALUE32_64)
+		enum { Int32Tag =        0xffffffff };
+		enum { BooleanTag =      0xfffffffe };
+		enum { NilTag =          0xfffffffd };
+		enum { UndefinedTag =    0xfffffffc };
+		enum { ReferenceTag =    0xfffffffb };
+		enum { UnitValueTag =    0xfffffffa };
 
-#     pragma pack(1)
-			struct integer_8_type {
-				enum value_type const value_type_tag;
-				integer_8 const integer_8_value;
-			};
+		enum { LowestTag =     UnitValueTag };
+#  endif
 
-#     pragma pack(1)
-			struct integer_8_unsigned_type {
-				enum value_type const value_type_tag;
-				unsigned_integer_8 const integer_8_unsigned_value;
-			};
+		static CValueLink
+		encode(CValue);
 
-#     pragma pack(1)
-			struct integer_16_type {
-				enum value_type const value_type_tag;
-				integer_16 const integer_16_value;
-			};
+		static CValue
+		decode(CValueLink);
 
-#     pragma pack(1)
-			struct integer_16_unsigned_type {
-				enum value_type const value_type_tag;
-				unsigned_integer_16 const integer_16_unsigned_value;
-			};
+		enum CNilTag { CNil };
+		enum CUndefinedTag { CUndefined };
+		enum CYesTag { CYes };
+		enum CNoTag { CNo };
+		enum CUnitTag { CUnit };
 
-			struct integer_32_type {
-				enum value_type const value_type_tag;
-				integer_32 const integer_32_value;
-			};
+		CValue();
+		CValue(CNilTag);
+		CValue(CUndefinedTag);
+		CValue(CYesTag);
+		CValue(CNoTag);
+		CValue(CUnitTag);
+		CValue(void* ptr);
+		CValue(const void* ptr);
 
-			struct integer_32_unsigned_type {
-				enum value_type const value_type_tag;
-				unsigned_integer_32 const integer_32_unsigned_value;
-			};
+		// TODO: add more constructors, per each reference subtype
 
-			struct integer_64_type {
-				enum value_type const value_type_tag;
-				integer_64 const integer_64_value;
-			};
+		bool
+		operator==(const CValue &other) const;
 
-			struct integer_64_unsigned_type {
-				enum value_type const value_type_tag;
-				unsigned_integer_64 const integer_64_unsigned_value;
-			};
+		bool
+		operator!=(const CValue &other) const;
 
-			struct integer_128_type {
-				enum value_type const value_type_tag;
-				integer_128 const integer_64_value;
-			};
+		bool
+		is_integer_32() const;
 
-			struct integer_128_unsigned_type {
-				enum value_type const value_type_tag;
-				unsigned_integer_128 const integer_64_unsigned_value;
-			};
+		integer_32
+		as_integer_32() const;
 
-#     pragma pack(1)
-			struct float_16_type {
-				enum value_type const value_type_tag;
-				float_16 const float_16_value;
-			};
+		bool
+		is_unsigned_integer_32() const;
 
-			struct float_32_type {
-				enum value_type const value_type_tag;
-				float_32 const float_32_value;
-			};
+		unsigned_integer_32
+		as_unsigned_integer_32() const;
 
-			struct float_64_type {
-				enum value_type const value_type_tag;
-				float_64 const float_64_value;
-			};
+		bool
+		is_float_64() const;
 
-			struct float_128_type {
-				enum value_type const value_type_tag;
-				float_128 const float_128_value;
-			};
+		float_64
+		as_float_64() const;
 
-			struct decimal_limited_type {
-				enum value_type const value_type_tag;
-				unsigned_integer_128 const decimal_limited_value;
-				unsigned_integer_8 const decimal_digits;
-			};
+		bool
+		is_a_yes() const;
 
-			struct decimal_unlimited_type {
-				enum value_type const value_type_tag;
-				unsigned_integer_8 *const decimal_unlimited_value;
-				size_t const decimal_unlimited_value_size;
-				unsigned_integer_64 const decimal_digits;
-			};
+		bool
+		is_a_no() const;
 
-			struct rational_type {
-				enum value_type const value_type_tag;
-				union integral_number_value_link *const numerator;
-				union integral_number_value_link *const denominator;
-			};
+		bool
+		as_boolean() const;
 
-			struct complex_type {
-				enum value_type const value_type_tag;
-				union any_real_number_value_link *const real_part;
-				union any_real_number_value_link *const imaginary_part;
-			};
+		bool
+		is_unit() const; // also getter
 
-			struct thread_type {
-				enum value_type const value_type_tag;
-				class std::thread *thread_value;
-			};
+		bool
+		is_nil() const; // also getter
 
-			union value_link {
-				enum value_type const value_type_tag;
-				struct nil_or_undefined;
-				struct reference_type;
-				union any_real_number_value_link;
-				struct complex_type;
-			};
+		bool
+		is_undefined() const; // also getter
 
-			union integral_number_value_link {
-				enum value_type const value_type_tag;
-				struct integer_8_type;
-				struct integer_8_unsigned_type;
-				struct integer_16_type;
-				struct integer_16_unsigned_type;
-				struct integer_32_type;
-				struct integer_32_unsigned_type;
-				struct integer_64_type;
-				struct integer_64_unsigned_type;
-				struct integer_128_type;
-				struct integer_128_unsigned_type;
-				struct decimal_limited_type; // when used as integral, decimal_digits limited to 0
-				struct decimal_unlimited_type; // when used as integral, decimal_digits limited to 0
-			};
+		bool
+		is_nil_or_undefined() const;
 
-			union any_real_number_value_link {
-				enum value_type const value_type_tag;
-				union integral_number_value_link;
-				struct float_16_type;
-				struct float_32_type;
-				struct float_64_type;
-				struct float_128_type;
-				struct rational_type;
-			};
+		bool
+		is_reference() const;
 
-#     pragma pack(2)
-			class object { // TODO: make more layouts? maybe as subclasses?
-			public:
-				object();
-				~object();
-				class std::bitset<2> flags;
-				unsigned_integer_64 reference_count;
-			private:
-				unsigned_integer_16 ivars_count;
-				class std::unordered_map<std::string, variable> *dynamic_ivars;
-				class std::vector<variable *> weaker_references;
-				struct variable *ivars[];
-			};
+		void *
+		as_reference() const;
 
-			struct reference_counting_aware_deleter {
-				void
-				operator()(const value_link *);
-			};
+#  if USE(CVALUE32_64)
+		/* On 32-bit platforms USE(CVALUE32_64) should be defined, and we use a NaN-encoded
+		 * form for immediates.
+		 *
+		 * The encoding makes use of unused NaN space in the IEEE754 representation. Any value
+		 * with the top 13 bits set represents a QNaN (with the sign bit set). qNaN values
+		 * can encode a 51-bit payload. Hardware produced and C-library payloads typically
+		 * have a payload of zero. We assume that non-zero payloads are available to encode
+		 * pointer and integer values. Since any 64-bit bit pattern where the top 15 bits are
+		 * all set represents a NaN with a non-zero payload, we can use this space in the NaN
+		 * ranges to encode other values (however there are also other ranges of NaN space that
+		 * could have been selected - let's ignore these for now).
+		 *
+		 * For CValues that do not contain a double value, the high 32 bits contain the tag
+		 * values listed in the enums below, which all correspond to NaN-space. In the case of
+		 * reference, integer and boolean values, the lower 32 bits (the 'payload') contain the pointer,
+		 * integer or boolean value; in the case of all other tags the payload is 0.
+		 */
+		uint32_t tag() const;
+		int32_t payload() const;
 
-			struct thread_aware_deleter {
-				void
-				operator()(const value_link *);
-			};
+#  elif USE(CVALUE64)
+		/* On 64-bit platforms USE(CVALUE64) should be defined, and we use a NaN-encoded
+		 * form for immediates.
+		 *
+		 * The encoding makes use of unused NaN space in the IEEE754 representation. Any value
+		 * with the top 13 bits set represents a QNaN (with the sign bit set). qNaN values
+		 * can encode a 51-bit payload. Hardware produced and C-library payloads typically
+		 * have a payload of zero. We assume that non-zero payloads are available to encode
+		 * pointer and integer values. Since any 64-bit bit pattern where the top 15 bits are
+		 * all set represents a NaN with a non-zero payload, we can use this space in the NaN
+		 * ranges to encode other values (however there are also other ranges of NaN space that
+		 * could have been selected - let's ignore these for now).
+		 *
+		 * This range of NaN space is represented by 64-bit numbers begining with the 16-bit
+		 * hex patterns 0xFFFE and 0xFFFF - we rely on the fact that no valid double-precision
+		 * numbers will fall in these ranges.
+		 *
+		 * The top 16-bits denote the type of the encoded CValue:
+		 *
+		 *     Pointer {  0000:PPPP:PPPP:PPPP
+		 *              / 0001:****:****:****
+		 *     Double  {         ...
+		 *              \ FFFE:****:****:****
+		 *     Integer {  FFFF:0000:IIII:IIII
+		 *
+		 * The scheme we have implemented encodes double precision values by performing a
+		 * 64-bit integer addition of the value 2^48 to the number. After this manipulation
+		 * no encoded double-precision value will begin with the pattern 0x0000 or 0xFFFF.
+		 * Values must be decoded by reversing this operation before subsequent floating point
+		 * operations may be peformed.
+		 *
+		 * 32-bit signed integers are marked with the 16-bit tag 0xFFFF.
+		 *
+		 * The tag 0x0000 denotes a pointer, or another form of tagged immediate. Boolean,
+		 * null and undefined values are represented by specific, invalid pointer values:
+		 *
+		 *     No:        0x06
+		 *     Yes:       0x07
+		 *     Undefined: 0x0a
+		 *     Nil:       0x02
+		 *
+		 * These values have the following properties:
+		 * - Bit 1 (TagBitTypeOther) is set for all four values, allowing real pointers to be
+		 *   quickly distinguished from all immediate values, including these invalid pointers.
+		 * - With bit 3 is masked out (TagBitUndefined) Undefined and Nil share the
+		 *   same value, allowing null & undefined to be quickly detected.
+		 *
+		 * No valid CValue will have the bit pattern 0x0, this is used to represent Unit, 
+		 * and as a C++ 'no value' result (e.g. CValue() has an internal value of 0).
+		 */
 
-			std::shared_ptr<const value_link>
-			get_link_for_number(integer_8 number);
+		// These values are #defines since using static const integers here is a ~1% regression!
 
-			std::shared_ptr<const value_link>
-			get_link_for_number(unsigned_integer_8 number);
+		// This value is 2^48, used to encode doubles such that the encoded value will begin
+		// with a 16-bit pattern within the range 0x0001..0xFFFE.
+#    define DoubleEncodeOffset 0x1000000000000ll
+		// If all bits in the mask are set, this indicates an integer number,
+		// if any but not all are set this value is a double precision number.
+#    define TagTypeNumber 0xffff000000000000ll
 
-			std::shared_ptr<const value_link>
-			get_link_for_number(integer_16 number);
+		// All non-numeric (boolean, null, undefined) immediates have bit 2 set.
+#    define TagBitTypeOther 0x2ll
+#    define TagBitBoolean   0x4ll
+#    define TagBitUndefined 0x8ll
+		// Combined integer value for non-numeric immediates.
+#    define ValueNo        (TagBitTypeOther | TagBitBool | false)
+#    define ValueYes       (TagBitTypeOther | TagBitBool | true)
+#    define ValueUndefined (TagBitTypeOther | TagBitUndefined)
+#    define ValueNil       (TagBitTypeOther)
+#    define ValueUnit      0x0ll
 
-			std::shared_ptr<const value_link>
-			get_link_for_number(unsigned_integer_16 number);
-		}
-	}
+		// TagMask is used to check for all types of immediate values (either number or 'other').
+#    define TagMask (TagTypeNumber | TagBitTypeOther)
+
+#  endif
+
+	private:
+		EncodedValueDescriptor evd;
+
+	public:
+		static const CValueLink kNilLink;
+		static const CValueLink kUndefinedLink;
+		static const CValueLink kYesLink;
+		static const CValueLink kNoLink;
+		static const CValueLink kUnitLink;
+
+		static const CValue kNil;
+		static const CValue kUndefined;
+		static const CValue kYes;
+		static const CValue kNo;
+		static const CValue kUnit;
+	};
 }
-
-extern const cvm::vm::memory::value_link *const Const_nil_value;
-extern const cvm::vm::memory::value_link *const Const_undefined_value;
 
 #endif /* defined(__coral_vm__value__) */
