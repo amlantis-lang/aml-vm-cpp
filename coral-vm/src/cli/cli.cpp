@@ -5,6 +5,9 @@
 #include "../vm/memory/value.hpp"
 #include "../vm/memory/value_inlines.hpp"
 #include "../vm/memory/variable.hpp"
+#include "../vm/memory/variable_inlines.hpp"
+#include "../vm/memory/reference.hpp"
+#include "../vm/memory/reference_inlines.hpp"
 
 namespace CVM {
 
@@ -28,6 +31,7 @@ namespace CVM {
 		std::cout << "sizeof CTypedVariable: " << sizeof(CTypedVariable) << std::endl;
 		std::cout << "sizeof atomic_llong: " << sizeof(std::atomic_llong) << std::endl;
 		std::cout << "sizeof atomic_long: " << sizeof(std::atomic_long) << std::endl;
+		std::cout << "sizeof CObject: " << sizeof(CObject) << std::endl;
 		std::atomic<CValueLink> val1;
 		std::atomic_llong val2;
 		std::atomic_long val3;

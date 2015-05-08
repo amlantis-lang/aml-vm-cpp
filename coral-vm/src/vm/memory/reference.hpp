@@ -2,7 +2,10 @@
 #define __coral_vm__reference__
 
 #include "../../lib/predef.hpp"
+#include "../../config/config.hpp"
 #include "variable.hpp"
+
+#include <mutex>
 
 namespace CVM {
 	enum CReferenceType : unsigned_integer_8 {
@@ -28,8 +31,10 @@ namespace CVM {
 
 		/* array type */
 		CReferenceTypeArray =              0x0b,
-		/* when a CValue pointer did not fit into 48 bits, the future is upon us */
-		CReferenceTypeNestedPointer =      0x0c
+		/* when a CValue pointer did not fit into 48 bits, the future is upon us, or more likely Solaris */
+		CReferenceTypeNestedPointer =      0x0c,
+		/* to break strong reference cycles */
+		CReferenceTypeWeakPointer =        0x0d
 	};
 
 	union CReferenceValue;
@@ -41,105 +46,144 @@ namespace CVM {
 		struct CTypedVariableLink *next;
 	};
 
+	struct CReference {
+	public:
+		struct std::atomic<union CReferenceValue *> const referenced_value;
+		struct std::atomic<STRONG_REFERENCE_COUNT_TYPE> strong_reference_count;
+		struct std::atomic<WEAK_REFERENCE_COUNT_TYPE> weak_reference_count;
+
+		CReference(union CReferenceValue *);
+		~CReference() noexcept;
+
+		void
+		retain(void * /* env */);
+
+		void
+		release(void * /* env */);
+
+		CValue
+		downgrade(void * /* env */);
+
+		STRONG_REFERENCE_COUNT_TYPE
+		strong_count() const noexcept;
+
+		WEAK_REFERENCE_COUNT_TYPE
+		weak_count() const noexcept;
+
+	private:
+		void
+		release_slow(void * /* env */);
+	};
+
+	struct CReferenceCommon {
+		const CReferenceType reference_type;
+
+		CReferenceCommon(CReferenceType);
+	};
+
 	struct CObject {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		void *psi_type;
 		struct CTypedVariableLink *dynamic_ivars;
-		const unsigned_integer_8 ivars_count;
-		CVariable ivars[];
+		unsigned_integer_8 ivars_count;
+		CVariable *ivars;
+
+		CObject(void * /* psi_type */, unsigned_integer_8 /* ivars_count */);
+		//~CObject();
 	};
 
 	struct CUnmanagedUnsafe {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		void *pointer;
 		void (*deallocator)(void *);
 	};
 
 	struct CInteger64 {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		const integer_64 value;
 	};
 
 	struct CInteger64Unsigned {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		const unsigned_integer_64 value;
 	};
 
 	struct CInteger128 {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		const integer_128 value;
 	};
 
 	struct CInteger128Unsigned {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		const unsigned_integer_128 value;
 	};
 
 	struct CFloat128 {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		const float_128 value;
 	};
 
 	struct CComplex {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		const CValue real;
 		const CValue imaginary;
 	};
 
 	struct CRational {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 		const CValue numerator;
 		const CValue denominator;
 	};
 
 	struct CDecimalLimited {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 	};
 
 	struct CDecimalUnlimited {
 	public:
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+		struct CReferenceCommon common;
 	};
 
 	struct CArray {
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+	public:
+		struct CReferenceCommon common;
 		unsigned_integer_64 elements_count;
 		CValue elements[];
 	};
 
 	struct CNestedPointer {
-		const CReferenceType reference_type;
-		struct std::atomic<unsigned_integer_32> reference_count;
+	public:
+		struct CReferenceCommon common;
 		union CReferenceValue *pointer;
 	};
 
+	struct CWeakPointer {
+	public:
+		struct CReferenceCommon common;
+		std::atomic<CReference *> const pointer;
+
+		CWeakPointer(CReference *);
+
+		CValue
+		upgrade(void * /* env */);
+
+	private:
+		void
+		on_release() noexcept;
+	};
+
 	union CReferenceValue {
-		struct {
-			const CReferenceType reference_type;
-			struct std::atomic<unsigned_integer_32> reference_count;
-		} common;
+		struct CReferenceCommon common;
 		struct CObject object;
 		struct CUnmanagedUnsafe unmanaged_unsafe;
 		struct CInteger64 integer_64;
@@ -153,7 +197,13 @@ namespace CVM {
 		struct CDecimalUnlimited decimal_unlimited;
 		struct CArray array;
 		struct CNestedPointer nested_pointer;
+		struct CWeakPointer weak_pointer;
 	};
+
+	typedef struct std::mutex CReferenceLock;
+
+	CReferenceLock &
+	lock_for_reference(union CReferenceValue *) noexcept;
 }
 
 #endif /* defined(__coral_vm__reference__) */

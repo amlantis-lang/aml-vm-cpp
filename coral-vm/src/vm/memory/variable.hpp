@@ -13,7 +13,7 @@ namespace CVM {
 		CVariable value;
 		void *const psi_type;
 
-		CTypedVariable(CVariable, void * /* psi_type */);
+		CTypedVariable(CValue, void * /* psi_type */);
 	};
 }
 

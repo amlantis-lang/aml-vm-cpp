@@ -107,7 +107,7 @@ namespace CVM {
 	}
 
 	inline
-	CValue::CValue(void* ptr) {
+	CValue::CValue(CReference *ptr) {
 		if (ptr) {
 			evd.as_bits.tag = ReferenceTag;
 			evd.as_bits.payload = reinterpret_cast<int32_t>(ptr);
@@ -118,10 +118,10 @@ namespace CVM {
 	}
 
 	inline
-	CValue::CValue(const CReferenceValue *ptr) {
+	CValue::CValue(const CReference *ptr) {
 		if (ptr) {
 			evd.as_bits.tag = ReferenceTag;
-			evd.as_bits.payload = reinterpret_cast<int32_t>(const_cast<CReferenceValue *>(ptr));
+			evd.as_bits.payload = reinterpret_cast<int32_t>(const_cast<CReference *>(ptr));
 		} else {
 			evd.as_bits.tag = NilTag;
 			evd.as_bits.payload = 0;
@@ -234,10 +234,10 @@ namespace CVM {
 	}
 
 	inline
-	CReferenceValue *
+	CReference *
 	CValue::as_reference() const {
 		assert(is_reference());
-		return reinterpret_cast<CReferenceValue *>(payload());
+		return reinterpret_cast<CReference *>(payload());
 	}
 
 	inline
@@ -298,7 +298,7 @@ namespace CVM {
 	}
 
 	inline
-	CValue::CValue(CReferenceValue *ptr) {
+	CValue::CValue(CReference *ptr) {
 		if (ptr) {
 			evd.as_int_64 = reinterpret_cast<uintptr_t>(ptr);
 		} else {
@@ -307,9 +307,9 @@ namespace CVM {
 	}
 
 	inline
-	CValue::CValue(const CReferenceValue *ptr) {
+	CValue::CValue(const CReference *ptr) {
 		if (ptr) {
-			evd.as_int_64 = reinterpret_cast<uintptr_t>(const_cast<CReferenceValue *>(ptr));
+			evd.as_int_64 = reinterpret_cast<uintptr_t>(const_cast<CReference *>(ptr));
 		} else {
 			evd.as_int_64 = ValueNil;
 		}
@@ -421,7 +421,7 @@ namespace CVM {
 	}
 
 	inline
-	CReferenceValue *
+	CReference *
 	CValue::as_reference() const {
 		assert(is_reference());
 		return evd.as_pointer;

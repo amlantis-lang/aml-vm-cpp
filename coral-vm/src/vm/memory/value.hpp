@@ -30,14 +30,14 @@
 
 namespace CVM {
 	typedef int64_t CValueLink;
-	union CReferenceValue;
+	struct CReference;
 
 	union EncodedValueDescriptor {
 		int64_t as_int_64;
 # if USE(CVALUE32_64)
 		double as_double;
 # elif USE(CVALUE64)
-		CReferenceValue *as_pointer;
+		struct CReference *as_pointer;
 # endif
 # if CPU(BIG_ENDIAN)
 		struct {
@@ -86,8 +86,8 @@ namespace CVM {
 		CValue(CYesTag);
 		CValue(CNoTag);
 		CValue(CUnitTag);
-		CValue(CReferenceValue *ptr);
-		CValue(const CReferenceValue *ptr);
+		CValue(CReference *ptr);
+		CValue(const CReference *ptr);
 
 		/* numeric values */
 		CValue(EncodeAsFloat64Tag, float_64);
@@ -151,7 +151,7 @@ namespace CVM {
 		bool
 		is_reference() const;
 
-		CReferenceValue *
+		struct CReference *
 		as_reference() const;
 
 #  if USE(CVALUE32_64)
