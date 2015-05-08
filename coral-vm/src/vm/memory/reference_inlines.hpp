@@ -61,11 +61,13 @@ namespace CVM {
 		return CValue::kNil; /* we failed to allocate the whole weak pointer, or just the ref. */
 	}
 
+	inline
 	STRONG_REFERENCE_COUNT_TYPE
 	CReference::strong_count() const noexcept {
 		return strong_reference_count.load(std::memory_order_seq_cst);
 	}
 
+	inline
 	WEAK_REFERENCE_COUNT_TYPE
 	CReference::weak_count() const noexcept {
 		/* we subtract 1 to hide the implicit weak reference held by all strong references */
@@ -116,7 +118,7 @@ namespace CVM {
 			if (ref_count == 0) {
 				return CValue::kNil;
 			} else if (ptr->strong_reference_count
-								 .compare_exchange_weak(ref_count, ref_count + 1, std::memory_order_seq_cst)) {
+					.compare_exchange_weak(ref_count, ref_count + 1, std::memory_order_seq_cst)) {
 				return CValue(ptr);
 			}
 		}

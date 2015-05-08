@@ -70,6 +70,7 @@ namespace CVM {
 		WEAK_REFERENCE_COUNT_TYPE
 		weak_count() const noexcept;
 
+	private:
 		void
 		release_slow(void * /* env */);
 	};
@@ -176,7 +177,6 @@ namespace CVM {
 		CValue
 		upgrade(void * /* env */);
 
-	private:
 		void
 		on_release() noexcept;
 	};
