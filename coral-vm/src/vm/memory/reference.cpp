@@ -87,6 +87,7 @@ namespace CVM {
 			}
 			case CReferenceTypeWeakPointer: {
 				CWeakPointer *real_pointer = reinterpret_cast<CWeakPointer *>(pointer);
+				real_pointer->on_release();
 				delete real_pointer;
 				break;
 			}
