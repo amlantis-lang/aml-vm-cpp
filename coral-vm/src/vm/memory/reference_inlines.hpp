@@ -61,6 +61,17 @@ namespace CVM {
 		return CValue::kNil; /* we failed to allocate the whole weak pointer, or just the ref. */
 	}
 
+	STRONG_REFERENCE_COUNT_TYPE
+	CReference::strong_count() const noexcept {
+		return strong_reference_count.load(std::memory_order_seq_cst);
+	}
+
+	WEAK_REFERENCE_COUNT_TYPE
+	CReference::weak_count() const noexcept {
+		/* we subtract 1 to hide the implicit weak reference held by all strong references */
+		return weak_reference_count.load(std::memory_order_seq_cst) - 1;
+	}
+
 	inline
 	CReferenceCommon::CReferenceCommon(CReferenceType ref_type)
 		: reference_type(ref_type) { }

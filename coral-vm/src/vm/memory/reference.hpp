@@ -61,7 +61,7 @@ namespace CVM {
 		void
 		release(void * /* env */);
 
-		CValue
+		CValue /* tagged pointer to CReference to CWeakReference */
 		downgrade(void * /* env */);
 
 		STRONG_REFERENCE_COUNT_TYPE
@@ -70,7 +70,6 @@ namespace CVM {
 		WEAK_REFERENCE_COUNT_TYPE
 		weak_count() const noexcept;
 
-	private:
 		void
 		release_slow(void * /* env */);
 	};
