@@ -58,6 +58,15 @@ namespace CVM {
 		CValue weak_reference = reference->downgrade(nullptr);
 		assert(reference->strong_count() == 2);
 		assert(reference->weak_count() == 1);
+		CReference *weak_reference_reference = weak_reference.as_reference();
+		assert(weak_reference_reference->strong_count() == 1);
+		assert(weak_reference_reference->weak_count() == 0);
+		CReferenceValue *value = weak_reference_reference->referenced_value.load(std::memory_order_seq_cst);
+		assert(value->common.reference_type == CReferenceTypeWeakPointer);
+		CWeakPointer *weak_pointer = reinterpret_cast<CWeakPointer *>(value);
+		CValue upgraded = weak_pointer->upgrade(nullptr);
+		assert(reference->strong_count() == 3);
+		assert(reference->weak_count() == 1);
 
 		return 0;
 	}
