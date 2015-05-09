@@ -46,6 +46,10 @@ namespace CVM {
 		struct CTypedVariableLink *next;
 	};
 
+	/* Here's an optimization idea: pre-allocate an array of CReferences to be used whenever a new one
+	 * would be needed, automatically grow it etc. (like std::vector<CReference> or something), to prevent
+	 * some random memory accesses (also that could open the possibility of garbage collection...)
+	 */
 	struct CReference {
 	public:
 		struct std::atomic<union CReferenceValue *> const referenced_value;
@@ -89,8 +93,12 @@ namespace CVM {
 		unsigned_integer_8 ivars_count;
 		CVariable *ivars;
 
+		static
+		CValue
+		allocate(void * /* psi_type */, void * /* env */) noexcept;
+
 		CObject(void * /* psi_type */, unsigned_integer_8 /* ivars_count */);
-		//~CObject();
+		~CObject();
 	};
 
 	struct CUnmanagedUnsafe {
@@ -98,36 +106,73 @@ namespace CVM {
 		struct CReferenceCommon common;
 		void *pointer;
 		void (*deallocator)(void *);
+
+		CUnmanagedUnsafe(void * /* pointer */, void (*)(void *) /* deallocator */);
+		~CUnmanagedUnsafe();
+
+		static
+		CValue
+		allocate(void * /* pointer */, void (*)(void *) /* deallocator */, void * /* env */) noexcept;
 	};
 
 	struct CInteger64 {
 	public:
 		struct CReferenceCommon common;
 		const integer_64 value;
+
+		CInteger64(const integer_64) noexcept;
+
+		static
+		CValue
+		allocate(const integer_64, void * /* env */) noexcept;
 	};
 
 	struct CInteger64Unsigned {
 	public:
 		struct CReferenceCommon common;
 		const unsigned_integer_64 value;
+
+		CInteger64Unsigned(const unsigned_integer_64) noexcept;
+
+		static
+		CValue
+		allocate(const unsigned_integer_64, void * /* env */) noexcept;
 	};
 
 	struct CInteger128 {
 	public:
 		struct CReferenceCommon common;
 		const integer_128 value;
+
+		CInteger128(const integer_128) noexcept;
+
+		static
+		CValue
+		allocate(const integer_128, void * /* env */) noexcept;
 	};
 
 	struct CInteger128Unsigned {
 	public:
 		struct CReferenceCommon common;
 		const unsigned_integer_128 value;
+
+		CInteger128Unsigned(const unsigned_integer_128) noexcept;
+
+		static
+		CValue
+		allocate(const unsigned_integer_128, void * /* env */) noexcept;
 	};
 
 	struct CFloat128 {
 	public:
 		struct CReferenceCommon common;
 		const float_128 value;
+
+		CFloat128(const float_128) noexcept;
+
+		static
+		CValue
+		allocate(const float_128, void * /* env */) noexcept;
 	};
 
 	struct CComplex {
@@ -135,6 +180,12 @@ namespace CVM {
 		struct CReferenceCommon common;
 		const CValue real;
 		const CValue imaginary;
+
+		CComplex(const CValue, const CValue) noexcept;
+
+		static
+		CValue
+		allocate(const CValue /* real */, const CValue /* imaginary, obviously */, void * /* env */) noexcept;
 	};
 
 	struct CRational {
@@ -142,31 +193,75 @@ namespace CVM {
 		struct CReferenceCommon common;
 		const CValue numerator;
 		const CValue denominator;
+
+		CRational(const CValue, const CValue) noexcept;
+
+		static
+		CValue
+		allocate(const CValue /* numerator */, const CValue /* denominator, obviously */, void * /* env */) noexcept;
 	};
 
 	struct CDecimalLimited {
 	public:
 		struct CReferenceCommon common;
+		const unsigned_integer_128 value;
+		/* Here's the idea: unsigned 128bit integer has at most 39 total digits,
+		 * thus that should fit easily into max 2^7 - 1 decimal digits of them, thus we can safely use
+		 * the first bit as the sign */
+		/** the number of digits *after* the decimal point; first bit is the sign */
+		const unsigned_integer_8 decimal_digits;
+
+		CDecimalLimited(const unsigned_integer_128, const unsigned_integer_8) noexcept;
+
+		static
+		CValue
+		allocate(const unsigned_integer_128, const unsigned_integer_8, void * /* env */) noexcept;
 	};
 
+	/* Stop right there for a moment: CDecimalLimited has the ability to save a number as big as
+	 * 340 undecillion (340_282_366_920_938_463_463_374_607_431_768_211_455), which is more than 
+	 * memory addressable in the full 64bit range (16 EiB), which is A LOT, are you 100% sure
+	 * you need more? */
 	struct CDecimalUnlimited {
 	public:
 		struct CReferenceCommon common;
+		/* Discussion: each unsigned_integer_8 can hold two base-10 digits without bits interleaving */
+		unsigned_integer_8 *const individual_digits;
+		const size_t digits_count;
+		/** the number of digits *after* the decimal point; first bit is the sign */
+		const unsigned_integer_64 decimal_digits; /* we say "unlimited", but 63bit decimal digits is the limit */
+
+		CDecimalUnlimited(unsigned_integer_8 *const, const size_t, const unsigned_integer_64) noexcept;
+		~CDecimalUnlimited() noexcept;
+
+		static
+		CValue
+		allocate(unsigned_integer_8 *const, const size_t, const unsigned_integer_64, void * /* env */) noexcept;
 	};
 
 	struct CArray {
 	public:
 		struct CReferenceCommon common;
 		unsigned_integer_64 elements_count;
-		CValue elements[];
+		CValue *elements;
+
+		static
+		CValue
+		allocate(const unsigned_integer_64 /* elements_count */, void * /* env */) noexcept;
 	};
 
+	/* just do not use this yet */
 	struct CNestedPointer {
 	public:
 		struct CReferenceCommon common;
 		union CReferenceValue *pointer;
+
+		static
+		CValue
+		allocate(union CReferenceValue * /* pointer */, void * /* env */) = delete;
 	};
 
+	/* only allocate from an existing strong reference, using downgrade() on CReference */
 	struct CWeakPointer {
 	public:
 		struct CReferenceCommon common;

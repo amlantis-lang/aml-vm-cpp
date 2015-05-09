@@ -87,6 +87,7 @@ namespace CVM {
 			}
 			case CReferenceTypeWeakPointer: {
 				CWeakPointer *real_pointer = reinterpret_cast<CWeakPointer *>(pointer);
+				/* maybe move this to destructor from *env */
 				real_pointer->on_release();
 				delete real_pointer;
 				break;
@@ -101,4 +102,70 @@ namespace CVM {
 			delete this;
 		}
 	}
+
+	CValue
+	CObject::allocate(void *psi_type, void *env) noexcept {
+		/* TODO: read number of ivars from psi_type */
+		CObject *object = new(std::nothrow) CObject(psi_type, 0);
+		if (object != nullptr) {
+			const CReference *object_reference
+				= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
+			if (object_reference != nullptr) {
+				return CValue(object_reference);
+			} else {
+				delete object; /* we failed to allocate the reference */
+			}
+		}
+		// TODO: call sth. like env->signal_out_of_memory()
+		return CValue::kNil; /* we failed to allocate the whole object, or just the ref. */
+	}
+
+	CValue
+	CUnmanagedUnsafe::allocate(void *pointer, void (*deallocator)(void *), void *env) noexcept {
+		CUnmanagedUnsafe *unmanaged = new(std::nothrow) CUnmanagedUnsafe(pointer, deallocator);
+		if (unmanaged != nullptr) {
+			const CReference *unmanaged_reference
+				= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(unmanaged));
+			if (unmanaged_reference != nullptr) {
+				return CValue(unmanaged_reference);
+			} else {
+				delete unmanaged; /* we failed to allocate the reference */
+			}
+		}
+		// TODO: call sth. like env->signal_out_of_memory()
+		return CValue::kNil; /* we failed to allocate the whole unmanaged object, or just the ref. */
+	}
+
+	CValue
+	CInteger64::allocate(const integer_64 value, void *env) noexcept {
+		CInteger64 *object = new(std::nothrow) CInteger64(value);
+		if (object != nullptr) {
+			const CReference *object_reference
+			= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
+			if (object_reference != nullptr) {
+				return CValue(object_reference);
+			} else {
+				delete object; /* we failed to allocate the reference */
+			}
+		}
+		// TODO: call sth. like env->signal_out_of_memory()
+		return CValue::kNil; /* we failed to allocate the whole object, or just the ref. */
+	}
+
+	CValue
+	CInteger64Unsigned::allocate(const unsigned_integer_64 value, void *env) noexcept {
+		CInteger64Unsigned *object = new(std::nothrow) CInteger64Unsigned(value);
+		if (object != nullptr) {
+			const CReference *object_reference
+			= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
+			if (object_reference != nullptr) {
+				return CValue(object_reference);
+			} else {
+				delete object; /* we failed to allocate the reference */
+			}
+		}
+		// TODO: call sth. like env->signal_out_of_memory()
+		return CValue::kNil; /* we failed to allocate the whole object, or just the ref. */
+	}
+
 }

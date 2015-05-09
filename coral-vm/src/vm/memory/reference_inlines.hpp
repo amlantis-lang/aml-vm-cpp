@@ -19,7 +19,6 @@ namespace CVM {
 	CReference::~CReference() noexcept {
 		assert(strong_reference_count.load(std::memory_order_seq_cst) == 0);
 		assert(weak_reference_count.load(std::memory_order_seq_cst) == 0);
-		delete referenced_value.load(std::memory_order_acquire);
 	}
 
 	inline
@@ -84,7 +83,7 @@ namespace CVM {
 			psi_type(psi_type),
 			dynamic_ivars(nullptr),
 			ivars_count(ivars_count),
-			ivars(new CVariable[ivars_count])
+			ivars(ivars_count >= 1 ? new CVariable[ivars_count] : nullptr)
 	{
 		for (unsigned_integer_16 i = 0; i < ivars_count; i += 1) {
 			ivars[i] = CValue::kUndefined;
@@ -92,9 +91,81 @@ namespace CVM {
 	}
 
 	inline
+	CUnmanagedUnsafe::CUnmanagedUnsafe(void *pointer, void (*deallocator)(void *))
+		:	common(CReferenceTypeUnmanagedUnsafe),
+			pointer(pointer),
+			deallocator(deallocator) {};
+
+	inline
+	CUnmanagedUnsafe::~CUnmanagedUnsafe() {
+		if (deallocator != nullptr) {
+			/* the deallocator function is supposed to determine whether or not to deallocate the value */
+			deallocator(pointer);
+		}
+	}
+
+	inline
+	CInteger64::CInteger64(const integer_64 value) noexcept
+		:	common(CReferenceTypeInteger64),
+			value(value) {};
+
+	inline
+	CInteger64Unsigned::CInteger64Unsigned(const unsigned_integer_64 value) noexcept
+		:	common(CReferenceTypeUnsignedInteger64),
+			value(value) {};
+
+	inline
+	CInteger128::CInteger128(const integer_128 value) noexcept
+		:	common(CReferenceTypeInteger128),
+			value(value) {};
+
+	inline
+	CInteger128Unsigned::CInteger128Unsigned(const unsigned_integer_128 value) noexcept
+		:	common(CReferenceTypeUnsignedInteger128),
+			value(value) {};
+
+	inline
+	CFloat128::CFloat128(const float_128 value) noexcept
+		:	common(CReferenceTypeFloat128),
+			value(value) {};
+
+	inline
+	CComplex::CComplex(const CValue real, const CValue imaginary) noexcept
+		:	common(CReferenceTypeComplex),
+			real(real),
+			imaginary(imaginary) {};
+
+	inline
+	CRational::CRational(const CValue numerator, const CValue denominator) noexcept
+		:	common(CReferenceTypeRational),
+			numerator(numerator),
+			denominator(denominator) {};
+
+	inline
+	CDecimalLimited::CDecimalLimited(const unsigned_integer_128 value,
+	                                 const unsigned_integer_8 decimal_digits) noexcept
+		:	common(CReferenceTypeDecimalLimited),
+			value(value),
+			decimal_digits(decimal_digits) {}
+
+	inline
+	CDecimalUnlimited::CDecimalUnlimited(unsigned_integer_8 *const individual_digits,
+	                                     const size_t digits_count,
+	                                     const unsigned_integer_64 decimal_digits) noexcept
+		:	common(CReferenceTypeDecimalUnlimited),
+			individual_digits(individual_digits), /* here we take over ownership of the digits */
+			digits_count(digits_count),
+			decimal_digits(decimal_digits) {}
+
+	inline
+	CDecimalUnlimited::~CDecimalUnlimited() noexcept {
+		delete[] individual_digits;
+	}
+
+	inline
 	CWeakPointer::CWeakPointer(CReference *ptr)
 		:	common(CReferenceTypeWeakPointer),
- 			pointer(ptr) {}
+			pointer(ptr) {}
 
 	inline
 	void
@@ -114,7 +185,8 @@ namespace CVM {
 		CReference *ptr = pointer.load(std::memory_order_seq_cst);
 		assert(ptr != nullptr);
 		while (true) {
-			STRONG_REFERENCE_COUNT_TYPE ref_count = ptr->strong_reference_count.load(std::memory_order_seq_cst);
+			STRONG_REFERENCE_COUNT_TYPE ref_count
+				= ptr->strong_reference_count.load(std::memory_order_seq_cst);
 			if (ref_count == 0) {
 				return CValue::kNil;
 			} else if (ptr->strong_reference_count

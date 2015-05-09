@@ -4,6 +4,8 @@
 #include "argv_input.hpp"
 #include "input_definition.hpp"
 
+#pragma GCC visibility push(default)
+
 namespace CVM {
 	class Cli {
 		Argv_Input *input;
@@ -15,5 +17,7 @@ namespace CVM {
 		int run(void);
 	};
 }
+
+#pragma GCC visibility pop
 
 #endif /* defined(__coral_vm__cli__) */

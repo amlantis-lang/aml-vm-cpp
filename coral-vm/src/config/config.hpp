@@ -2,12 +2,13 @@
 #define __coral_vm__config__
 
 #include "../lib/predef.hpp"
-#include <cstdint>
+#include <cstdint> /* for uintptr_t */
 
 /* Edit these constants to your platform's needs. */
 
 #if USE(CVALUE64)
-#  define STRONG_REFERENCE_COUNT_TYPE unsigned_integer_64
+   /* (2^32 - 1) strong references should be enough for everybody */
+#  define STRONG_REFERENCE_COUNT_TYPE unsigned_integer_32
 #  define WEAK_REFERENCE_COUNT_TYPE STRONG_REFERENCE_COUNT_TYPE
 #elif USE(CVALUE32_64)
 #  define STRONG_REFERENCE_COUNT_TYPE unsigned_integer_32
