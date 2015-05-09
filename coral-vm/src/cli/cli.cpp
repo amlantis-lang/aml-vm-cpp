@@ -48,6 +48,17 @@ namespace CVM {
 		std::cout << "kUndefined is number: " << CValue::kUndefined.is_number() << std::endl;
 		std::cout << "number is number: " << CValue(CValue::EncodeAsFloat64, 1.42).is_number() << std::endl;
 
+		CValue some_object = CObject::allocate(nullptr, nullptr);
+		CReference *reference = some_object.as_reference();
+		assert(reference->strong_count() == 1);
+		assert(reference->weak_count() == 0);
+		reference->retain(nullptr);
+		assert(reference->strong_count() == 2);
+		assert(reference->weak_count() == 0);
+		CValue weak_reference = reference->downgrade(nullptr);
+		assert(reference->strong_count() == 2);
+		assert(reference->weak_count() == 1);
+
 		return 0;
 	}
 

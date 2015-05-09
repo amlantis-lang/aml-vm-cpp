@@ -91,6 +91,11 @@ namespace CVM {
 	}
 
 	inline
+	CObject::~CObject() {
+		// TODO: delete dynamic_ivars
+	}
+
+	inline
 	CUnmanagedUnsafe::CUnmanagedUnsafe(void *pointer, void (*deallocator)(void *))
 		:	common(CReferenceTypeUnmanagedUnsafe),
 			pointer(pointer),

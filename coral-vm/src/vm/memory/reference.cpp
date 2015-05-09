@@ -1,5 +1,7 @@
 #include "reference.hpp"
 #include "reference_inlines.hpp"
+#include "value.hpp"
+#include "value_inlines.hpp"
 
 #include <cassert>
 
@@ -108,7 +110,7 @@ namespace CVM {
 		/* TODO: read number of ivars from psi_type */
 		CObject *object = new(std::nothrow) CObject(psi_type, 0);
 		if (object != nullptr) {
-			const CReference *object_reference
+			CReference *object_reference
 				= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
 			if (object_reference != nullptr) {
 				return CValue(object_reference);
@@ -124,7 +126,7 @@ namespace CVM {
 	CUnmanagedUnsafe::allocate(void *pointer, void (*deallocator)(void *), void *env) noexcept {
 		CUnmanagedUnsafe *unmanaged = new(std::nothrow) CUnmanagedUnsafe(pointer, deallocator);
 		if (unmanaged != nullptr) {
-			const CReference *unmanaged_reference
+			CReference *unmanaged_reference
 				= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(unmanaged));
 			if (unmanaged_reference != nullptr) {
 				return CValue(unmanaged_reference);
@@ -140,8 +142,8 @@ namespace CVM {
 	CInteger64::allocate(const integer_64 value, void *env) noexcept {
 		CInteger64 *object = new(std::nothrow) CInteger64(value);
 		if (object != nullptr) {
-			const CReference *object_reference
-			= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
+			CReference *object_reference
+				= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
 			if (object_reference != nullptr) {
 				return CValue(object_reference);
 			} else {
@@ -156,8 +158,8 @@ namespace CVM {
 	CInteger64Unsigned::allocate(const unsigned_integer_64 value, void *env) noexcept {
 		CInteger64Unsigned *object = new(std::nothrow) CInteger64Unsigned(value);
 		if (object != nullptr) {
-			const CReference *object_reference
-			= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
+			CReference *object_reference
+				= new(std::nothrow) CReference(reinterpret_cast<CReferenceValue *>(object));
 			if (object_reference != nullptr) {
 				return CValue(object_reference);
 			} else {

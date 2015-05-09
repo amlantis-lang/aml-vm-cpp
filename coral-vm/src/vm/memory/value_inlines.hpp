@@ -298,7 +298,7 @@ namespace CVM {
 	}
 
 	inline
-	CValue::CValue(CReference *ptr) {
+	CValue::CValue(struct CReference *ptr) {
 		if (ptr) {
 			evd.as_int_64 = reinterpret_cast<uintptr_t>(ptr);
 		} else {
@@ -307,7 +307,7 @@ namespace CVM {
 	}
 
 	inline
-	CValue::CValue(const CReference *ptr) {
+	CValue::CValue(const struct CReference *ptr) {
 		if (ptr) {
 			evd.as_int_64 = reinterpret_cast<uintptr_t>(const_cast<CReference *>(ptr));
 		} else {

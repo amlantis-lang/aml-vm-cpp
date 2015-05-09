@@ -86,8 +86,8 @@ namespace CVM {
 		CValue(CYesTag);
 		CValue(CNoTag);
 		CValue(CUnitTag);
-		CValue(CReference *ptr);
-		CValue(const CReference *ptr);
+		CValue(struct CReference *ptr);
+		CValue(const struct CReference *ptr);
 
 		/* numeric values */
 		CValue(EncodeAsFloat64Tag, float_64);

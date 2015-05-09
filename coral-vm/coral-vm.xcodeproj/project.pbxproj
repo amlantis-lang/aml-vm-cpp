@@ -416,12 +416,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7FABF581AFD824500A90E00 /* reference.cpp in Sources */,
 				A7FABF5B1AFD824500A90E00 /* value.cpp in Sources */,
 				A7FABF5E1AFD824500A90E00 /* variable.cpp in Sources */,
-				A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */,
+				A7FABF581AFD824500A90E00 /* reference.cpp in Sources */,
 				A7FABF4F1AFD824500A90E00 /* argv_input.cpp in Sources */,
 				A7FABF511AFD824500A90E00 /* input_definition.cpp in Sources */,
+				A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
