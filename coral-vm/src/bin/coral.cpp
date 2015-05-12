@@ -1,8 +1,10 @@
 #include "../cli/cli.hpp"
 
-#include <iostream>
-
 using CVM::Cli;
+
+/**
+ * Run a Coral module or Coral script inside a CVM.
+ */
 
 int
 main(const int argc, const char **argv) {

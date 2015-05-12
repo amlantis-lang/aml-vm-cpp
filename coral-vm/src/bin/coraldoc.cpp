@@ -1,8 +1,10 @@
 #include "../cli/cli.hpp"
 
-#include <iostream>
-
 using CVM::Cli;
+
+/**
+ * Generate documentation for a Coral module or Coral script.
+ */
 
 int
 main(const int argc, const char **argv) {

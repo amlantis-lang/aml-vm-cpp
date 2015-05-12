@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3788E6411B0280950062BCB8 /* libcvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FABF621AFD82B400A90E00 /* libcvm.a */; };
+		3788E6431B0282520062BCB8 /* coralf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3788E6421B0282520062BCB8 /* coralf.cpp */; };
 		A7FABF3C1AFD806C00A90E00 /* coral.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1EF91A92303A00188ADD /* coral.cpp */; };
 		A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1F001A92373600188ADD /* cli.cpp */; };
 		A7FABF4F1AFD824500A90E00 /* argv_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1F031A923D1A00188ADD /* argv_input.cpp */; };
@@ -24,6 +26,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3788E63F1B02808E0062BCB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A79839B21A913917007DA45D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7FABF401AFD81B900A90E00;
+			remoteInfo = cvm;
+		};
 		A7FABF5F1AFD82A200A90E00 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A79839B21A913917007DA45D /* Project object */;
@@ -55,6 +64,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3788E6361B02807C0062BCB8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		A7DC1EEF1A922F0300188ADD /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -85,6 +103,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3788E6381B02807C0062BCB8 /* coralf */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = coralf; sourceTree = BUILT_PRODUCTS_DIR; };
+		3788E6421B0282520062BCB8 /* coralf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = coralf.cpp; sourceTree = "<group>"; };
 		A707E6CD1AEAE950003B1B71 /* value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = value.cpp; path = src/vm/memory/value.cpp; sourceTree = SOURCE_ROOT; };
 		A707E6CE1AEAE950003B1B71 /* value.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = value.hpp; path = src/vm/memory/value.hpp; sourceTree = SOURCE_ROOT; };
 		A707E6D01AEB9826003B1B71 /* predef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = predef.hpp; sourceTree = "<group>"; };
@@ -116,6 +136,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3788E6351B02807C0062BCB8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3788E6411B0280950062BCB8 /* libcvm.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7DC1EEE1A922F0300188ADD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -182,6 +210,7 @@
 				A7FABF691AFD841D00A90E00 /* coralc */,
 				A7FABF781AFE0A6400A90E00 /* coraldoc */,
 				A7FABF881AFE0AC900A90E00 /* coralp */,
+				3788E6381B02807C0062BCB8 /* coralf */,
 				A7FABF621AFD82B400A90E00 /* libcvm.a */,
 			);
 			sourceTree = "<group>";
@@ -252,6 +281,7 @@
 				A7FABF641AFD83FD00A90E00 /* coralc.cpp */,
 				A7FABF7F1AFE0A8900A90E00 /* coraldoc.cpp */,
 				A7FABF8F1AFE0AFB00A90E00 /* coralp.cpp */,
+				3788E6421B0282520062BCB8 /* coralf.cpp */,
 			);
 			path = bin;
 			sourceTree = "<group>";
@@ -269,6 +299,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		3788E6371B02807C0062BCB8 /* coralf */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3788E63E1B02807C0062BCB8 /* Build configuration list for PBXNativeTarget "coralf" */;
+			buildPhases = (
+				3788E6341B02807C0062BCB8 /* Sources */,
+				3788E6351B02807C0062BCB8 /* Frameworks */,
+				3788E6361B02807C0062BCB8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3788E6401B02808E0062BCB8 /* PBXTargetDependency */,
+			);
+			name = coralf;
+			productName = coralf;
+			productReference = 3788E6381B02807C0062BCB8 /* coralf */;
+			productType = "com.apple.product-type.tool";
+		};
 		A7DC1EF01A922F0300188ADD /* coral */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7DC1EF51A922F0400188ADD /* Build configuration list for PBXNativeTarget "coral" */;
@@ -365,6 +413,9 @@
 			attributes = {
 				LastUpgradeCheck = 0630;
 				TargetAttributes = {
+					3788E6371B02807C0062BCB8 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
 					A7DC1EF01A922F0300188ADD = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -398,12 +449,21 @@
 				A7FABF681AFD841D00A90E00 /* coralc */,
 				A7FABF771AFE0A6400A90E00 /* coraldoc */,
 				A7FABF871AFE0AC900A90E00 /* coralp */,
+				3788E6371B02807C0062BCB8 /* coralf */,
 				A7FABF401AFD81B900A90E00 /* cvm */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3788E6341B02807C0062BCB8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3788E6431B0282520062BCB8 /* coralf.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7DC1EED1A922F0300188ADD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -452,6 +512,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3788E6401B02808E0062BCB8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7FABF401AFD81B900A90E00 /* cvm */;
+			targetProxy = 3788E63F1B02808E0062BCB8 /* PBXContainerItemProxy */;
+		};
 		A7FABF601AFD82A200A90E00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7FABF401AFD81B900A90E00 /* cvm */;
@@ -475,6 +540,84 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		3788E63C1B02807C0062BCB8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		3788E63D1B02807C0062BCB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		A79839B61A913917007DA45D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -907,6 +1050,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3788E63E1B02807C0062BCB8 /* Build configuration list for PBXNativeTarget "coralf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3788E63C1B02807C0062BCB8 /* Debug */,
+				3788E63D1B02807C0062BCB8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		A79839B51A913917007DA45D /* Build configuration list for PBXProject "coral-vm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -950,6 +1101,7 @@
 				A7FABF7D1AFE0A6500A90E00 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A7FABF8C1AFE0AC900A90E00 /* Build configuration list for PBXNativeTarget "coralp" */ = {
 			isa = XCConfigurationList;
@@ -958,6 +1110,7 @@
 				A7FABF8E1AFE0AC900A90E00 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,8 +1,10 @@
 #include "../cli/cli.hpp"
 
-#include <iostream>
-
 using CVM::Cli;
+
+/**
+ * Inspect a compiled Coral module or script.
+ */
 
 int
 main(const int argc, const char **argv) {
