@@ -6,8 +6,9 @@
 namespace GVM {
 
 	inline
-	GTypedVariable::GTypedVariable(GValue value, void *psi_type)
-		: value(value), psi_type(psi_type) { };
+	GTypedVariable::GTypedVariable(GValue value, PsiElement *psi_type)
+		:	value(value),
+ 			psi_type(psi_type) {};
 
 }
 

@@ -4,6 +4,7 @@
 #include "../../lib/predef.hpp"
 #include "../../config/config.hpp"
 #include "variable.hpp"
+#include "../psi/psi.hpp"
 
 #include <mutex>
 
@@ -31,10 +32,15 @@ namespace GVM {
 
 		/* array type */
 		GReferenceTypeArray =              0x0b,
+
 		/* when a GValue pointer did not fit into 48 bits, the future is upon us, or more likely Solaris */
 		GReferenceTypeNestedPointer =      0x0c,
+
 		/* to break strong reference cycles */
-		GReferenceTypeWeakPointer =        0x0d
+		GReferenceTypeWeakPointer =        0x0d,
+
+		/* an object associated with a PSI element */
+		GPsiBearer =                       0x0e
 	};
 
 	union GReferenceValue;
@@ -88,16 +94,17 @@ namespace GVM {
 	struct GObject {
 	public:
 		struct GReferenceCommon common;
-		void *psi_type;
+		/* non-const psi_type, because hot code loading may upgrade it to new version */
+		PsiElement *psi_type;
 		struct GTypedVariableLink *dynamic_ivars;
 		unsigned_integer_8 ivars_count;
 		GVariable *ivars;
 
 		static
 		GValue
-		allocate(void * /* psi_type */, void * /* env */) noexcept;
+		allocate(PsiElement * /* psi_type */, void * /* env */) noexcept;
 
-		GObject(void * /* psi_type */, unsigned_integer_8 /* ivars_count */);
+		GObject(PsiElement * /* psi_type */, unsigned_integer_8 /* ivars_count */);
 		~GObject();
 	};
 
@@ -274,6 +281,23 @@ namespace GVM {
 
 		void
 		on_release() noexcept;
+	};
+
+	struct GPsiBearer {
+	public:
+		struct GReferenceCommon common;
+		/* non-const psi_type, because hot code loading may upgrade it to new version */
+		PsiElement *psi_element;
+		struct GTypedVariableLink *dynamic_ivars;
+		unsigned_integer_8 ivars_count;
+		GVariable *ivars;
+
+		static
+		GValue
+		allocate(PsiElement * /* psi_element */, void * /* env */) noexcept;
+
+		GPsiBearer(PsiElement * /* psi_element */, unsigned_integer_8 /* ivars_count */);
+		~GPsiBearer();
 	};
 
 	union GReferenceValue {

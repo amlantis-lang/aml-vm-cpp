@@ -106,7 +106,7 @@ namespace GVM {
 	}
 
 	GValue
-	GObject::allocate(void *psi_type, void *env) noexcept {
+	GObject::allocate(PsiElement *psi_type, void *env) noexcept {
 		/* TODO: read number of ivars from psi_type */
 		GObject *object = new(std::nothrow) GObject(psi_type, 0);
 		if (object != nullptr) {

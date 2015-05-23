@@ -6,7 +6,7 @@ using GVM::Cli;
  * Run various bundling tools to create, assemble and compile a Gear module and its dependencies,
  * and to publish a Gear module and manage it.
  *
- * Name comes from "Faceting machine"
+ * Name comes from "Gear Factory"
  */
 
 int

@@ -2,6 +2,7 @@
 #define __gear_vm__variable__
 
 #include "value.hpp"
+#include "../psi/psi.hpp"
 
 #include <atomic>
 
@@ -11,9 +12,9 @@ namespace GVM {
 	struct GTypedVariable {
 	public:
 		GVariable value;
-		void *const psi_type;
+		PsiElement *const psi_type;
 
-		GTypedVariable(GValue, void * /* psi_type */);
+		GTypedVariable(GValue, PsiElement * /* psi_type */);
 	};
 }
 

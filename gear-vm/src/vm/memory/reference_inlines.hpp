@@ -78,7 +78,7 @@ namespace GVM {
 		: reference_type(ref_type) { }
 
 	inline
-	GObject::GObject(void *psi_type, unsigned_integer_8 ivars_count)
+	GObject::GObject(PsiElement *psi_type, unsigned_integer_8 ivars_count)
 		:	common(GReferenceTypeObject),
 			psi_type(psi_type),
 			dynamic_ivars(nullptr),
