@@ -1,5 +1,6 @@
 #include "psi.hpp"
 
+#include <string>
 #include <cassert>
 
 namespace GVM {
