@@ -3,7 +3,7 @@
 using GVM::Cli;
 
 /**
- * Run Gear interactively.
+ * Run a Gear module or Gear script inside GVM.
  */
 
 int

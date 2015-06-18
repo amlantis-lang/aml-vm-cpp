@@ -3,9 +3,7 @@
 using GVM::Cli;
 
 /**
- * Runs Gear programs interactively.
- *
- * Name comes from "Interactive Gear Console"
+ * Compile and optimize a Gear module or Gear script for GVM.
  */
 
 int
