@@ -40,7 +40,7 @@ namespace GVM {
 		GReferenceTypeWeakPointer =        0x0d,
 
 		/* an object associated with a PSI element */
-		GPsiBearer =                       0x0e
+		GReferenceTypePsiBearer =          0x0e
 	};
 
 	union GReferenceValue;
@@ -316,6 +316,7 @@ namespace GVM {
 		struct GArray array;
 		struct GNestedPointer nested_pointer;
 		struct GWeakPointer weak_pointer;
+		struct GPsiBearer psi_bearer;
 	};
 
 	typedef struct std::mutex GReferenceLock;

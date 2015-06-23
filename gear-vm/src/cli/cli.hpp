@@ -9,9 +9,10 @@
 namespace GVM {
 	class Cli {
 		Argv_Input *input;
+		const char *cmd;
 
 	public:
-		Cli(const int argc, const char **argv);
+		Cli(const char *cmd, const int argc, const char **argv);
 		~Cli(void);
 
 		int run(void);

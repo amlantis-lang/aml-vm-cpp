@@ -15,6 +15,9 @@
 		3753AA631B07E48A006CAEA7 /* psi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3753AA611B07E48A006CAEA7 /* psi.cpp */; };
 		3788E6411B0280950062BCB8 /* libgearvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FABF621AFD82B400A90E00 /* libgearvm.a */; };
 		3788E6431B0282520062BCB8 /* gearf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3788E6421B0282520062BCB8 /* gearf.cpp */; };
+		37DAE2841B3837AB00932043 /* lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37DAE2821B3837AB00932043 /* lexer.cpp */; };
+		37DAE2881B383CA100932043 /* input_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37DAE2861B383CA100932043 /* input_stream.cpp */; };
+		37DAE28C1B383D2300932043 /* file_input_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37DAE28A1B383D2300932043 /* file_input_stream.cpp */; };
 		A7FABF3C1AFD806C00A90E00 /* gear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1EF91A92303A00188ADD /* gear.cpp */; };
 		A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1F001A92373600188ADD /* cli.cpp */; };
 		A7FABF4F1AFD824500A90E00 /* argv_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1F031A923D1A00188ADD /* argv_input.cpp */; };
@@ -152,6 +155,12 @@
 		3753AA611B07E48A006CAEA7 /* psi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = psi.cpp; sourceTree = "<group>"; };
 		3753AA621B07E48A006CAEA7 /* psi.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = psi.hpp; sourceTree = "<group>"; };
 		3788E6421B0282520062BCB8 /* gearf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gearf.cpp; sourceTree = "<group>"; };
+		37DAE2821B3837AB00932043 /* lexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lexer.cpp; sourceTree = "<group>"; };
+		37DAE2831B3837AB00932043 /* lexer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = lexer.hpp; sourceTree = "<group>"; };
+		37DAE2861B383CA100932043 /* input_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = input_stream.cpp; sourceTree = "<group>"; };
+		37DAE2871B383CA100932043 /* input_stream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = input_stream.hpp; sourceTree = "<group>"; };
+		37DAE28A1B383D2300932043 /* file_input_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = file_input_stream.cpp; sourceTree = "<group>"; };
+		37DAE28B1B383D2300932043 /* file_input_stream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = file_input_stream.hpp; sourceTree = "<group>"; };
 		A707E6CD1AEAE950003B1B71 /* value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = value.cpp; path = src/vm/memory/value.cpp; sourceTree = SOURCE_ROOT; };
 		A707E6CE1AEAE950003B1B71 /* value.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = value.hpp; path = src/vm/memory/value.hpp; sourceTree = SOURCE_ROOT; };
 		A707E6D01AEB9826003B1B71 /* predef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = predef.hpp; sourceTree = "<group>"; };
@@ -254,6 +263,27 @@
 			path = psi;
 			sourceTree = "<group>";
 		};
+		37DAE2801B38373D00932043 /* compiler */ = {
+			isa = PBXGroup;
+			children = (
+				37DAE2811B38375B00932043 /* lexer */,
+			);
+			path = compiler;
+			sourceTree = "<group>";
+		};
+		37DAE2811B38375B00932043 /* lexer */ = {
+			isa = PBXGroup;
+			children = (
+				37DAE2831B3837AB00932043 /* lexer.hpp */,
+				37DAE2821B3837AB00932043 /* lexer.cpp */,
+				37DAE2871B383CA100932043 /* input_stream.hpp */,
+				37DAE2861B383CA100932043 /* input_stream.cpp */,
+				37DAE28B1B383D2300932043 /* file_input_stream.hpp */,
+				37DAE28A1B383D2300932043 /* file_input_stream.cpp */,
+			);
+			path = lexer;
+			sourceTree = "<group>";
+		};
 		A7432DA41A928D0F00F1FC44 /* memory */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,6 +362,7 @@
 		A7DC1EFF1A92367C00188ADD /* vm */ = {
 			isa = PBXGroup;
 			children = (
+				37DAE2801B38373D00932043 /* compiler */,
 				A7432DA41A928D0F00F1FC44 /* memory */,
 				3753AA601B07E45E006CAEA7 /* psi */,
 			);
@@ -610,13 +641,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37DAE2881B383CA100932043 /* input_stream.cpp in Sources */,
 				A7FABF5B1AFD824500A90E00 /* value.cpp in Sources */,
+				37DAE28C1B383D2300932043 /* file_input_stream.cpp in Sources */,
 				A7FABF5E1AFD824500A90E00 /* variable.cpp in Sources */,
+				37DAE2841B3837AB00932043 /* lexer.cpp in Sources */,
 				A7FABF581AFD824500A90E00 /* reference.cpp in Sources */,
 				A7FABF4F1AFD824500A90E00 /* argv_input.cpp in Sources */,
 				A7FABF511AFD824500A90E00 /* input_definition.cpp in Sources */,
-				A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */,
 				3753AA631B07E48A006CAEA7 /* psi.cpp in Sources */,
+				A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +755,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -756,6 +797,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -797,6 +845,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -832,6 +887,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -874,6 +936,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -910,6 +979,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -977,6 +1053,13 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1020,6 +1103,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1083,6 +1173,7 @@
 					"-licuio",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1140,6 +1231,7 @@
 					"-licuio",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1182,6 +1274,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1219,6 +1318,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1261,6 +1367,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1297,6 +1410,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1339,6 +1459,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1375,6 +1502,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/usr/local/Cellar/icu4c/55.1/lib",
+					"-licui18n",
+					"-licuuc",
+					"-licudata",
+					"-licuio",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};

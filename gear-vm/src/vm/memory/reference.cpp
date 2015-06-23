@@ -94,6 +94,11 @@ namespace GVM {
 				delete real_pointer;
 				break;
 			}
+			case GReferenceTypePsiBearer: {
+				GPsiBearer *real_pointer = reinterpret_cast<GPsiBearer *>(pointer);
+				delete real_pointer;
+				break;
+			}
 		}
 		/* just once again, to check that env did not resurrect the referenced value */
 		assert(strong_reference_count.load(std::memory_order_seq_cst) == 0);
