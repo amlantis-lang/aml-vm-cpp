@@ -15,7 +15,7 @@ namespace GVM {
 
 	bool
 	FileInputStream::moveToNextUChar32() {
-		current = u_fgetc_55(file);
+		current = u_fgetcx_55(file);
 		return current != U_EOF
 			&& current != 0xffffffff;
 	}

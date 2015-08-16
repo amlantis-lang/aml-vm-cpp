@@ -2,9 +2,11 @@
 #define __gear_vm__lexer__
 
 #include "input_stream.hpp"
+#include "../../../lib/predef.hpp"
 
 #include <unicode/ustdio.h>
 #include <vector>
+#include <stack>
 
 namespace GVM {
 	typedef enum : uint8_t {
@@ -24,13 +26,21 @@ namespace GVM {
 		RawLexicalItemComplexImaginaryLiteral,
 		RawLexicalItemCharacterLiteral,
 		RawLexicalItemBooleanLiteral,
+
 		RawLexicalItemStringLiteral,
 		RawLexicalItemSymbolLiteral,
 		RawLexicalItemRegexpLiteral,
+
 		RawLexicalItemArrayLiteralStart,
+		RawLexicalItemArrayLiteralEnd,
 		RawLexicalItemListLiteralStart,
+		RawLexicalItemListLiteralEnd,
 		RawLexicalItemDictionaryLiteralStart,
+		RawLexicalItemDictionaryLiteralEnd,
+		RawLexicalItemMultimapLiteralStart,
+		RawLexicalItemMultimapLiteralEnd,
 		RawLexicalItemBagLiteralStart,
+		RawLexicalItemBagLiteralEnd,
 
 		RawLexicalItemCommentStart,
 		RawLexicalItemCommentEnd,
@@ -62,6 +72,7 @@ namespace GVM {
 		/* Operators, delimiters */
 		Solidus = 0x002f,
 		ReverseSolidus = 0x005c,
+		PercentSign = 0x0025,
 		Apostrophe = 0x0027,
 		QuotationMark = 0x0022,
 		QuestionMark = 0x003f,
@@ -71,7 +82,6 @@ namespace GVM {
 		Ampersand = 0x0026,
 		Space = 0x0020,
 		Semicolon = 0x003b,
-		PercentSign = 0x0025,
 
 		/* Letters */
 		Letter_A = 0x0041,
@@ -85,11 +95,13 @@ namespace GVM {
 		Letter_l = 0x006c,
 		Letter_m = 0x006d,
 		Letter_n = 0x006e,
+		Letter_q = 0x0071,
 		Letter_r = 0x0072,
 		Letter_s = 0x0073,
 		Letter_t = 0x0074,
 		Letter_u = 0x0075,
 		Letter_v = 0x0076,
+		Letter_w = 0x0077,
 		Letter_x = 0x0078,
 		Letter_z = 0x007a,
 
@@ -98,9 +110,21 @@ namespace GVM {
 		Digit_9 = 0x0039
 	} KnownCharacters;
 
+	typedef enum : unsigned_integer_8 {
+		ParenthesesElementBasic = 0,
+		ParenthesesElementInterpolatedString = 1,
+		ParenthesesElementInterpolatedRegexp = 2,
+		ParenthesesElementInterpolatedSymbol = 3,
+		ParenthesesElementList = 4,
+		ParenthesesElementArray = 5,
+		ParenthesesElementDictionary = 6,
+		ParenthesesElementMultimap = 7,
+		ParenthesesElementBag = 8
+	} ParenthesesElement;
+
 	struct RawLexicalToken {
 		RawLexicalItem item;
-		class UnicodeString rawValue;
+		class std::vector<UChar32> rawValue;
 		char flags[4];
 	};
 
@@ -111,6 +135,9 @@ namespace GVM {
 		std::vector<struct RawLexicalToken> *
 		parseInputStream(class InputStream *inputStream);
 
+		static bool isLineBreakStart(UChar32 inputChar);
+		static bool isUnicodeNamePart(UChar32 inputChar);
+
 		class FirstPassState;
 
 		class FirstPassMachine {
@@ -119,9 +146,25 @@ namespace GVM {
 			void handle(UChar32 inputChar);
 			void changeState(FirstPassState *newState);
 			void appendToOutput(RawLexicalToken rawToken);
+			void pushParenthesesElement(ParenthesesElement element);
+			void popParenthesesElement();
+			ParenthesesElement peekParenthesesElement() const;
+			unsigned_integer_32 parenthesisCount() const;
+			void incrementParenthesisCounter();
+			void decrementParenthesisCounter();
+			unsigned_integer_32 squareBracketCount() const;
+			void incrementSquareBracketCounter();
+			void decrementSquareBracketCounter();
+			unsigned_integer_32 braceCount() const;
+			void incrementBraceCounter();
+			void decrementBraceCounter();
 		private:
 			std::unique_ptr<FirstPassState> state;
 			std::vector<RawLexicalToken> *output;
+			std::stack<ParenthesesElement> parenthesesElements;
+			unsigned_integer_32 parenthesisCounter;
+			unsigned_integer_32 squareBracketCounter;
+			unsigned_integer_32 braceCounter;
 		};
 
 		class FirstPassState {
@@ -137,7 +180,7 @@ namespace GVM {
 
 			void
 			accept(UChar32 inputChar) {
-				rawToken.rawValue.append(inputChar);
+				rawToken.rawValue.push_back(inputChar);
 			};
 		};
 
@@ -195,6 +238,12 @@ namespace GVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
+		class FirstPassParameterPlaceholderState : public FirstPassState {
+		public:
+			FirstPassParameterPlaceholderState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
 		class FirstPassOperatorOrLiteralState : public FirstPassState {
 		public:
 			FirstPassOperatorOrLiteralState();
@@ -219,13 +268,26 @@ namespace GVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
-		class FirstPassStringLiteralState : public FirstPassState {
+		class FirstPassStringState : public FirstPassState {
 		public:
-			FirstPassStringLiteralState();
+			FirstPassStringState();
+			FirstPassStringState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
-		typedef enum : int8_t {
+		class FirstPassRawStringState : public FirstPassState {
+		public:
+			FirstPassRawStringState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassQuotedStringState : public FirstPassState {
+		public:
+			FirstPassQuotedStringState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		typedef enum : unsigned_integer_8 {
 			ExtendedCharacterEscapeTypeInvalid = 0,
 
 			ExtendedCharacterEscapeTypeHex = 1,
@@ -235,9 +297,9 @@ namespace GVM {
 			ExtendedCharacterEscapeTypeUnicodeNamed
 		} ExtendedCharacterEscapeType;
 
-		class FirstPassCharacterLiteralState : public FirstPassState {
+		class FirstPassCharacterState : public FirstPassState {
 		public:
-			FirstPassCharacterLiteralState(RawLexicalToken rawToken);
+			FirstPassCharacterState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		private:
 			bool doingEscapeSequence;
@@ -245,9 +307,35 @@ namespace GVM {
 			ExtendedCharacterEscapeType escapeExtendedType;
 		};
 
-		class FirstPassRegexpLiteralState : public FirstPassState {
+		class FirstPassWordsListOrArrayState : public FirstPassState {
 		public:
-			FirstPassRegexpLiteralState(RawLexicalToken rawToken, UChar32 delimiter);
+			FirstPassWordsListOrArrayState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassListOrArrayState : public FirstPassState {
+		public:
+			FirstPassListOrArrayState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassDictionaryOrMultimapState : public FirstPassState {
+		public:
+			FirstPassDictionaryOrMultimapState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassRegexpState : public FirstPassState {
+		public:
+			FirstPassRegexpState(RawLexicalToken rawToken, UChar32 delimiter);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			UChar32 delimiter;
+		};
+
+		class FirstPassSubstitutionRegexpState : public FirstPassState {
+		public:
+			FirstPassSubstitutionRegexpState(RawLexicalToken rawToken, UChar32 delimiter);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		private:
 			UChar32 delimiter;
