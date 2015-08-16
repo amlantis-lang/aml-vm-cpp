@@ -28,8 +28,15 @@ namespace GVM {
 		RawLexicalItemBooleanLiteral,
 
 		RawLexicalItemStringLiteral,
+		RawLexicalItemStringLiteralContinuation,
 		RawLexicalItemSymbolLiteral,
+		RawLexicalItemSymbolLiteralContinuation,
 		RawLexicalItemRegexpLiteral,
+		RawLexicalItemRegexpLiteralContinuation,
+
+		RawLexicalItemParameterPlaceholder,
+		RawLexicalItemPolymorphicTypeStart,
+		RawLexicalItemPolymorphicTypeEnd,
 
 		RawLexicalItemArrayLiteralStart,
 		RawLexicalItemArrayLiteralEnd,
@@ -70,18 +77,38 @@ namespace GVM {
 		RightBrace = 0x007d,
 
 		/* Operators, delimiters */
-		Solidus = 0x002f,
-		ReverseSolidus = 0x005c,
-		PercentSign = 0x0025,
-		Apostrophe = 0x0027,
+		Space = 0x0020,
+		ExclamationMark = 0x0021,
 		QuotationMark = 0x0022,
-		QuestionMark = 0x003f,
 		NumberSign = 0x0023,
 		HashSign = NumberSign,
 		DollarSign = 0x0024,
+		PercentSign = 0x0025,
 		Ampersand = 0x0026,
-		Space = 0x0020,
+		Apostrophe = 0x0027,
+		Asterisk = 0x002a,
+		PlusSign = 0x002b,
+		Comma = 0x002c,
+		HyphenMinusSign = 0x002d,
+		FullStop = 0x002e,
+		Dot = FullStop,
+		Solidus = 0x002f,
+		Colon = 0x003a,
 		Semicolon = 0x003b,
+		LessThanSign = 0x003c,
+		EqualsSign = 0x003d,
+		GreaterThanSign = 0x003e,
+		QuestionMark = 0x003f,
+		AtSign = 0x0040,
+		ReverseSolidus = 0x005c,
+		CircumflexAccent = 0x005e,
+		LowLine = 0x005f,
+		Underscore = LowLine,
+		GraveAccent = 0x0060,
+		VerticalLine = 0x007c,
+		Tilde = 0x007e,
+		SectionSign = 0x00a7,
+		DivisionSign = 0x00f7,
 
 		/* Letters */
 		Letter_A = 0x0041,
@@ -119,7 +146,8 @@ namespace GVM {
 		ParenthesesElementArray = 5,
 		ParenthesesElementDictionary = 6,
 		ParenthesesElementMultimap = 7,
-		ParenthesesElementBag = 8
+		ParenthesesElementBag = 8,
+		ParenthesesElementPolymorphicType = 9
 	} ParenthesesElement;
 
 	struct RawLexicalToken {
@@ -137,6 +165,12 @@ namespace GVM {
 
 		static bool isLineBreakStart(UChar32 inputChar);
 		static bool isUnicodeNamePart(UChar32 inputChar);
+		static bool isGearIdentifierStart(UChar32 inputChar);
+		static bool isGearIdentifierPart(UChar32 inputChar);
+		static bool isGearIdentifierEnd(UChar32 inputChar);
+		static bool isGearIdentifierRepeatableEnd(UChar32 inputChar);
+		static bool isGearOperatorChar(UChar32 inputChar);
+		static bool isDigitChar(UChar32 inputChar);
 
 		class FirstPassState;
 
@@ -268,6 +302,12 @@ namespace GVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
+		class FirstPassQuotedIdentifierState : public FirstPassState {
+		public:
+			FirstPassQuotedIdentifierState();
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
 		class FirstPassStringState : public FirstPassState {
 		public:
 			FirstPassStringState();
@@ -284,6 +324,12 @@ namespace GVM {
 		class FirstPassQuotedStringState : public FirstPassState {
 		public:
 			FirstPassQuotedStringState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassVerbatimStringState : public FirstPassState {
+		public:
+			FirstPassVerbatimStringState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 

@@ -3,11 +3,11 @@
 namespace GVM {
 
 	Lexer::
-	FirstPassIdentifierState::FirstPassIdentifierState() {};
+	FirstPassQuotedIdentifierState::FirstPassQuotedIdentifierState() {};
 
 	void
 	Lexer::
-	FirstPassIdentifierState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassQuotedIdentifierState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		switch (rawToken.rawValue.size()) {
     	case 0:
 				/* correctness handled by the start state */

@@ -26,25 +26,26 @@ namespace GVM {
 				case ParenthesesElementMultimap:
 					if (rawToken.rawValue.size() == 1) {
 						rawToken.item = RawLexicalItemMultimapLiteralEnd;
+						/* decrement the second closing brace */
 						machine.popParenthesesElement();
-						machine.decrementSquareBracketCounter();
+						machine.decrementBraceCounter();
 						return; /* prevent state change, there is one more brace to come */
 					}
 					break;
 				case ParenthesesElementInterpolatedString:
-					/* TODO: interpolated string continue */
+					/* TODO: interpolated string continuation */
 					break;
 				case ParenthesesElementInterpolatedSymbol:
-					/* TODO: interpolated symbol continue */
+					/* TODO: interpolated symbol continuation */
 					break;
 				case ParenthesesElementInterpolatedRegexp:
-					/* TODO: interpolated regexp continue */
+					/* TODO: interpolated regexp continuation */
 					break;
 				default:
 					throw "Uneven right brace";
 			}
 			machine.popParenthesesElement();
-			machine.decrementSquareBracketCounter();
+			machine.decrementBraceCounter();
 			machine.appendToOutput(rawToken);
 			machine.changeState(new Lexer::FirstPassStartState);
 		}

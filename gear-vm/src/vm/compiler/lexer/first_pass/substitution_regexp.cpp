@@ -7,4 +7,9 @@ namespace GVM {
 		:	FirstPassState(rawToken),
 			delimiter(delimiter) {};
 
+	void
+	Lexer::
+	FirstPassSubstitutionRegexpState::handle(FirstPassMachine &machine, UChar32 inputChar) {
+
+	}
 }

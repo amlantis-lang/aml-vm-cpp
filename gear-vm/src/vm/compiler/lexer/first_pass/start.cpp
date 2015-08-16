@@ -9,28 +9,34 @@ namespace GVM {
 	Lexer::
 	FirstPassStartState::handle(FirstPassMachine &machine, UChar32 inputChar) {
 		if (Lexer::isLineBreakStart(inputChar)) {
-			machine.changeState(new Lexer::FirstPassNewlineState);
+			machine.changeState(new FirstPassNewlineState);
 			machine.handle(inputChar);
 		} else if (inputChar == LeftParens) {
-			machine.changeState(new Lexer::FirstPassLeftParenthesisState);
+			machine.changeState(new FirstPassLeftParenthesisState);
 			machine.handle(inputChar);
 		} else if (inputChar == RightParens) {
-			machine.changeState(new Lexer::FirstPassRightParenthesisState);
+			machine.changeState(new FirstPassRightParenthesisState);
 			machine.handle(inputChar);
 		} else if (inputChar == LeftSquareBracket) {
-			machine.changeState(new Lexer::FirstPassLeftSquareBracketState);
+			machine.changeState(new FirstPassLeftSquareBracketState);
 			machine.handle(inputChar);
 		} else if (inputChar == RightSquareBracket) {
-			machine.changeState(new Lexer::FirstPassRightSquareBracketState);
+			machine.changeState(new FirstPassRightSquareBracketState);
 			machine.handle(inputChar);
 		} else if (inputChar == LeftBrace) {
-			machine.changeState(new Lexer::FirstPassLeftBraceState);
+			machine.changeState(new FirstPassLeftBraceState);
 			machine.handle(inputChar);
 		} else if (inputChar == RightBrace) {
-			machine.changeState(new Lexer::FirstPassRightBraceState);
+			machine.changeState(new FirstPassRightBraceState);
 			machine.handle(inputChar);
 		} else if (inputChar == PercentSign) {
-			machine.changeState(new Lexer::FirstPassOperatorOrLiteralState);
+			machine.changeState(new FirstPassOperatorOrLiteralState);
+			machine.handle(inputChar);
+		} else if (Lexer::isGearIdentifierStart(inputChar)) {
+			machine.changeState(new FirstPassIdentifierState);
+			machine.handle(inputChar);
+		} else if (Lexer::isGearOperatorChar(inputChar)) {
+			machine.changeState(new FirstPassOperatorState);
 			machine.handle(inputChar);
 		}
 	};

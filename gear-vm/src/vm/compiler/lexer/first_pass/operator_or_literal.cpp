@@ -1,7 +1,7 @@
 #include "../lexer.hpp"
 
 namespace GVM {
-  
+
 	Lexer::
 	FirstPassOperatorOrLiteralState::FirstPassOperatorOrLiteralState() {};
 
@@ -14,10 +14,10 @@ namespace GVM {
 
 		} else if (rawToken.rawValue.size() == 1) {
 			if (inputChar == Solidus) {
-				/* regexp */
+				/* regexp: %/ */
 				accept(inputChar);
 				rawToken.item = RawLexicalItemRegexpLiteral;
-				machine.changeState(new Lexer::FirstPassRegexpState(rawToken, inputChar));
+				machine.changeState(new Lexer::FirstPassRegexpState(rawToken, Solidus));
 
 			} else if (inputChar == Letter_r) {
 				/* regexp or raw string: %r */
@@ -85,7 +85,7 @@ namespace GVM {
 				accept(inputChar);
 				machine.changeState(new FirstPassDictionaryOrMultimapState(rawToken));
 
-			} else if (inputChar >= Digit_0 && inputChar <= Digit_9) {
+			} else if (Lexer::isDigitChar(inputChar)) {
 				/* anynymous function parameter placeholder: %1...%9 */
 				accept(inputChar);
 				machine.changeState(new FirstPassParameterPlaceholderState(rawToken));
@@ -185,7 +185,7 @@ namespace GVM {
 					if (rawToken.rawValue.at(1) == Letter_s) {
 						/* substitution regexp: %s/ */
 						accept(inputChar);
-						machine.changeState(new FirstPassSubstitutionRegexpState(rawToken, inputChar));
+						machine.changeState(new FirstPassSubstitutionRegexpState(rawToken, Solidus));
 					} else {
 						throw "Unexpected input character";
 					}
@@ -227,9 +227,67 @@ namespace GVM {
 						throw "Unexpected input character";
 					}
 					break;
-				default:
+				case LeftParens:
+					if (   (   rawToken.rawValue.at(1) == Letter_i
+							    || rawToken.rawValue.at(1) == Letter_m
+							    || rawToken.rawValue.at(1) == Letter_l)
+							&& rawToken.rawValue.at(2) == Letter_s) {
+						/* set literal with modifiers: %is(, %ms(, %ls( */
+						accept(inputChar);
+						rawToken.item = RawLexicalItemBagLiteralStart;
+						machine.pushParenthesesElement(ParenthesesElementBag);
+						machine.incrementParenthesisCounter();
+						machine.appendToOutput(rawToken);
+						machine.changeState(new FirstPassStartState);
+					} else {
+						throw "Unexpected input character";
+					}
 					break;
+				case LeftSquareBracket:
+					if (   (   rawToken.rawValue.at(1) == Letter_i
+							    || rawToken.rawValue.at(1) == Letter_m)
+							&& rawToken.rawValue.at(2) == Letter_l) {
+						/* list/array literal with modifiers: %il[, %ml[ */
+						accept(inputChar);
+						machine.changeState(new FirstPassListOrArrayState(rawToken));
+					} else {
+						throw "Unexpected input character";
+					}
+					break;
+				case LeftBrace:
+					if (   (   rawToken.rawValue.at(1) == Letter_i
+							    || rawToken.rawValue.at(1) == Letter_m)
+							&& rawToken.rawValue.at(2) == Letter_l) {
+						/* dictionary/multimap literal with modifiers: %il{, %ml{ */
+						accept(inputChar);
+						machine.changeState(new FirstPassDictionaryOrMultimapState(rawToken));
+					} else {
+						throw "Unexpected input character";
+					}
+					break;
+				default:
+					throw "Unexpected input character";
 			}
+		} else if (rawToken.rawValue.size() == 4) {
+			switch (inputChar) {
+				case LeftParens:
+					/* only set literal can get there */
+					if (   (   rawToken.rawValue.at(1) == Letter_i
+							    || rawToken.rawValue.at(1) == Letter_m)
+							&& rawToken.rawValue.at(2) == Letter_l
+							&& rawToken.rawValue.at(3) == Letter_s) {
+						/* set literal with modifiers: %ils(, %mls( */
+						accept(inputChar);
+						machine.changeState(new FirstPassListOrArrayState(rawToken));
+					} else {
+						throw "Unexpected input character";
+					}
+					break;
+				default:
+					throw "Unexpected input character";
+			}
+		} else {
+			throw "Illegal state, operator or literal consumed more input characters than it should've";
 		}
 	}
 

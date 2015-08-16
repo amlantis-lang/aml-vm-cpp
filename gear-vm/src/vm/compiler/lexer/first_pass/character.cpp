@@ -120,6 +120,7 @@ namespace GVM {
 							} else if (inputChar == Semicolon) {
 								accept(inputChar);
 								completedEscapeSequence = true;
+								escapeExtendedType = ExtendedCharacterEscapeTypeInvalid;
 
 							} else {
 								throw "Unexpected input character in character literal";
@@ -174,6 +175,7 @@ namespace GVM {
 							} else if (inputChar == Semicolon) {
 								accept(inputChar);
 								completedEscapeSequence = true;
+								escapeExtendedType = ExtendedCharacterEscapeTypeInvalid;
 
 							} else {
 								throw "Unexpected input character in character literal";
@@ -261,6 +263,7 @@ namespace GVM {
 							} else {
 								throw "Unexpected input character in character literal";
 							}
+							break;
 					}
 					break;
 
