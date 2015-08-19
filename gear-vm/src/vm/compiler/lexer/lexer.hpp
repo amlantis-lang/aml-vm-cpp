@@ -37,6 +37,7 @@ namespace GVM {
 		RawLexicalItemParameterPlaceholder,
 		RawLexicalItemPolymorphicTypeStart,
 		RawLexicalItemPolymorphicTypeEnd,
+		RawLexicalItemPolymorphicTagName,
 
 		RawLexicalItemArrayLiteralStart,
 		RawLexicalItemArrayLiteralEnd,
@@ -105,6 +106,7 @@ namespace GVM {
 		LowLine = 0x005f,
 		Underscore = LowLine,
 		GraveAccent = 0x0060,
+		Backtick = GraveAccent,
 		VerticalLine = 0x007c,
 		Tilde = 0x007e,
 		SectionSign = 0x00a7,
@@ -302,10 +304,23 @@ namespace GVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
+		typedef enum : unsigned_integer_8 {
+			/* not yet in a state that can safely decide */
+			QuotedIdentifierTypeUndecided,
+			/* quoted keyword or identifier, or also polymorphic variant tag name */
+			QuotedIdentifierTypeNamed,
+			/* quoted operator name */
+			QuotedIdentifierTypeOperator,
+			/* arbitrary quoted identifier */
+			QuotedIdentifierTypeDoubleQuoted
+		} QuotedIdentifierType;
+
 		class FirstPassQuotedIdentifierState : public FirstPassState {
 		public:
 			FirstPassQuotedIdentifierState();
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			QuotedIdentifierType identifierType;
 		};
 
 		class FirstPassStringState : public FirstPassState {

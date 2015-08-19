@@ -35,6 +35,9 @@ namespace GVM {
 		} else if (Lexer::isGearIdentifierStart(inputChar)) {
 			machine.changeState(new FirstPassIdentifierState);
 			machine.handle(inputChar);
+		} else if (inputChar == Backtick) {
+			machine.changeState(new FirstPassQuotedIdentifierState);
+			machine.handle(inputChar);
 		} else if (Lexer::isGearOperatorChar(inputChar)) {
 			machine.changeState(new FirstPassOperatorState);
 			machine.handle(inputChar);

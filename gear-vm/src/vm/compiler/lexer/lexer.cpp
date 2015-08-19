@@ -238,28 +238,29 @@ namespace GVM {
 	bool
 	Lexer::isGearOperatorChar(UChar32 inputChar) {
 		const UCharCategory category = (UCharCategory) u_charType_55(inputChar);
-		return category == U_MATH_SYMBOL
-			|| category == U_OTHER_SYMBOL
-			|| inputChar == ExclamationMark
-			|| inputChar == HashSign
-			|| inputChar == PercentSign
-			|| inputChar == Ampersand
-			|| inputChar == Asterisk
-			|| inputChar == PlusSign
-			|| inputChar == HyphenMinusSign
-			|| inputChar == Dot
-			|| inputChar == Solidus
-			|| inputChar == Colon
-			|| inputChar == LessThanSign
-			|| inputChar == EqualsSign
-			|| inputChar == ExclamationMark
-			|| inputChar == GreaterThanSign
-			|| inputChar == QuestionMark
-			|| inputChar == AtSign
-			|| inputChar == ReverseSolidus
-			|| inputChar == GraveAccent
-			|| inputChar == VerticalLine
-			|| inputChar == Tilde;
+		return (category == U_MATH_SYMBOL
+				|| category == U_OTHER_SYMBOL
+				|| inputChar == ExclamationMark
+				|| inputChar == HashSign
+				|| inputChar == PercentSign
+				|| inputChar == Ampersand
+				|| inputChar == Asterisk
+				|| inputChar == PlusSign
+				|| inputChar == HyphenMinusSign
+				|| inputChar == Dot
+				|| inputChar == Solidus
+				|| inputChar == Colon
+				|| inputChar == LessThanSign
+				|| inputChar == EqualsSign
+				|| inputChar == ExclamationMark
+				|| inputChar == GreaterThanSign
+				|| inputChar == QuestionMark
+				|| inputChar == AtSign
+				|| inputChar == ReverseSolidus
+				|| inputChar == GraveAccent
+				|| inputChar == VerticalLine
+				|| inputChar == Tilde)
+			&& inputChar != Backtick;
 	}
 }
 
