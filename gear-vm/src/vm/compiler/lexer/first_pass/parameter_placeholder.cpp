@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassParameterPlaceholderState::FirstPassParameterPlaceholderState(RawLexicalToken rawToken)
@@ -8,7 +8,7 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassParameterPlaceholderState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassParameterPlaceholderState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (Lexer::isDigitChar(inputChar)) {
 			accept(inputChar);
 		} else {

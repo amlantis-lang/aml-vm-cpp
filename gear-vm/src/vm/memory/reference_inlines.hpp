@@ -1,11 +1,11 @@
-#ifndef __gear_vm__reference_inlines__
-#define __gear_vm__reference_inlines__
+#ifndef __aml_vm__reference_inlines__
+#define __aml_vm__reference_inlines__
 
 #include "reference.hpp"
 
 #include <cassert>
 
-namespace GVM {
+namespace AVM {
 
 	inline
 	GReference::GReference(union GReferenceValue *ref_value)

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:../..">
+      location = "self:/Users/themarketka/Documents/amlantis-lang/aml-vm-cpp/gear-vm/aml-vm.xcodeproj">
    </FileRef>
 </Workspace>

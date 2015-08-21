@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	Lexer::
 	FirstPassOperatorOrLiteralState::FirstPassOperatorOrLiteralState() {};
 
 	void
 	Lexer::
-	FirstPassOperatorOrLiteralState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassOperatorOrLiteralState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (rawToken.rawValue.size() == 0) {
 			/* leading `%' */
 			accept(inputChar);

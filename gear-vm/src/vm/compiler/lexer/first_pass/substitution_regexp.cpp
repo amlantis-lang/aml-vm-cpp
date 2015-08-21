@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	Lexer::
 	FirstPassSubstitutionRegexpState::FirstPassSubstitutionRegexpState(RawLexicalToken rawToken, UChar32 delimiter)

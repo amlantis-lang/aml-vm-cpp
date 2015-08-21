@@ -1,11 +1,11 @@
-#ifndef __gear_vm__file_input_stream__
-#define __gear_vm__file_input_stream__
+#ifndef __aml_vm__file_input_stream__
+#define __aml_vm__file_input_stream__
 
 #include "input_stream.hpp"
 
 #include <unicode/ustdio.h>
 
-namespace GVM {
+namespace AVM {
 	class FileInputStream : public InputStream {
 	public:
 		FileInputStream(const char *filename, const char *codepage);
@@ -20,4 +20,4 @@ namespace GVM {
 	};
 }
 
-#endif /* defined(__gear_vm__file_input_stream__) */
+#endif /* defined(__aml_vm__file_input_stream__) */

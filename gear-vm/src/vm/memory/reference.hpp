@@ -1,5 +1,5 @@
-#ifndef __gear_vm__reference__
-#define __gear_vm__reference__
+#ifndef __aml_vm__reference__
+#define __aml_vm__reference__
 
 #include "../../lib/predef.hpp"
 #include "../../config/config.hpp"
@@ -8,7 +8,7 @@
 
 #include <mutex>
 
-namespace GVM {
+namespace AVM {
 	enum GReferenceType : unsigned_integer_8 {
 
 		/* main point of interest */
@@ -325,4 +325,4 @@ namespace GVM {
 	lock_for_reference(union GReferenceValue *) noexcept;
 }
 
-#endif /* defined(__gear_vm__reference__) */
+#endif /* defined(__aml_vm__reference__) */

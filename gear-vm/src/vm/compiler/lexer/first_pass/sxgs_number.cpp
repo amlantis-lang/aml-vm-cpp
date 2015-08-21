@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassSxgsNumberState::FirstPassSxgsNumberState(RawLexicalToken rawToken)
@@ -8,7 +8,7 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassSxgsNumberState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassSxgsNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 
 	}
 }

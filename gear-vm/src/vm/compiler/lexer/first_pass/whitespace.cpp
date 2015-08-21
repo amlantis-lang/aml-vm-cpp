@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassWhitespaceState::FirstPassWhitespaceState() {};
 	
 	void
 	Lexer::
-	FirstPassWhitespaceState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassWhitespaceState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (u_isblank_55(inputChar)) {
 			accept(inputChar);
 

@@ -5,7 +5,7 @@
 
 #include <cassert>
 
-namespace GVM {
+namespace AVM {
 	static GReferenceLock ReferenceLocks[REFERENCE_LOCKS_COUNT];
 
 	GReferenceLock &

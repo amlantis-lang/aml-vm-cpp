@@ -1,12 +1,12 @@
-#ifndef __gear_vm__psi__
-#define __gear_vm__psi__
+#ifndef __aml_vm__psi__
+#define __aml_vm__psi__
 
 #include "../../lib/predef.hpp"
 #include "../memory/value.hpp"
 
 #include <shared_mutex>
 
-namespace GVM {
+namespace AVM {
 	class PsiElement {
 	public:
 		enum Kind {
@@ -57,4 +57,4 @@ namespace GVM {
 	};
 }
 
-#endif /* defined(__gear_vm__psi__) */
+#endif /* defined(__aml_vm__psi__) */

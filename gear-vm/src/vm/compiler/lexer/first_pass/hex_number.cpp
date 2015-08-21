@@ -1,14 +1,14 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
-	FirstPassDecNumberState::FirstPassDecNumberState(RawLexicalToken rawToken)
+	FirstPassHexNumberState::FirstPassHexNumberState(RawLexicalToken rawToken)
 		: FirstPassState(rawToken) {};
 
 	void
 	Lexer::
-	FirstPassDecNumberState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassHexNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 
 	}
 }

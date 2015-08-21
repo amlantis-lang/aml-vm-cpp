@@ -1,9 +1,9 @@
-#ifndef __gear_vm__argv_input__
-#define __gear_vm__argv_input__
+#ifndef __aml_vm__argv_input__
+#define __aml_vm__argv_input__
 
 #include "input_definition.cpp"
 
-namespace GVM {
+namespace AVM {
 class Argv_Input {
 	Input_Definition *input_definition;
 
@@ -14,4 +14,4 @@ public:
 };
 }
 
-#endif /* defined(__gear_vm__argv_input__) */
+#endif /* defined(__aml_vm__argv_input__) */

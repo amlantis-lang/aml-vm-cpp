@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassNumberState::FirstPassNumberState() {};
 
 	void
 	Lexer::
-	FirstPassNumberState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		switch (rawToken.rawValue.size()) {
 			case 0:
 				accept(inputChar);
@@ -38,8 +38,8 @@ namespace GVM {
 					}
 				} else if (Lexer::isLetterChar(inputChar)) {
 					throw "Unexpected input character";
-				} else if (Lexer::isGearDelimiterChar(inputChar)
-						|| Lexer::isGearOperatorChar(inputChar)
+				} else if (Lexer::isAmlDelimiterChar(inputChar)
+						|| Lexer::isAmlOperatorChar(inputChar)
 						|| u_isblank_55(inputChar)) {
 					rawToken.item = RawLexicalItemIntegerLiteral;
 					machine.appendToOutput(rawToken);

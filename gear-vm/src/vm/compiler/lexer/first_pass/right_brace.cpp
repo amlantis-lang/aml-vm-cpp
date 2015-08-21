@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	Lexer::
 	FirstPassRightBraceState::FirstPassRightBraceState() {};
 
 	void
 	Lexer::
-	FirstPassRightBraceState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassRightBraceState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		/* } */
 		if (machine.braceCount() >= 1) {
 			if (inputChar == RightBrace) {

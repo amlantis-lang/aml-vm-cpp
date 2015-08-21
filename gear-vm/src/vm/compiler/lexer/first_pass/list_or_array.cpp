@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassListOrArrayState::FirstPassListOrArrayState(RawLexicalToken rawToken)
@@ -8,7 +8,7 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassListOrArrayState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassListOrArrayState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (inputChar == VerticalLine) {
 			accept(inputChar);
 			rawToken.item = RawLexicalItemArrayLiteralStart;

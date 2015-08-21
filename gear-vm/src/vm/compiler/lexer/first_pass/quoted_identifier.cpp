@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	Lexer::
 	FirstPassQuotedIdentifierState::FirstPassQuotedIdentifierState()
@@ -8,7 +8,7 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassQuotedIdentifierState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassQuotedIdentifierState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		switch (rawToken.rawValue.size()) {
 			case 0:
 				/* just leading ` */
@@ -16,13 +16,13 @@ namespace GVM {
 				break;
 			case 1:
 				/* decide state */
-				if (Lexer::isGearIdentifierStart(inputChar)) {
+				if (Lexer::isAmlIdentifierStart(inputChar)) {
 					identifierType = QuotedIdentifierTypeNamed;
 					accept(inputChar);
 				} else if (inputChar == Backtick) {
 					identifierType = QuotedIdentifierTypeDoubleQuoted;
 					accept(inputChar);
-				} else if (Lexer::isGearOperatorChar(inputChar)) {
+				} else if (Lexer::isAmlOperatorChar(inputChar)) {
 					identifierType = QuotedIdentifierTypeOperator;
 					accept(inputChar);
 				} else {
@@ -42,12 +42,12 @@ namespace GVM {
 						} else if (inputChar == Backtick) {
 							/* the next accept will finish the quoted identifier */
 							accept(inputChar);
-						} else if ((   Lexer::isGearIdentifierPart(inputChar)
-								        || Lexer::isGearIdentifierEnd(inputChar))
-								&& !Lexer::isGearIdentifierEnd(rawToken.rawValue.at(lastIndex))) {
+						} else if ((   Lexer::isAmlIdentifierPart(inputChar)
+								        || Lexer::isAmlIdentifierEnd(inputChar))
+								&& !Lexer::isAmlIdentifierEnd(rawToken.rawValue.at(lastIndex))) {
 							accept(inputChar);
-						} else if (Lexer::isGearIdentifierRepeatableEnd(rawToken.rawValue.at(lastIndex))
-								&& Lexer::isGearIdentifierRepeatableEnd(inputChar)) {
+						} else if (Lexer::isAmlIdentifierRepeatableEnd(rawToken.rawValue.at(lastIndex))
+								&& Lexer::isAmlIdentifierRepeatableEnd(inputChar)) {
 							accept(inputChar);
 						} else {
 							/* the special case when identifier starts with backtick, 
@@ -61,7 +61,7 @@ namespace GVM {
 					}
 
 					case QuotedIdentifierTypeOperator:
-						if (Lexer::isGearOperatorChar(inputChar)) {
+						if (Lexer::isAmlOperatorChar(inputChar)) {
 							accept(inputChar);
 						} else if (inputChar == Backtick) {
 							accept(inputChar);

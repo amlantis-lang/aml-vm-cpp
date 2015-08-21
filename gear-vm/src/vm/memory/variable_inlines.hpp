@@ -1,9 +1,9 @@
-#ifndef __gear_vm__variable_inlines__
-#define __gear_vm__variable_inlines__
+#ifndef __aml_vm__variable_inlines__
+#define __aml_vm__variable_inlines__
 
 #include "variable.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	inline
 	GTypedVariable::GTypedVariable(GValue value, PsiElement *psi_type)

@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassRegexpState::FirstPassRegexpState(RawLexicalToken rawToken, UChar32 delimiter)
@@ -9,7 +9,7 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassRegexpState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassRegexpState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 
 	}
 }

@@ -1,7 +1,7 @@
-#ifndef __gear_vm__input_definition__
-#define __gear_vm__input_definition__
+#ifndef __aml_vm__input_definition__
+#define __aml_vm__input_definition__
 
-namespace GVM {
+namespace AVM {
 
 	class Input_Definition {
 	public:
@@ -11,4 +11,4 @@ namespace GVM {
 
 }
 
-#endif /* defined(__gear_vm__input_definition__) */
+#endif /* defined(__aml_vm__input_definition__) */

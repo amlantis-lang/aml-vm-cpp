@@ -1,5 +1,5 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 }

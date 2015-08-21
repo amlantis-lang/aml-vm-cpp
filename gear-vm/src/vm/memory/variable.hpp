@@ -1,12 +1,12 @@
-#ifndef __gear_vm__variable__
-#define __gear_vm__variable__
+#ifndef __aml_vm__variable__
+#define __aml_vm__variable__
 
 #include "value.hpp"
 #include "../psi/psi.hpp"
 
 #include <atomic>
 
-namespace GVM {
+namespace AVM {
 	typedef struct std::atomic<GValue> GVariable;
 
 	struct GTypedVariable {
@@ -18,4 +18,4 @@ namespace GVM {
 	};
 }
 
-#endif /* defined(__gear_vm__variable__) */
+#endif /* defined(__aml_vm__variable__) */

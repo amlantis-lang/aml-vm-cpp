@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-namespace GVM {
+namespace AVM {
 
 	Lexer::Lexer() {};
 
@@ -36,13 +36,13 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassMachine::changeState(GVM::Lexer::FirstPassState *newState) {
+	FirstPassMachine::changeState(AVM::Lexer::FirstPassState *newState) {
 		state.reset(newState);
 	}
 
 	void
 	Lexer::
-	FirstPassMachine::appendToOutput(GVM::RawLexicalToken rawToken) {
+	FirstPassMachine::appendToOutput(AVM::RawLexicalToken rawToken) {
 		output->push_back(rawToken);
 	}
 
@@ -194,7 +194,7 @@ namespace GVM {
 
 	static
 	bool
-	isGearIdentifierChar(UChar32 inputChar) {
+	isAmlIdentifierChar(UChar32 inputChar) {
 		return Lexer::isLetterChar(inputChar)
 			|| Lexer::isDigitChar(inputChar)
 			|| isConnectingChar(inputChar)
@@ -243,30 +243,30 @@ namespace GVM {
 	}
 
 	bool
-	Lexer::isGearIdentifierStart(UChar32 inputChar) {
+	Lexer::isAmlIdentifierStart(UChar32 inputChar) {
 		return isLowerChar(inputChar)
 			|| isUpperChar(inputChar);
 	}
 
 	bool
-	Lexer::isGearIdentifierPart(UChar32 inputChar) {
-		return isGearIdentifierChar(inputChar);
+	Lexer::isAmlIdentifierPart(UChar32 inputChar) {
+		return isAmlIdentifierChar(inputChar);
 	}
 
 	bool
-	Lexer::isGearIdentifierEnd(UChar32 inputChar) {
+	Lexer::isAmlIdentifierEnd(UChar32 inputChar) {
 		return inputChar == QuestionMark
 			|| inputChar == ExclamationMark;
 	}
 
 	bool
-	Lexer::isGearIdentifierRepeatableEnd(UChar32 inputChar) {
-		return isGearIdentifierChar(inputChar)
+	Lexer::isAmlIdentifierRepeatableEnd(UChar32 inputChar) {
+		return isAmlIdentifierChar(inputChar)
 			|| inputChar == Apostrophe;
 	}
 
 	bool
-	Lexer::isGearOperatorChar(UChar32 inputChar) {
+	Lexer::isAmlOperatorChar(UChar32 inputChar) {
 		const UCharCategory category = (UCharCategory) u_charType_55(inputChar);
 		return (category == U_MATH_SYMBOL
 				|| category == U_OTHER_SYMBOL
@@ -294,7 +294,7 @@ namespace GVM {
 	}
 
 	bool
-	Lexer::isGearDelimiterChar(UChar32 inputChar) {
+	Lexer::isAmlDelimiterChar(UChar32 inputChar) {
 		return inputChar == Backtick
 			|| inputChar == Apostrophe
 			|| inputChar == Comma

@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassLeftParenthesisState::FirstPassLeftParenthesisState() {};
 	
 	void
 	Lexer::
-	FirstPassLeftParenthesisState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassLeftParenthesisState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		/* ( */
 		accept(inputChar);
 		rawToken.item = RawLexicalItemLeftParenthesis;

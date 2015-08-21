@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassNewlineState::FirstPassNewlineState() {};
 
 	void
 	Lexer::
-	FirstPassNewlineState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassNewlineState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (rawToken.rawValue.size() == 0) {
 			accept(inputChar);
 			if (inputChar != LF && inputChar != CR) {

@@ -3,7 +3,7 @@
 #include <string>
 #include <cassert>
 
-namespace GVM {
+namespace AVM {
 	PsiElement::PsiElement(PsiElement::Kind kind, const char *name)
 		:	kind(kind),
 			name(name),

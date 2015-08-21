@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassStartState::FirstPassStartState() {};
@@ -32,13 +32,13 @@ namespace GVM {
 		} else if (inputChar == PercentSign) {
 			machine.changeState(new FirstPassOperatorOrLiteralState);
 			machine.handle(inputChar);
-		} else if (Lexer::isGearIdentifierStart(inputChar)) {
+		} else if (Lexer::isAmlIdentifierStart(inputChar)) {
 			machine.changeState(new FirstPassIdentifierState);
 			machine.handle(inputChar);
 		} else if (inputChar == Backtick) {
 			machine.changeState(new FirstPassQuotedIdentifierState);
 			machine.handle(inputChar);
-		} else if (Lexer::isGearOperatorChar(inputChar)) {
+		} else if (Lexer::isAmlOperatorChar(inputChar)) {
 			machine.changeState(new FirstPassOperatorState);
 			machine.handle(inputChar);
 		} else if (inputChar == Comma) {

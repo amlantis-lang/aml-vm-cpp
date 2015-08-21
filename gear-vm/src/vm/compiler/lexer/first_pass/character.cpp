@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	Lexer::
 	FirstPassCharacterState::FirstPassCharacterState(RawLexicalToken rawToken)
@@ -11,7 +11,7 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassCharacterState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassCharacterState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (rawToken.rawValue.size() == 2) {
 			/* contains: %' */
 			if (inputChar == ReverseSolidus) {

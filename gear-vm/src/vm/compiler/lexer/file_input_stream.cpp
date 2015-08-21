@@ -1,6 +1,6 @@
 #include "file_input_stream.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	FileInputStream::FileInputStream(const char *filename, const char *codepage) {
 		file = u_fopen_55(filename, "r", nullptr, codepage);

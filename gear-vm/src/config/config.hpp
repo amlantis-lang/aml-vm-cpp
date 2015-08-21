@@ -1,5 +1,5 @@
-#ifndef __gear_vm__config__
-#define __gear_vm__config__
+#ifndef __aml_vm__config__
+#define __aml_vm__config__
 
 #include "../lib/predef.hpp"
 #include <cstdint> /* for uintptr_t */

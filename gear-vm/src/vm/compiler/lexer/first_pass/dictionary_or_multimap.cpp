@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassDictionaryOrMultimapState::FirstPassDictionaryOrMultimapState(RawLexicalToken rawToken)
@@ -8,7 +8,7 @@ namespace GVM {
 
 	void
 	Lexer::
-	FirstPassDictionaryOrMultimapState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassDictionaryOrMultimapState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (inputChar == LeftBrace) {
 			accept(inputChar);
 			rawToken.item = RawLexicalItemMultimapLiteralStart;

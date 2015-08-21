@@ -23,14 +23,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __gear_vm__nan__
-#define __gear_vm__nan__
+#ifndef __aml_vm__nan__
+#define __aml_vm__nan__
 
 #include "predef.hpp"
 
-namespace GVM {
+namespace AVM {
 
-	/* NaN (not-a-number) float_64 values are central to how GVM encodes GVM
+	/* NaN (not-a-number) float_64 values are central to how AVM encodes AVM
 	 * values (GValues). All values, including integers and non-numeric values, are always
 	 * encoded using the IEEE 754 binary float_64 format. Non-float_64 values are encoded using
 	 * a NaN with the sign bit set. The 51-bit payload is then used for encoding the actual
@@ -41,12 +41,12 @@ namespace GVM {
 	 *
 	 * Our use of NaN encoding means that we have to be careful with how we use NaNs for
 	 * ordinary float_64s. For example, it would be wrong to ever use a NaN that has the top
-	 * 15 bits set, as that would look like a non-float_64 value to GVM.
+	 * 15 bits set, as that would look like a non-float_64 value to AVM.
 	 *
 	 * We can trust that on all of the hardware/OS combinations that we care about,
 	 * NaN-producing math operations never produce a NaN that looks like a tagged value. But
 	 * if we're ever in a situation where we worry about it, we can use purify_NaN() to get a
-	 * NaN that doesn't look like a tagged non- float_64 value. The Gear language doesn't
+	 * NaN that doesn't look like a tagged non- float_64 value. The Aml language doesn't
 	 * distinguish between different flavors of NaN and there is no way to detect what kind
 	 * of NaN you have - hence so long as all float_64 NaNs are purified, then our tagging
 	 * scheme remains sound.

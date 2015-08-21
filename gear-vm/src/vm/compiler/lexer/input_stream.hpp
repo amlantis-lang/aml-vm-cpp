@@ -1,9 +1,9 @@
-#ifndef __gear_vm__input_stream__
-#define __gear_vm__input_stream__
+#ifndef __aml_vm__input_stream__
+#define __aml_vm__input_stream__
 
 #include <unicode/utypes.h>
 
-namespace GVM {
+namespace AVM {
 	class InputStream {
 	public:
 		virtual bool moveToNextUChar32() = 0;
@@ -11,4 +11,4 @@ namespace GVM {
 	};
 }
 
-#endif /* defined(__gear_vm__input_stream__) */
+#endif /* defined(__aml_vm__input_stream__) */

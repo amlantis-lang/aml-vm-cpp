@@ -1,6 +1,6 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   Lexer::
 	FirstPassStringState::FirstPassStringState() {}
 

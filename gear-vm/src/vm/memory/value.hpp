@@ -20,15 +20,15 @@
  *
  */
 
-#ifndef __gear_vm__value__
-#define __gear_vm__value__
+#ifndef __aml_vm__value__
+#define __aml_vm__value__
 
 #include <cstdint>
 #include <cstddef>
 
 #include "../../lib/predef.hpp"
 
-namespace GVM {
+namespace AVM {
 	typedef int64_t GValueLink;
 	struct GReference;
 
@@ -273,4 +273,4 @@ namespace GVM {
 	};
 }
 
-#endif /* defined(__gear_vm__value__) */
+#endif /* defined(__aml_vm__value__) */

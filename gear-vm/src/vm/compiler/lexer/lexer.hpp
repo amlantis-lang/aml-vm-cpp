@@ -1,5 +1,5 @@
-#ifndef __gear_vm__lexer__
-#define __gear_vm__lexer__
+#ifndef __aml_vm__lexer__
+#define __aml_vm__lexer__
 
 #include "input_stream.hpp"
 #include "../../../lib/predef.hpp"
@@ -8,7 +8,7 @@
 #include <vector>
 #include <stack>
 
-namespace GVM {
+namespace AVM {
 	typedef enum : uint8_t {
 		RawLexicalItemIdentifier,
 		RawLexicalItemOperatorOrDelimiter,
@@ -60,7 +60,7 @@ namespace GVM {
 	} RawLexicalItem;
 
 	typedef enum : UChar32 {
-		/* Newlines as defined by Gear */
+		/* Newlines as defined by Aml */
 		LF = 0x000a,
 		CR = 0x000d,
 		VT = 0x000b,
@@ -184,11 +184,11 @@ namespace GVM {
 
 		static bool isLineBreakStart(UChar32 inputChar);
 		static bool isUnicodeNamePart(UChar32 inputChar);
-		static bool isGearIdentifierStart(UChar32 inputChar);
-		static bool isGearIdentifierPart(UChar32 inputChar);
-		static bool isGearIdentifierEnd(UChar32 inputChar);
-		static bool isGearIdentifierRepeatableEnd(UChar32 inputChar);
-		static bool isGearOperatorChar(UChar32 inputChar);
+		static bool isAmlIdentifierStart(UChar32 inputChar);
+		static bool isAmlIdentifierPart(UChar32 inputChar);
+		static bool isAmlIdentifierEnd(UChar32 inputChar);
+		static bool isAmlIdentifierRepeatableEnd(UChar32 inputChar);
+		static bool isAmlOperatorChar(UChar32 inputChar);
 		static bool isDigitChar(UChar32 inputChar);
 		static bool isHexDigitChar(UChar32 inputChar);
 		static bool isOctDigitChar(UChar32 inputChar);
@@ -196,7 +196,7 @@ namespace GVM {
 		static bool isSxgsDigitChar(UChar32 inputChar);
 		static bool isDdecDigitChar(UChar32 inputChar);
 		static bool isLetterChar(UChar32 inputChar);
-		static bool isGearDelimiterChar(UChar32 inputChar);
+		static bool isAmlDelimiterChar(UChar32 inputChar);
 
 		class FirstPassState;
 
@@ -477,4 +477,4 @@ namespace GVM {
 	};
 }
 
-#endif /* defined(__gear_vm__lexer__) */
+#endif /* defined(__aml_vm__lexer__) */

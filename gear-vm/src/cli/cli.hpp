@@ -1,12 +1,12 @@
-#ifndef __gear_vm__cli__
-#define __gear_vm__cli__
+#ifndef __aml_vm__cli__
+#define __aml_vm__cli__
 
 #include "argv_input.hpp"
 #include "input_definition.hpp"
 
 #pragma GCC visibility push(default)
 
-namespace GVM {
+namespace AVM {
 	class Cli {
 		Argv_Input *input;
 		const char *cmd;
@@ -21,4 +21,4 @@ namespace GVM {
 
 #pragma GCC visibility pop
 
-#endif /* defined(__gear_vm__cli__) */
+#endif /* defined(__aml_vm__cli__) */

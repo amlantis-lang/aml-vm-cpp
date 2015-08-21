@@ -1,7 +1,7 @@
 #include "value.hpp"
 #include "value_inlines.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	const GValue GValue::kNil = GValue(GNil);
 	const GValue GValue::kUndefined = GValue(GUndefined);

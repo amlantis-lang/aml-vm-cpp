@@ -14,7 +14,7 @@
 #include "../vm/compiler/lexer/file_input_stream.hpp"
 
 
-namespace GVM {
+namespace AVM {
 
 	Cli::Cli(const char *cmd, const int argc, const char **argv)
 		: cmd(cmd)
@@ -28,9 +28,9 @@ namespace GVM {
 
 	int
 	Cli::run(void) {
-		std::cout << cmd << " 0.2.0" << std::endl;
+		std::cout << cmd << " 0.4.0" << std::endl;
 
-		auto finputStream = new FileInputStream("/Users/themarketka/test.gear", "UTF-8");
+		auto finputStream = new FileInputStream("/Users/themarketka/test.aml", "UTF-8");
 		auto lexer = new Lexer;
 		auto parsed = lexer->parseInputStream(finputStream);
 

@@ -1,14 +1,14 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassOperatorState::FirstPassOperatorState() {}
 
 	void
 	Lexer::
-	FirstPassOperatorState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
-		if (Lexer::isGearOperatorChar(inputChar)) {
+	FirstPassOperatorState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+		if (Lexer::isAmlOperatorChar(inputChar)) {
 			/* next operator character */
 			accept(inputChar);
 		} else if (inputChar == RightSquareBracket

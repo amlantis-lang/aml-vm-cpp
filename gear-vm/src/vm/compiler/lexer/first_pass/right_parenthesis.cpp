@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
   
 	Lexer::
 	FirstPassRightParenthesisState::FirstPassRightParenthesisState() {};
 
 	void
 	Lexer::
-	FirstPassRightParenthesisState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassRightParenthesisState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		/* ) */
 		if (machine.parenthesisCount() >= 1) {
 			accept(inputChar);

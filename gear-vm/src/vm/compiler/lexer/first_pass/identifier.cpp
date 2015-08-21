@@ -1,13 +1,13 @@
 #include "../lexer.hpp"
 
-namespace GVM {
+namespace AVM {
 
 	Lexer::
 	FirstPassIdentifierState::FirstPassIdentifierState() {};
 
 	void
 	Lexer::
-	FirstPassIdentifierState::handle(GVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassIdentifierState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		switch (rawToken.rawValue.size()) {
     	case 0:
 				/* correctness handled by the start state */
@@ -15,16 +15,16 @@ namespace GVM {
 				break;
 			default: {
 				const size_t lastIndex = rawToken.rawValue.size() - 1;
-				if (Lexer::isGearIdentifierPart(inputChar)
-						|| Lexer::isGearIdentifierEnd(inputChar)) {
+				if (Lexer::isAmlIdentifierPart(inputChar)
+						|| Lexer::isAmlIdentifierEnd(inputChar)) {
 					accept(inputChar);
-				} else if (Lexer::isGearIdentifierEnd(rawToken.rawValue.at(lastIndex))) {
+				} else if (Lexer::isAmlIdentifierEnd(rawToken.rawValue.at(lastIndex))) {
 					rawToken.item = RawLexicalItemIdentifier;
 					machine.appendToOutput(rawToken);
 					machine.changeState(new FirstPassStartState);
 					machine.handle(inputChar);
-				} else if (Lexer::isGearIdentifierRepeatableEnd(rawToken.rawValue.at(lastIndex))
-						&& Lexer::isGearIdentifierRepeatableEnd(inputChar)) {
+				} else if (Lexer::isAmlIdentifierRepeatableEnd(rawToken.rawValue.at(lastIndex))
+						&& Lexer::isAmlIdentifierRepeatableEnd(inputChar)) {
 					accept(inputChar);
 				} else {
 					rawToken.item = RawLexicalItemIdentifier;

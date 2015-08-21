@@ -23,8 +23,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __gear_vm__value_inlines__
-#define __gear_vm__value_inlines__
+#ifndef __aml_vm__value_inlines__
+#define __aml_vm__value_inlines__
 
 #include "value.hpp"
 #include "../../lib/predef.hpp"
@@ -32,7 +32,7 @@
 
 #include <cassert>
 
-namespace GVM {
+namespace AVM {
 
 	inline
 	GValueLink
