@@ -11,6 +11,13 @@
 		3725647F1B33593300581B3E /* libgearvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FABF621AFD82B400A90E00 /* libgearvm.a */; };
 		3725648C1B335FBC00581B3E /* gearrun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3725648B1B335FBC00581B3E /* gearrun.cpp */; };
 		3725648F1B33600B00581B3E /* libgearvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FABF621AFD82B400A90E00 /* libgearvm.a */; };
+		374564731B8721F800F023A5 /* comma.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 374564721B8721F800F023A5 /* comma.cpp */; };
+		374564751B8760C500F023A5 /* dec_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 374564741B8760C500F023A5 /* dec_number.cpp */; };
+		374564771B87614000F023A5 /* hex_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 374564761B87614000F023A5 /* hex_number.cpp */; };
+		374564791B87615F00F023A5 /* oct_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 374564781B87615F00F023A5 /* oct_number.cpp */; };
+		3745647B1B87619E00F023A5 /* bin_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3745647A1B87619E00F023A5 /* bin_number.cpp */; };
+		3745647D1B8761E300F023A5 /* sxgs_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3745647C1B8761E300F023A5 /* sxgs_number.cpp */; };
+		3745647F1B87637D00F023A5 /* ddec_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3745647E1B87637D00F023A5 /* ddec_number.cpp */; };
 		3753AA5F1B075054006CAEA7 /* libgearvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FABF621AFD82B400A90E00 /* libgearvm.a */; };
 		3753AA631B07E48A006CAEA7 /* psi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3753AA611B07E48A006CAEA7 /* psi.cpp */; };
 		3788E6411B0280950062BCB8 /* libgearvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FABF621AFD82B400A90E00 /* libgearvm.a */; };
@@ -208,6 +215,13 @@
 		3725647B1B33590D00581B3E /* gearopt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gearopt.cpp; sourceTree = "<group>"; };
 		372564841B335FA200581B3E /* gearrun */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gearrun; sourceTree = BUILT_PRODUCTS_DIR; };
 		3725648B1B335FBC00581B3E /* gearrun.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gearrun.cpp; sourceTree = "<group>"; };
+		374564721B8721F800F023A5 /* comma.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = comma.cpp; sourceTree = "<group>"; };
+		374564741B8760C500F023A5 /* dec_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dec_number.cpp; sourceTree = "<group>"; };
+		374564761B87614000F023A5 /* hex_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hex_number.cpp; sourceTree = "<group>"; };
+		374564781B87615F00F023A5 /* oct_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oct_number.cpp; sourceTree = "<group>"; };
+		3745647A1B87619E00F023A5 /* bin_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bin_number.cpp; sourceTree = "<group>"; };
+		3745647C1B8761E300F023A5 /* sxgs_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sxgs_number.cpp; sourceTree = "<group>"; };
+		3745647E1B87637D00F023A5 /* ddec_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ddec_number.cpp; sourceTree = "<group>"; };
 		3753AA5A1B07503F006CAEA7 /* gear */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gear; sourceTree = BUILT_PRODUCTS_DIR; };
 		3753AA5B1B07503F006CAEA7 /* gearc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gearc; sourceTree = BUILT_PRODUCTS_DIR; };
 		3753AA5C1B07503F006CAEA7 /* geardoc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = geardoc; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -398,7 +412,14 @@
 				37D6607D1B800737004858C5 /* dictionary_or_multimap.cpp */,
 				37D6607F1B80074D004858C5 /* regexp.cpp */,
 				37D660831B800765004858C5 /* substitution_regexp.cpp */,
+				374564721B8721F800F023A5 /* comma.cpp */,
 				37D30E581B80ECCA006AC3C5 /* number.cpp */,
+				374564741B8760C500F023A5 /* dec_number.cpp */,
+				374564761B87614000F023A5 /* hex_number.cpp */,
+				374564781B87615F00F023A5 /* oct_number.cpp */,
+				3745647A1B87619E00F023A5 /* bin_number.cpp */,
+				3745647C1B8761E300F023A5 /* sxgs_number.cpp */,
+				3745647E1B87637D00F023A5 /* ddec_number.cpp */,
 			);
 			path = first_pass;
 			sourceTree = "<group>";
@@ -850,15 +871,19 @@
 				37D6607A1B80070B004858C5 /* words_list_or_array.cpp in Sources */,
 				37D660741B8006C1004858C5 /* raw_string.cpp in Sources */,
 				37DAE2881B383CA100932043 /* input_stream.cpp in Sources */,
+				3745647B1B87619E00F023A5 /* bin_number.cpp in Sources */,
 				37D660761B8006CD004858C5 /* quoted_string.cpp in Sources */,
 				37D6605C1B8000CE004858C5 /* left_parenthesis.cpp in Sources */,
 				37D6607E1B800737004858C5 /* dictionary_or_multimap.cpp in Sources */,
+				374564791B87615F00F023A5 /* oct_number.cpp in Sources */,
 				37D660601B8001FC004858C5 /* left_square_bracket.cpp in Sources */,
+				374564771B87614000F023A5 /* hex_number.cpp in Sources */,
 				37D30E5B1B8110B2006AC3C5 /* quoted_identifier.cpp in Sources */,
 				37D660661B800267004858C5 /* right_brace.cpp in Sources */,
 				37D6606A1B8002DE004858C5 /* operator_or_literal.cpp in Sources */,
 				37D660621B80020B004858C5 /* right_square_bracket.cpp in Sources */,
 				A7FABF5B1AFD824500A90E00 /* value.cpp in Sources */,
+				3745647F1B87637D00F023A5 /* ddec_number.cpp in Sources */,
 				37DAE28C1B383D2300932043 /* file_input_stream.cpp in Sources */,
 				37D660721B8006B1004858C5 /* string.cpp in Sources */,
 				37D6605A1B7FECF8004858C5 /* newline.cpp in Sources */,
@@ -866,16 +891,19 @@
 				37D30E591B80ECCA006AC3C5 /* number.cpp in Sources */,
 				37D6607C1B80071F004858C5 /* list_or_array.cpp in Sources */,
 				A7FABF5E1AFD824500A90E00 /* variable.cpp in Sources */,
+				3745647D1B8761E300F023A5 /* sxgs_number.cpp in Sources */,
 				37DAE2841B3837AB00932043 /* lexer.cpp in Sources */,
 				37D660581B7FEBFC004858C5 /* whitespace.cpp in Sources */,
 				37D660841B800765004858C5 /* substitution_regexp.cpp in Sources */,
 				37D6606C1B800520004858C5 /* operator_or_identifier.cpp in Sources */,
 				37D660811B80074D004858C5 /* regexp.cpp in Sources */,
+				374564731B8721F800F023A5 /* comma.cpp in Sources */,
 				37D660551B7FE9C2004858C5 /* start.cpp in Sources */,
 				A7FABF581AFD824500A90E00 /* reference.cpp in Sources */,
 				A7FABF4F1AFD824500A90E00 /* argv_input.cpp in Sources */,
 				A7FABF511AFD824500A90E00 /* input_definition.cpp in Sources */,
 				3753AA631B07E48A006CAEA7 /* psi.cpp in Sources */,
+				374564751B8760C500F023A5 /* dec_number.cpp in Sources */,
 				A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */,
 				37D660641B800240004858C5 /* left_brace.cpp in Sources */,
 				37D6605E1B80013C004858C5 /* right_parenthesis.cpp in Sources */,
@@ -1941,6 +1969,7 @@
 				37BB5AFB1B82796E002609F7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		37BB5B071B82799C002609F7 /* Build configuration list for PBXNativeTarget "gearprof" */ = {
 			isa = XCConfigurationList;
@@ -1949,6 +1978,7 @@
 				37BB5B091B82799C002609F7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A79839B51A913917007DA45D /* Build configuration list for PBXProject "gear-vm" */ = {
 			isa = XCConfigurationList;

@@ -148,18 +148,6 @@ namespace GVM {
 
 	static
 	bool
-	isLetterChar(UChar32 inputChar) {
-		const UCharCategory category = (UCharCategory) u_charType_55(inputChar);
-		return category == U_UPPERCASE_LETTER
-			|| category == U_LOWERCASE_LETTER
-			|| category == U_TITLECASE_LETTER
-			|| category == U_OTHER_LETTER
-			|| category == U_MODIFIER_LETTER
-			|| category == U_LETTER_NUMBER;
-	}
-
-	static
-	bool
 	isConnectingChar(UChar32 inputChar) {
 		return u_charType_55(inputChar) == U_CONNECTOR_PUNCTUATION;
 	}
@@ -178,6 +166,17 @@ namespace GVM {
 		return u_charType_55(inputChar) == U_FORMAT_CHAR;
 	}
 
+	bool
+	Lexer::isLetterChar(UChar32 inputChar) {
+		const UCharCategory category = (UCharCategory) u_charType_55(inputChar);
+		return category == U_UPPERCASE_LETTER
+			|| category == U_LOWERCASE_LETTER
+			|| category == U_TITLECASE_LETTER
+			|| category == U_OTHER_LETTER
+			|| category == U_MODIFIER_LETTER
+			|| category == U_LETTER_NUMBER;
+	}
+
 	static
 	bool
 	isLowerChar(UChar32 inputChar) {
@@ -188,7 +187,7 @@ namespace GVM {
 	static
 	bool
 	isUpperChar(UChar32 inputChar) {
-		return (isLetterChar(inputChar) && !isLowerChar(inputChar))
+		return (Lexer::isLetterChar(inputChar) && !isLowerChar(inputChar))
 			|| inputChar == DollarSign
 			|| inputChar == SectionSign;
 	}
@@ -196,7 +195,7 @@ namespace GVM {
 	static
 	bool
 	isGearIdentifierChar(UChar32 inputChar) {
-		return isLetterChar(inputChar)
+		return Lexer::isLetterChar(inputChar)
 			|| Lexer::isDigitChar(inputChar)
 			|| isConnectingChar(inputChar)
 			|| isCombiningChar(inputChar)
@@ -210,6 +209,37 @@ namespace GVM {
 	bool
 	Lexer::isDigitChar(UChar32 inputChar) {
 		return inputChar >= Digit_0 && inputChar <= Digit_9;
+	}
+
+	bool
+	Lexer::isHexDigitChar(UChar32 inputChar) {
+		return (inputChar >= Digit_0 && inputChar <= Digit_9)
+			|| (inputChar >= Letter_a && inputChar <= Letter_f)
+			|| (inputChar >= Letter_A && inputChar <= Letter_F);
+	}
+
+	bool
+	Lexer::isOctDigitChar(UChar32 inputChar) {
+		return inputChar >= Digit_0 && inputChar <= Digit_7;
+	}
+
+	bool
+	Lexer::isBinDigitChar(UChar32 inputChar) {
+		return inputChar == Digit_0 || inputChar == Digit_1;
+	}
+
+	bool
+	Lexer::isSxgsDigitChar(UChar32 inputChar) {
+		return inputChar >= Digit_0 && inputChar <= Digit_9;
+	}
+
+	bool
+	Lexer::isDdecDigitChar(UChar32 inputChar) {
+		return (inputChar >= Digit_0 && inputChar <= Digit_9)
+			|| inputChar == Letter_a
+			|| inputChar == Letter_A
+			|| inputChar == Letter_b
+			|| inputChar == Letter_B;
 	}
 
 	bool
@@ -261,6 +291,20 @@ namespace GVM {
 				|| inputChar == VerticalLine
 				|| inputChar == Tilde)
 			&& inputChar != Backtick;
+	}
+
+	bool
+	Lexer::isGearDelimiterChar(UChar32 inputChar) {
+		return inputChar == Backtick
+			|| inputChar == Apostrophe
+			|| inputChar == Comma
+			|| inputChar == QuotationMark
+			|| inputChar == LeftParens
+			|| inputChar == RightParens
+			|| inputChar == LeftSquareBracket
+			|| inputChar == RightSquareBracket
+			|| inputChar == LeftBrace
+			|| inputChar == RightBrace;
 	}
 }
 

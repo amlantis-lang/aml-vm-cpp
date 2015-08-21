@@ -41,6 +41,12 @@ namespace GVM {
 		} else if (Lexer::isGearOperatorChar(inputChar)) {
 			machine.changeState(new FirstPassOperatorState);
 			machine.handle(inputChar);
+		} else if (inputChar == Comma) {
+			machine.changeState(new FirstPassCommaState);
+			machine.handle(inputChar);
+		} else if (Lexer::isDigitChar(inputChar)) {
+			machine.changeState(new FirstPassNumberState);
+			machine.handle(inputChar);
 		}
 	};
 

@@ -114,16 +114,25 @@ namespace GVM {
 
 		/* Letters */
 		Letter_A = 0x0041,
+		Letter_B = 0x0042,
+		Letter_C = 0x0043,
+		Letter_D = 0x0044,
+		Letter_E = 0x0045,
+		Letter_F = 0x0046,
 		Letter_U = 0x0055,
 		Letter_Z = 0x005a,
 
 		Letter_a = 0x0061,
 		Letter_b = 0x0062,
+		Letter_c = 0x0063,
+		Letter_d = 0x0064,
+		Letter_e = 0x0064,
 		Letter_f = 0x0066,
 		Letter_i = 0x0069,
 		Letter_l = 0x006c,
 		Letter_m = 0x006d,
 		Letter_n = 0x006e,
+		Letter_o = 0x006f,
 		Letter_q = 0x0071,
 		Letter_r = 0x0072,
 		Letter_s = 0x0073,
@@ -136,6 +145,14 @@ namespace GVM {
 
 		/* Digits */
 		Digit_0 = 0x0030,
+		Digit_1 = 0x0031,
+		Digit_2 = 0x0032,
+		Digit_3 = 0x0033,
+		Digit_4 = 0x0034,
+		Digit_5 = 0x0035,
+		Digit_6 = 0x0036,
+		Digit_7 = 0x0037,
+		Digit_8 = 0x0038,
 		Digit_9 = 0x0039
 	} KnownCharacters;
 
@@ -173,6 +190,13 @@ namespace GVM {
 		static bool isGearIdentifierRepeatableEnd(UChar32 inputChar);
 		static bool isGearOperatorChar(UChar32 inputChar);
 		static bool isDigitChar(UChar32 inputChar);
+		static bool isHexDigitChar(UChar32 inputChar);
+		static bool isOctDigitChar(UChar32 inputChar);
+		static bool isBinDigitChar(UChar32 inputChar);
+		static bool isSxgsDigitChar(UChar32 inputChar);
+		static bool isDdecDigitChar(UChar32 inputChar);
+		static bool isLetterChar(UChar32 inputChar);
+		static bool isGearDelimiterChar(UChar32 inputChar);
 
 		class FirstPassState;
 
@@ -400,6 +424,54 @@ namespace GVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		private:
 			UChar32 delimiter;
+		};
+
+		class FirstPassCommaState : public FirstPassState {
+		public:
+			FirstPassCommaState();
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassNumberState : public FirstPassState {
+		public:
+			FirstPassNumberState();
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassDecNumberState : public FirstPassState {
+		public:
+			FirstPassDecNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassHexNumberState : public FirstPassState {
+		public:
+			FirstPassHexNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassOctNumberState : public FirstPassState {
+		public:
+			FirstPassOctNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassBinNumberState : public FirstPassState {
+		public:
+			FirstPassBinNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassSxgsNumberState : public FirstPassState {
+		public:
+			FirstPassSxgsNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassDdecNumberState : public FirstPassState {
+		public:
+			FirstPassDdecNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
 	};
