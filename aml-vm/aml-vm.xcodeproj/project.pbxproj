@@ -18,6 +18,12 @@
 		3745647F1B87637D00F023A5 /* ddec_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3745647E1B87637D00F023A5 /* ddec_number.cpp */; };
 		3753AA631B07E48A006CAEA7 /* psi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3753AA611B07E48A006CAEA7 /* psi.cpp */; };
 		3788E6431B0282520062BCB8 /* amlf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3788E6421B0282520062BCB8 /* amlf.cpp */; };
+		3793EEEA1B88FD950055A9D1 /* dec_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEE91B88FD950055A9D1 /* dec_ffp_number.cpp */; };
+		3793EEEC1B88FDA60055A9D1 /* hex_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEEB1B88FDA60055A9D1 /* hex_ffp_number.cpp */; };
+		3793EEEE1B88FE670055A9D1 /* oct_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEED1B88FE670055A9D1 /* oct_ffp_number.cpp */; };
+		3793EEF01B88FEE10055A9D1 /* bin_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEEF1B88FEE10055A9D1 /* bin_ffp_number.cpp */; };
+		3793EEF21B88FF120055A9D1 /* sxgs_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF11B88FF120055A9D1 /* sxgs_ffp_number.cpp */; };
+		3793EEF41B88FF280055A9D1 /* ddec_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF31B88FF280055A9D1 /* ddec_ffp_number.cpp */; };
 		3793EEF61B8903E70055A9D1 /* semicolon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF51B8903E70055A9D1 /* semicolon.cpp */; };
 		37D30E571B80CF92006AC3C5 /* verbatim_string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E561B80CF92006AC3C5 /* verbatim_string.cpp */; };
 		37D30E591B80ECCA006AC3C5 /* number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E581B80ECCA006AC3C5 /* number.cpp */; };
@@ -227,6 +233,13 @@
 		3753AA611B07E48A006CAEA7 /* psi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = psi.cpp; sourceTree = "<group>"; };
 		3753AA621B07E48A006CAEA7 /* psi.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = psi.hpp; sourceTree = "<group>"; };
 		3788E6421B0282520062BCB8 /* amlf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = amlf.cpp; sourceTree = "<group>"; };
+		3793EEE91B88FD950055A9D1 /* dec_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dec_ffp_number.cpp; sourceTree = "<group>"; };
+		3793EEEB1B88FDA60055A9D1 /* hex_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hex_ffp_number.cpp; sourceTree = "<group>"; };
+		3793EEED1B88FE670055A9D1 /* oct_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oct_ffp_number.cpp; sourceTree = "<group>"; };
+		3793EEEF1B88FEE10055A9D1 /* bin_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bin_ffp_number.cpp; sourceTree = "<group>"; };
+		3793EEF11B88FF120055A9D1 /* sxgs_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sxgs_ffp_number.cpp; sourceTree = "<group>"; };
+		3793EEF31B88FF280055A9D1 /* ddec_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ddec_ffp_number.cpp; sourceTree = "<group>"; };
+		3793EEF51B8903E70055A9D1 /* semicolon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = semicolon.cpp; sourceTree = "<group>"; };
 		37D30E561B80CF92006AC3C5 /* verbatim_string.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = verbatim_string.cpp; sourceTree = "<group>"; };
 		37D30E581B80ECCA006AC3C5 /* number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = number.cpp; sourceTree = "<group>"; };
 		37D30E5A1B8110B2006AC3C5 /* quoted_identifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = quoted_identifier.cpp; sourceTree = "<group>"; };
@@ -420,13 +433,20 @@
 				37D6607F1B80074D004858C5 /* regexp.cpp */,
 				37D660831B800765004858C5 /* substitution_regexp.cpp */,
 				374564721B8721F800F023A5 /* comma.cpp */,
+				3793EEF51B8903E70055A9D1 /* semicolon.cpp */,
 				37D30E581B80ECCA006AC3C5 /* number.cpp */,
 				374564741B8760C500F023A5 /* dec_number.cpp */,
+				3793EEE91B88FD950055A9D1 /* dec_ffp_number.cpp */,
 				374564761B87614000F023A5 /* hex_number.cpp */,
+				3793EEEB1B88FDA60055A9D1 /* hex_ffp_number.cpp */,
 				374564781B87615F00F023A5 /* oct_number.cpp */,
+				3793EEED1B88FE670055A9D1 /* oct_ffp_number.cpp */,
 				3745647A1B87619E00F023A5 /* bin_number.cpp */,
+				3793EEEF1B88FEE10055A9D1 /* bin_ffp_number.cpp */,
 				3745647C1B8761E300F023A5 /* sxgs_number.cpp */,
+				3793EEF11B88FF120055A9D1 /* sxgs_ffp_number.cpp */,
 				3745647E1B87637D00F023A5 /* ddec_number.cpp */,
+				3793EEF31B88FF280055A9D1 /* ddec_ffp_number.cpp */,
 				37EFD61E1B88A72400F9A678 /* comment.cpp */,
 			);
 			path = first_pass;
@@ -878,8 +898,10 @@
 				37D660681B800286004858C5 /* parameter_placeholder.cpp in Sources */,
 				37D30E571B80CF92006AC3C5 /* verbatim_string.cpp in Sources */,
 				37D660701B800695004858C5 /* identifier.cpp in Sources */,
+				3793EEF01B88FEE10055A9D1 /* bin_ffp_number.cpp in Sources */,
 				37D6606E1B8005C5004858C5 /* operator.cpp in Sources */,
 				37D660521B7FE914004858C5 /* state.cpp in Sources */,
+				3793EEF21B88FF120055A9D1 /* sxgs_ffp_number.cpp in Sources */,
 				37D6607A1B80070B004858C5 /* words_list_or_array.cpp in Sources */,
 				37D660741B8006C1004858C5 /* raw_string.cpp in Sources */,
 				37DAE2881B383CA100932043 /* input_stream.cpp in Sources */,
@@ -888,6 +910,7 @@
 				37D6605C1B8000CE004858C5 /* left_parenthesis.cpp in Sources */,
 				37D6607E1B800737004858C5 /* dictionary_or_multimap.cpp in Sources */,
 				374564791B87615F00F023A5 /* oct_number.cpp in Sources */,
+				3793EEEA1B88FD950055A9D1 /* dec_ffp_number.cpp in Sources */,
 				37D660601B8001FC004858C5 /* left_square_bracket.cpp in Sources */,
 				374564771B87614000F023A5 /* hex_number.cpp in Sources */,
 				37D30E5B1B8110B2006AC3C5 /* quoted_identifier.cpp in Sources */,
@@ -899,6 +922,7 @@
 				37DAE28C1B383D2300932043 /* file_input_stream.cpp in Sources */,
 				37D660721B8006B1004858C5 /* string.cpp in Sources */,
 				37D6605A1B7FECF8004858C5 /* newline.cpp in Sources */,
+				3793EEF41B88FF280055A9D1 /* ddec_ffp_number.cpp in Sources */,
 				37D660781B8006EC004858C5 /* character.cpp in Sources */,
 				37D30E591B80ECCA006AC3C5 /* number.cpp in Sources */,
 				37D6607C1B80071F004858C5 /* list_or_array.cpp in Sources */,
@@ -908,14 +932,17 @@
 				37D660581B7FEBFC004858C5 /* whitespace.cpp in Sources */,
 				37EFD61F1B88A72400F9A678 /* comment.cpp in Sources */,
 				37D660841B800765004858C5 /* substitution_regexp.cpp in Sources */,
+				3793EEEC1B88FDA60055A9D1 /* hex_ffp_number.cpp in Sources */,
 				37D6606C1B800520004858C5 /* operator_or_identifier.cpp in Sources */,
 				37D660811B80074D004858C5 /* regexp.cpp in Sources */,
+				3793EEEE1B88FE670055A9D1 /* oct_ffp_number.cpp in Sources */,
 				374564731B8721F800F023A5 /* comma.cpp in Sources */,
 				37D660551B7FE9C2004858C5 /* start.cpp in Sources */,
 				A7FABF581AFD824500A90E00 /* reference.cpp in Sources */,
 				A7FABF4F1AFD824500A90E00 /* argv_input.cpp in Sources */,
 				A7FABF511AFD824500A90E00 /* input_definition.cpp in Sources */,
 				3753AA631B07E48A006CAEA7 /* psi.cpp in Sources */,
+				3793EEF61B8903E70055A9D1 /* semicolon.cpp in Sources */,
 				374564751B8760C500F023A5 /* dec_number.cpp in Sources */,
 				A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */,
 				37D660641B800240004858C5 /* left_brace.cpp in Sources */,

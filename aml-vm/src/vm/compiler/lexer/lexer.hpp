@@ -480,9 +480,21 @@ namespace AVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
+		class FirstPassDecimalFloatingOrFixedPointNumberState : public FirstPassNumberState {
+		public:
+			FirstPassDecimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
 		class FirstPassHexadecimalNumberState : public FirstPassNumberState {
 		public:
 			FirstPassHexadecimalNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassHexadecimalFloatingOrFixedPointNumberState : public FirstPassNumberState {
+		public:
+			FirstPassHexadecimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
@@ -492,9 +504,21 @@ namespace AVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
+		class FirstPassOctalFloatingOrFixedPointNumberState : public FirstPassNumberState {
+		public:
+			FirstPassOctalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
 		class FirstPassBinaryNumberState : public FirstPassNumberState {
 		public:
 			FirstPassBinaryNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassBinaryFloatingOrFixedPointNumberState : public FirstPassNumberState {
+		public:
+			FirstPassBinaryFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
@@ -504,9 +528,21 @@ namespace AVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
-		class FirstPassDdecNumberState : public FirstPassNumberState {
+		class FirstPassSexagesimalFloatingOrFixedPointNumberState : public FirstPassNumberState {
 		public:
-			FirstPassDdecNumberState(RawLexicalToken rawToken);
+			FirstPassSexagesimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassDuodecimalNumberState : public FirstPassNumberState {
+		public:
+			FirstPassDuodecimalNumberState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassDuodecimalFloatingOrFixedPointNumberState : public FirstPassNumberState {
+		public:
+			FirstPassDuodecimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 

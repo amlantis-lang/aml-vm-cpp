@@ -60,7 +60,7 @@ namespace AVM {
 						machine.changeState(new FirstPassSexagesimalNumberState(rawToken));
 					} else if (inputChar == Letter_d) {
 						accept(inputChar);
-						machine.changeState(new FirstPassDdecNumberState(rawToken));
+						machine.changeState(new FirstPassDuodecimalNumberState(rawToken));
 					} else {
 						rawToken.item = RawLexicalItemIntegerLiteral;
 						machine.appendToOutput(rawToken);
