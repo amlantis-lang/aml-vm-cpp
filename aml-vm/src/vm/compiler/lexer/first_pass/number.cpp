@@ -3,20 +3,36 @@
 namespace AVM {
   
 	Lexer::
-	FirstPassNumberState::FirstPassNumberState() {};
+	FirstPassNumberState::FirstPassNumberState()
+		:	hasIntegerSuffix(false) {};
+
+	Lexer::
+	FirstPassNumberState::FirstPassNumberState(RawLexicalToken rawToken)
+		:	hasIntegerSuffix(false),
+			FirstPassState(rawToken)
+	{
+		if (rawToken.rawValue.size() >= 2
+				&& Lexer::isIntegerSuffixChar(rawToken.rawValue.at(1))) {
+			hasIntegerSuffix = true; /* only happens with decimal integers */
+		}
+	};
 
 	void
 	Lexer::
-	FirstPassNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassNumberState::handle(FirstPassMachine &machine, UChar32 inputChar) {
 		switch (rawToken.rawValue.size()) {
 			case 0:
 				accept(inputChar);
 				break;
 
 			case 1: {
-				if (Lexer::isDigitChar(inputChar)) {
+				if (Lexer::isDigitChar(inputChar)
+						|| inputChar == Underscore
+						|| Lexer::isIntegerSuffixChar(inputChar)) {
 					accept(inputChar);
 					machine.changeState(new FirstPassDecNumberState(rawToken));
+				} else if (inputChar == Dot) {
+					/* switch to floating/fixed-point number or operator */
 				} else if (rawToken.rawValue.at(0) == Digit_0) {
 					if (inputChar == Letter_x) {
 						accept(inputChar);
@@ -36,17 +52,11 @@ namespace AVM {
 					} else {
 						throw "Unexpected input character";
 					}
-				} else if (Lexer::isLetterChar(inputChar)) {
-					throw "Unexpected input character";
-				} else if (Lexer::isAmlDelimiterChar(inputChar)
-						|| Lexer::isAmlOperatorChar(inputChar)
-						|| u_isblank_55(inputChar)) {
+				} else {
 					rawToken.item = RawLexicalItemIntegerLiteral;
 					machine.appendToOutput(rawToken);
 					machine.changeState(new FirstPassStartState);
 					machine.handle(inputChar);
-				} else {
-					throw "Unexpected input character";
 				}
 				break;
 			}

@@ -243,6 +243,33 @@ namespace AVM {
 	}
 
 	bool
+	Lexer::isIntegerSuffixChar(UChar32 inputChar) {
+		return inputChar == Letter_G
+			|| inputChar == Letter_I
+			|| inputChar == Letter_M
+			|| inputChar == Letter_N
+			|| inputChar == Letter_T
+			|| inputChar == Letter_Q
+			|| inputChar == Letter_R
+			|| inputChar == Letter_Z;
+	}
+
+	bool
+	Lexer::isFpSuffixChar(UChar32 inputChar) {
+		return inputChar == Letter_e
+			|| inputChar == Letter_h
+			|| inputChar == Letter_f
+			|| inputChar == Letter_d
+			|| inputChar == Letter_q
+			|| inputChar == Letter_m;
+	}
+
+	bool
+	Lexer::isFpHexSuffixChar(UChar32 inputChar) {
+		return inputChar == Letter_p;
+	}
+
+	bool
 	Lexer::isAmlIdentifierStart(UChar32 inputChar) {
 		return isLowerChar(inputChar)
 			|| isUpperChar(inputChar);
