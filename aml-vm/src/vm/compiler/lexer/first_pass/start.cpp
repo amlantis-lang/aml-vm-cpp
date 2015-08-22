@@ -11,6 +11,9 @@ namespace AVM {
 		if (Lexer::isLineBreakStart(inputChar)) {
 			machine.changeState(new FirstPassNewlineState);
 			machine.handle(inputChar);
+		} else if (u_isblank_55(inputChar)) {
+			machine.changeState(new FirstPassWhitespaceState);
+			machine.handle(inputChar);
 		} else if (inputChar == LeftParens) {
 			machine.changeState(new FirstPassLeftParenthesisState);
 			machine.handle(inputChar);

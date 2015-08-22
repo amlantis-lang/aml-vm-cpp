@@ -33,6 +33,18 @@ namespace AVM {
 					machine.changeState(new FirstPassDecNumberState(rawToken));
 				} else if (inputChar == Dot) {
 					/* switch to floating/fixed-point number or operator */
+				} else if (inputChar == Letter_r) {
+					/* 0r etc. */
+					accept(inputChar);
+					rawToken.item = RawLexicalItemRationalDenominatorLiteral;
+					machine.appendToOutput(rawToken);
+					machine.changeState(new FirstPassStartState);
+				} else if (inputChar == Letter_i) {
+					/* 0i etc. */
+					accept(inputChar);
+					rawToken.item = RawLexicalItemComplexImaginaryLiteral;
+					machine.appendToOutput(rawToken);
+					machine.changeState(new FirstPassStartState);
 				} else if (rawToken.rawValue.at(0) == Digit_0) {
 					if (inputChar == Letter_x) {
 						accept(inputChar);
@@ -50,7 +62,10 @@ namespace AVM {
 						accept(inputChar);
 						machine.changeState(new FirstPassDdecNumberState(rawToken));
 					} else {
-						throw "Unexpected input character";
+						rawToken.item = RawLexicalItemIntegerLiteral;
+						machine.appendToOutput(rawToken);
+						machine.changeState(new FirstPassStartState);
+						machine.handle(inputChar);
 					}
 				} else {
 					rawToken.item = RawLexicalItemIntegerLiteral;
