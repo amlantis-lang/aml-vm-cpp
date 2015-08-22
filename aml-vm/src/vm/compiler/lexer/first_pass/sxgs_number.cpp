@@ -3,12 +3,12 @@
 namespace AVM {
   
 	Lexer::
-	FirstPassSxgsNumberState::FirstPassSxgsNumberState(RawLexicalToken rawToken)
+	FirstPassSexagesimalNumberState::FirstPassSexagesimalNumberState(RawLexicalToken rawToken)
 		: FirstPassNumberState(rawToken) {};
 
 	void
 	Lexer::
-	FirstPassSxgsNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassSexagesimalNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (Lexer::isSxgsDigitChar(inputChar)) {
 			/* sexagesimal numbers are groups of 1-2 digits in range 0-59, therefore the first digit
 			   can only be 1 to 5, if one more is to come; however, we allow two zeros to appear 

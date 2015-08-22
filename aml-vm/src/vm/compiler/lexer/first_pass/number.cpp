@@ -30,7 +30,7 @@ namespace AVM {
 						|| inputChar == Underscore
 						|| Lexer::isIntegerSuffixChar(inputChar)) {
 					accept(inputChar);
-					machine.changeState(new FirstPassDecNumberState(rawToken));
+					machine.changeState(new FirstPassDecimalNumberState(rawToken));
 				} else if (inputChar == Dot) {
 					/* switch to floating/fixed-point number or operator */
 				} else if (inputChar == Letter_r) {
@@ -48,16 +48,16 @@ namespace AVM {
 				} else if (rawToken.rawValue.at(0) == Digit_0) {
 					if (inputChar == Letter_x) {
 						accept(inputChar);
-						machine.changeState(new FirstPassHexNumberState(rawToken));
+						machine.changeState(new FirstPassHexadecimalNumberState(rawToken));
 					} else if (inputChar == Letter_o) {
 						accept(inputChar);
-						machine.changeState(new FirstPassOctNumberState(rawToken));
+						machine.changeState(new FirstPassOctalNumberState(rawToken));
 					} else if (inputChar == Letter_b) {
 						accept(inputChar);
-						machine.changeState(new FirstPassBinNumberState(rawToken));
+						machine.changeState(new FirstPassBinaryNumberState(rawToken));
 					} else if (inputChar == Letter_s) {
 						accept(inputChar);
-						machine.changeState(new FirstPassSxgsNumberState(rawToken));
+						machine.changeState(new FirstPassSexagesimalNumberState(rawToken));
 					} else if (inputChar == Letter_d) {
 						accept(inputChar);
 						machine.changeState(new FirstPassDdecNumberState(rawToken));

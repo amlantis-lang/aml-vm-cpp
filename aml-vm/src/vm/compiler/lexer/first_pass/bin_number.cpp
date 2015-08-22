@@ -3,12 +3,12 @@
 namespace AVM {
   
 	Lexer::
-	FirstPassBinNumberState::FirstPassBinNumberState(RawLexicalToken rawToken)
+	FirstPassBinaryNumberState::FirstPassBinaryNumberState(RawLexicalToken rawToken)
 		: FirstPassNumberState(rawToken) {};
 
 	void
 	Lexer::
-	FirstPassBinNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassBinaryNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (Lexer::isBinDigitChar(inputChar)) {
 			accept(inputChar);
 		} else if (Lexer::isIntegerSuffixChar(inputChar)) {

@@ -20,6 +20,7 @@ namespace AVM {
 		RawLexicalItemRightBrace,
 		RawLexicalItemNewline,
 		RawLexicalItemSemicolon,
+		RawLexicalItemDoubleSemicolon,
 		RawLexicalItemIntegerLiteral,
 		RawLexicalItemRealLiteral,
 		RawLexicalItemRationalDenominatorLiteral,
@@ -458,6 +459,12 @@ namespace AVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
+		class FirstPassSemicolonState : public FirstPassState {
+		public:
+			FirstPassSemicolonState();
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
 		class FirstPassNumberState : public FirstPassState {
 		public:
 			FirstPassNumberState();
@@ -467,33 +474,33 @@ namespace AVM {
 			bool hasIntegerSuffix;
 		};
 
-		class FirstPassDecNumberState : public FirstPassNumberState {
+		class FirstPassDecimalNumberState : public FirstPassNumberState {
 		public:
-			FirstPassDecNumberState(RawLexicalToken rawToken);
+			FirstPassDecimalNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
-		class FirstPassHexNumberState : public FirstPassNumberState {
+		class FirstPassHexadecimalNumberState : public FirstPassNumberState {
 		public:
-			FirstPassHexNumberState(RawLexicalToken rawToken);
+			FirstPassHexadecimalNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
-		class FirstPassOctNumberState : public FirstPassNumberState {
+		class FirstPassOctalNumberState : public FirstPassNumberState {
 		public:
-			FirstPassOctNumberState(RawLexicalToken rawToken);
+			FirstPassOctalNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
-		class FirstPassBinNumberState : public FirstPassNumberState {
+		class FirstPassBinaryNumberState : public FirstPassNumberState {
 		public:
-			FirstPassBinNumberState(RawLexicalToken rawToken);
+			FirstPassBinaryNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
-		class FirstPassSxgsNumberState : public FirstPassNumberState {
+		class FirstPassSexagesimalNumberState : public FirstPassNumberState {
 		public:
-			FirstPassSxgsNumberState(RawLexicalToken rawToken);
+			FirstPassSexagesimalNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 

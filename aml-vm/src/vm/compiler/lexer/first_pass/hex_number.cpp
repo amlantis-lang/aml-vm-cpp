@@ -3,12 +3,12 @@
 namespace AVM {
   
 	Lexer::
-	FirstPassHexNumberState::FirstPassHexNumberState(RawLexicalToken rawToken)
+	FirstPassHexadecimalNumberState::FirstPassHexadecimalNumberState(RawLexicalToken rawToken)
 		: FirstPassNumberState(rawToken) {};
 
 	void
 	Lexer::
-	FirstPassHexNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassHexadecimalNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (Lexer::isHexDigitChar(inputChar)) {
 			accept(inputChar);
 		} else if (Lexer::isIntegerSuffixChar(inputChar)) {

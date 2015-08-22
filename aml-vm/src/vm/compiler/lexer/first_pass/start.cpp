@@ -14,6 +14,9 @@ namespace AVM {
 		} else if (u_isblank_55(inputChar)) {
 			machine.changeState(new FirstPassWhitespaceState);
 			machine.handle(inputChar);
+		} else if (inputChar == Semicolon) {
+			machine.changeState(new FirstPassSemicolonState);
+			machine.handle(inputChar);
 		} else if (inputChar == LeftParens) {
 			machine.changeState(new FirstPassLeftParenthesisState);
 			machine.handle(inputChar);

@@ -3,12 +3,12 @@
 namespace AVM {
   
 	Lexer::
-	FirstPassOctNumberState::FirstPassOctNumberState(RawLexicalToken rawToken)
+	FirstPassOctalNumberState::FirstPassOctalNumberState(RawLexicalToken rawToken)
 		: FirstPassNumberState(rawToken) {};
 
 	void
 	Lexer::
-	FirstPassOctNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
+	FirstPassOctalNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
 		if (Lexer::isOctDigitChar(inputChar)) {
 			accept(inputChar);
 		} else if (Lexer::isIntegerSuffixChar(inputChar)) {

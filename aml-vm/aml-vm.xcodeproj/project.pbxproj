@@ -18,6 +18,7 @@
 		3745647F1B87637D00F023A5 /* ddec_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3745647E1B87637D00F023A5 /* ddec_number.cpp */; };
 		3753AA631B07E48A006CAEA7 /* psi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3753AA611B07E48A006CAEA7 /* psi.cpp */; };
 		3788E6431B0282520062BCB8 /* amlf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3788E6421B0282520062BCB8 /* amlf.cpp */; };
+		3793EEF61B8903E70055A9D1 /* semicolon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF51B8903E70055A9D1 /* semicolon.cpp */; };
 		37D30E571B80CF92006AC3C5 /* verbatim_string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E561B80CF92006AC3C5 /* verbatim_string.cpp */; };
 		37D30E591B80ECCA006AC3C5 /* number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E581B80ECCA006AC3C5 /* number.cpp */; };
 		37D30E5B1B8110B2006AC3C5 /* quoted_identifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E5A1B8110B2006AC3C5 /* quoted_identifier.cpp */; };
