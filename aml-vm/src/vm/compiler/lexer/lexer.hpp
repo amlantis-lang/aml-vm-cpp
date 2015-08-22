@@ -50,8 +50,7 @@ namespace AVM {
 		RawLexicalItemBagLiteralStart,
 		RawLexicalItemBagLiteralEnd,
 
-		RawLexicalItemCommentStart,
-		RawLexicalItemCommentEnd,
+		RawLexicalItemComment,
 
 		RawLexicalItemWhitespace,
 
@@ -502,6 +501,14 @@ namespace AVM {
 		public:
 			FirstPassDdecNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		};
+
+		class FirstPassCommentState : public FirstPassState {
+		public:
+			FirstPassCommentState(RawLexicalToken rawToken);
+			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			unsigned_integer_8 nestingLevel;
 		};
 
 	};

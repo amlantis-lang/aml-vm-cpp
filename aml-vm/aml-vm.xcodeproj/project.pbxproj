@@ -59,6 +59,7 @@
 		37EFD6191B87DA1900F9A678 /* libamlvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EFD6071B87D9A100F9A678 /* libamlvm.a */; };
 		37EFD61B1B87DB3700F9A678 /* amldbg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37EFD61A1B87DB3700F9A678 /* amldbg.cpp */; };
 		37EFD61D1B87DB4500F9A678 /* amlprof.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37EFD61C1B87DB4500F9A678 /* amlprof.cpp */; };
+		37EFD61F1B88A72400F9A678 /* comment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37EFD61E1B88A72400F9A678 /* comment.cpp */; };
 		A7FABF3C1AFD806C00A90E00 /* aml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1EF91A92303A00188ADD /* aml.cpp */; };
 		A7FABF4D1AFD824500A90E00 /* cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1F001A92373600188ADD /* cli.cpp */; };
 		A7FABF4F1AFD824500A90E00 /* argv_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7DC1F031A923D1A00188ADD /* argv_input.cpp */; };
@@ -270,6 +271,7 @@
 		37EFD6101B87D9A100F9A678 /* amlprof */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = amlprof; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EFD61A1B87DB3700F9A678 /* amldbg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = amldbg.cpp; sourceTree = "<group>"; };
 		37EFD61C1B87DB4500F9A678 /* amlprof.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = amlprof.cpp; sourceTree = "<group>"; };
+		37EFD61E1B88A72400F9A678 /* comment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = comment.cpp; sourceTree = "<group>"; };
 		A707E6CD1AEAE950003B1B71 /* value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = value.cpp; path = src/vm/memory/value.cpp; sourceTree = SOURCE_ROOT; };
 		A707E6CE1AEAE950003B1B71 /* value.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = value.hpp; path = src/vm/memory/value.hpp; sourceTree = SOURCE_ROOT; };
 		A707E6D01AEB9826003B1B71 /* predef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = predef.hpp; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				3745647A1B87619E00F023A5 /* bin_number.cpp */,
 				3745647C1B8761E300F023A5 /* sxgs_number.cpp */,
 				3745647E1B87637D00F023A5 /* ddec_number.cpp */,
+				37EFD61E1B88A72400F9A678 /* comment.cpp */,
 			);
 			path = first_pass;
 			sourceTree = "<group>";
@@ -902,6 +905,7 @@
 				3745647D1B8761E300F023A5 /* sxgs_number.cpp in Sources */,
 				37DAE2841B3837AB00932043 /* lexer.cpp in Sources */,
 				37D660581B7FEBFC004858C5 /* whitespace.cpp in Sources */,
+				37EFD61F1B88A72400F9A678 /* comment.cpp in Sources */,
 				37D660841B800765004858C5 /* substitution_regexp.cpp in Sources */,
 				37D6606C1B800520004858C5 /* operator_or_identifier.cpp in Sources */,
 				37D660811B80074D004858C5 /* regexp.cpp in Sources */,
