@@ -333,5 +333,8 @@ namespace AVM {
 			|| inputChar == LeftBrace
 			|| inputChar == RightBrace;
 	}
+
+	Lexer::FirstPassStartState *const
+	Lexer::StartState1 = new Lexer::FirstPassStartState;
 }
 

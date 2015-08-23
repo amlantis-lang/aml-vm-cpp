@@ -5,7 +5,7 @@ namespace AVM {
 	Lexer::
 	FirstPassSexagesimalFloatingOrFixedPointNumberState::
 	FirstPassSexagesimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken)
-		: FirstPassNumberState(rawToken) {};
+		: FirstPassState(rawToken) {};
 
 	void
 	Lexer::

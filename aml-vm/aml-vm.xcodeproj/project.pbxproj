@@ -25,6 +25,7 @@
 		3793EEF21B88FF120055A9D1 /* sxgs_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF11B88FF120055A9D1 /* sxgs_ffp_number.cpp */; };
 		3793EEF41B88FF280055A9D1 /* ddec_ffp_number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF31B88FF280055A9D1 /* ddec_ffp_number.cpp */; };
 		3793EEF61B8903E70055A9D1 /* semicolon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF51B8903E70055A9D1 /* semicolon.cpp */; };
+		3793EEF81B8A12F50055A9D1 /* integer_suffix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3793EEF71B8A12F50055A9D1 /* integer_suffix.cpp */; };
 		37D30E571B80CF92006AC3C5 /* verbatim_string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E561B80CF92006AC3C5 /* verbatim_string.cpp */; };
 		37D30E591B80ECCA006AC3C5 /* number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E581B80ECCA006AC3C5 /* number.cpp */; };
 		37D30E5B1B8110B2006AC3C5 /* quoted_identifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37D30E5A1B8110B2006AC3C5 /* quoted_identifier.cpp */; };
@@ -240,6 +241,7 @@
 		3793EEF11B88FF120055A9D1 /* sxgs_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sxgs_ffp_number.cpp; sourceTree = "<group>"; };
 		3793EEF31B88FF280055A9D1 /* ddec_ffp_number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ddec_ffp_number.cpp; sourceTree = "<group>"; };
 		3793EEF51B8903E70055A9D1 /* semicolon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = semicolon.cpp; sourceTree = "<group>"; };
+		3793EEF71B8A12F50055A9D1 /* integer_suffix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = integer_suffix.cpp; sourceTree = "<group>"; };
 		37D30E561B80CF92006AC3C5 /* verbatim_string.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = verbatim_string.cpp; sourceTree = "<group>"; };
 		37D30E581B80ECCA006AC3C5 /* number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = number.cpp; sourceTree = "<group>"; };
 		37D30E5A1B8110B2006AC3C5 /* quoted_identifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = quoted_identifier.cpp; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 				3793EEF11B88FF120055A9D1 /* sxgs_ffp_number.cpp */,
 				3745647E1B87637D00F023A5 /* ddec_number.cpp */,
 				3793EEF31B88FF280055A9D1 /* ddec_ffp_number.cpp */,
+				3793EEF71B8A12F50055A9D1 /* integer_suffix.cpp */,
 				37EFD61E1B88A72400F9A678 /* comment.cpp */,
 			);
 			path = first_pass;
@@ -895,6 +898,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3793EEF81B8A12F50055A9D1 /* integer_suffix.cpp in Sources */,
 				37D660681B800286004858C5 /* parameter_placeholder.cpp in Sources */,
 				37D30E571B80CF92006AC3C5 /* verbatim_string.cpp in Sources */,
 				37D660701B800695004858C5 /* identifier.cpp in Sources */,

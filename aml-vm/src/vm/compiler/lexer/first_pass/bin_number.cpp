@@ -4,45 +4,76 @@ namespace AVM {
   
 	Lexer::
 	FirstPassBinaryNumberState::FirstPassBinaryNumberState(RawLexicalToken rawToken)
-		: FirstPassNumberState(rawToken) {};
+		: FirstPassState(rawToken) {};
 
 	void
 	Lexer::
 	FirstPassBinaryNumberState::handle(AVM::Lexer::FirstPassMachine &machine, UChar32 inputChar) {
-		if (Lexer::isBinDigitChar(inputChar)) {
-			accept(inputChar);
-		} else if (Lexer::isIntegerSuffixChar(inputChar)) {
-			if (hasIntegerSuffix) {
-				throw "Already has integer suffix";
-			} else if (rawToken.rawValue.at(inputChar) == Underscore) {
-				throw "Underscore not allowed before integer suffix";
-			} else {
+		UChar32 const &lastChar = rawToken.rawValue.back();
+		if (Lexer::isBinDigitChar(lastChar)) {
+			if (Lexer::isBinDigitChar(inputChar)) {
+				/* 0b### */
 				accept(inputChar);
-				hasIntegerSuffix = true;
-			}
-		} else if (hasIntegerSuffix && Lexer::isDigitChar(inputChar)) {
-			accept(inputChar);
-		} else if (inputChar == Dot) {
-			/* switch to floating/fixed-point number or operator */
-		} else if (Lexer::isFpSuffixChar(inputChar)) {
-			/* switch to floating/fixed-point number or operator */
-		} else if (inputChar == Underscore) {
-			if (rawToken.rawValue.back() == Underscore) {
-				throw "Only one underscore is allowed between digits";
-			} else if (hasIntegerSuffix) {
-				throw "Underscores not allowed in integer suffix";
-			} else {
+
+			} else if (inputChar == Underscore) {
+				/* 0b###_ */
 				accept(inputChar);
-			}
-		} else {
-			if (rawToken.rawValue.back() != Underscore) {
-				rawToken.item = RawLexicalItemIntegerLiteral;
+
+			} else if (Lexer::isIntegerSuffixChar(inputChar)) {
+				/* 0b###Z */
+				accept(inputChar);
+				machine.changeState(new FirstPassIntegerSuffixState(rawToken, RawLexicalItemIntegerLiteral));
+
+			} else if (inputChar == Letter_r) {
+				/* 0b###r */
+				accept(inputChar);
+				rawToken.item = RawLexicalItemRationalDenominatorLiteral;
 				machine.appendToOutput(rawToken);
 				machine.changeState(new FirstPassStartState);
-				machine.handle(inputChar);
+
+			} else if (inputChar == Letter_i) {
+				/* 0b###i */
+				accept(inputChar);
+				rawToken.item = RawLexicalItemComplexImaginaryLiteral;
+				machine.appendToOutput(rawToken);
+				machine.changeState(new FirstPassStartState);
+
+			} else if (inputChar == Dot) {
+				/* 0b###. */
+				/* the ffp state might need to back off and cut the dot, if this was a mistake */
+				accept(inputChar);
+				machine.changeState(new FirstPassDecimalFloatingOrFixedPointNumberState(rawToken));
+
+			} else if (Lexer::isFpSuffixChar(inputChar)) {
+				/* 0b###e */
+				accept(inputChar);
+				machine.changeState(new FirstPassDecimalFloatingOrFixedPointNumberState(rawToken));
+
 			} else {
-				throw "Number literal cannot end with an underscore";
+				if (rawToken.rawValue.size() > 2) {
+					/* 0b### */
+					rawToken.item = RawLexicalItemIntegerLiteral;
+					machine.appendToOutput(rawToken);
+					machine.changeState(new FirstPassStartState);
+					machine.handle(inputChar);
+
+				} else {
+					throw "Unexpected end of binary number literal";
+				}
 			}
+
+		} else if (lastChar == Underscore || lastChar == Letter_b) {
+			if (Lexer::isBinDigitChar(inputChar)) {
+				/* 0b###_# */
+				accept(inputChar);
+
+			} else {
+				throw "Unexpected input character";
+			}
+
+		} else {
+			/* only digit chars and underscores may appear in this state */
+			throw "Illegal state";
 		}
 	}
 }
