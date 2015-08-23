@@ -226,9 +226,6 @@ namespace AVM {
 		static bool isAmlDelimiterChar(UChar32 inputChar);
 
 		class FirstPassState;
-		class FirstPassStartState;
-
-		static FirstPassStartState *const StartState1;
 
 		class FirstPassMachine {
 		public:

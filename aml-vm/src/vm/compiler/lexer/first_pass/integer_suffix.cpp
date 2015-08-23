@@ -16,7 +16,7 @@ namespace AVM {
 		} else {
 			rawToken.item = associatedItem;
 			machine.appendToOutput(rawToken);
-			machine.changeState(Lexer::StartState1);
+			machine.changeState(new FirstPassStartState);
 			machine.handle(inputChar);
 		}
 	}
