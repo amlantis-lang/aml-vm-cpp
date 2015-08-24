@@ -27,9 +27,6 @@ namespace AVM {
 			} else if (inputChar == Letter_r) {
 				/* ###r */
 				accept(inputChar);
-				rawToken.item = RawLexicalItemRationalDenominatorLiteral;
-				machine.appendToOutput(rawToken);
-				machine.changeState(new FirstPassStartState);
 
 			} else if (inputChar == Letter_i) {
 				/* ###i */
@@ -66,8 +63,21 @@ namespace AVM {
 				throw "Unexpected input character";
 			}
 
+		} else if (lastChar == Letter_r) {
+			if (inputChar == Letter_i) {
+				/* ###ri */
+				accept(inputChar);
+
+			} else {
+				/* ###r */
+				rawToken.item = RawLexicalItemRationalDenominatorLiteral;
+				machine.appendToOutput(rawToken);
+				machine.changeState(new FirstPassStartState);
+				machine.handle(inputChar);
+			}
+
 		} else {
-			/* only digit chars and underscores may appear in this state */
+			/* only digit chars and underscore may appear in this state */
 			throw "Illegal state";
 		}
 	}

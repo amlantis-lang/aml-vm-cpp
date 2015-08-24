@@ -222,6 +222,7 @@ namespace AVM {
 		static bool isIntegerSuffixChar(UChar32 inputChar);
 		static bool isFpSuffixChar(UChar32 inputChar);
 		static bool isFpHexSuffixChar(UChar32 inputChar);
+		static bool isFpTypeSuffixChar(UChar32 inputChar);
 		static bool isLetterChar(UChar32 inputChar);
 		static bool isAmlDelimiterChar(UChar32 inputChar);
 
@@ -472,6 +473,12 @@ namespace AVM {
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
 		};
 
+		typedef enum : unsigned_integer_8 {
+			FloatingOrFixedPointFlavourDot,
+			FloatingOrFixedPointFlavourExponentPart,
+			FloatingOrFixedPointFlavourTypeSuffix
+		} FloatingOrFixedPointFlavour;
+
 		class FirstPassDecimalNumberState : public FirstPassState {
 		public:
 			FirstPassDecimalNumberState(RawLexicalToken rawToken);
@@ -482,6 +489,8 @@ namespace AVM {
 		public:
 			FirstPassDecimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			FloatingOrFixedPointFlavour flavour;
 		};
 
 		class FirstPassHexadecimalNumberState : public FirstPassState {

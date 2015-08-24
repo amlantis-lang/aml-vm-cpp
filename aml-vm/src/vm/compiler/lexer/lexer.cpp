@@ -255,13 +255,18 @@ namespace AVM {
 	}
 
 	bool
-	Lexer::isFpSuffixChar(UChar32 inputChar) {
-		return inputChar == Letter_e
-			|| inputChar == Letter_h
+	Lexer::isFpTypeSuffixChar(UChar32 inputChar) {
+		return inputChar == Letter_h
 			|| inputChar == Letter_f
 			|| inputChar == Letter_d
 			|| inputChar == Letter_q
 			|| inputChar == Letter_m;
+	}
+
+	bool
+	Lexer::isFpSuffixChar(UChar32 inputChar) {
+		return inputChar == Letter_e
+			|| Lexer::isFpTypeSuffixChar(inputChar);
 	}
 
 	bool
