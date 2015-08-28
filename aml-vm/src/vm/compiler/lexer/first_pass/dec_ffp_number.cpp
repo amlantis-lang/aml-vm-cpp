@@ -102,6 +102,10 @@ namespace AVM {
 						accept(inputChar);
 						flavour = FloatingOrFixedPointFlavourTypeSuffix;
 
+					} else if (inputChar == PlusSign || lastChar == HyphenMinusSign) {
+						/* ###e##+ or ###e##- */
+						accept(inputChar);
+
 					} else {
 						/* ###e### + something else */
 						rawToken.item = RawLexicalItemRealLiteral;
@@ -139,6 +143,17 @@ namespace AVM {
 						machine.appendToOutput(rawToken);
 						machine.changeState(new FirstPassStartState);
 						machine.handle(inputChar);
+					}
+
+				} else if (lastChar == Letter_e) {
+					if (Lexer::isDigitChar(inputChar)) {
+						accept(inputChar);
+
+					} else if (inputChar == PlusSign || lastChar == HyphenMinusSign) {
+						accept(inputChar);
+
+					} else {
+						throw "Unexpected input character";
 					}
 
 				} else {

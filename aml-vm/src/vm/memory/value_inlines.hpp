@@ -35,79 +35,79 @@
 namespace AVM {
 
 	inline
-	GValueLink
-	GValue::encode(GValue value) {
+	AValueLink
+	AValue::encode(AValue value) {
 		return value.evd.as_int_64;
 	};
 
 	inline
-	GValue
-	GValue::decode(GValueLink encoded) {
-		GValue decoded;
+	AValue
+	AValue::decode(AValueLink encoded) {
+		AValue decoded;
 		decoded.evd.as_int_64 = encoded;
 		return decoded;
 	};
 
 	inline
 	float_64
-	GValue::as_number() const {
+	AValue::as_number() const {
 		return as_float_64();
 	}
 
 	inline
 	bool
-	GValue::is_unsigned_integer_32() const {
+	AValue::is_unsigned_integer_32() const {
 		// technically, it would be only unsigned integer 31
 		return is_integer_32() && as_integer_32() >= 0;
 	}
 
 	inline
 	unsigned_integer_32
-	GValue::as_unsigned_integer_32() const {
+	AValue::as_unsigned_integer_32() const {
 		assert(is_unsigned_integer_32());
 		return as_integer_32();
 	}
 
-#if USE(CVALUE32_64)
+#if USE(AVALUE32_64)
 
 	inline
-	GValue::GValue() {
+	AValue::AValue() {
 		evd.as_bits.tag = UnitValueTag;
 		evd.as_bits.payload = 0;
 	}
 
 	inline
-	GValue::GValue(GNilTag) {
+	AValue::AValue(ANilTag) {
 		evd.as_bits.tag = NilTag;
 		evd.as_bits.payload = 0;
 	}
 
 	inline
-	GValue::GValue(GUndefinedTag) {
+	AValue::AValue(AUndefinedTag) {
 		evd.as_bits.tag = UndefinedTag;
 		evd.as_bits.payload = 0;
 	}
 
 	inline
-	GValue::GValue(GYesTag) {
+	AValue::AValue(AYesTag) {
 		evd.as_bits.tag = BooleanTag;
 		evd.as_bits.payload = 1;
 	}
 
 	inline
-	GValue::GValue(GNoTag) {
+	AValue::AValue(ANoTag) {
 		evd.as_bits.tag = BooleanTag;
 		evd.as_bits.payload = 0;
 	}
 
 	inline
-	GValue::GValue(GUnitTag) {
+	AValue::AValue(AUnitTag) {
 		evd.as_bits.tag = UnitValueTag;
 		evd.as_bits.payload = 0;
 	}
 
 	inline
-	GValue::GValue(GReference *ptr) {
+	AValue::AValue(AReference *ptr) {
 		if (ptr) {
 			evd.as_bits.tag = ReferenceTag;
 			evd.as_bits.payload = reinterpret_cast<int32_t>(ptr);
@@ -118,10 +118,10 @@ namespace AVM {
 	}
 
 	inline
-	GValue::GValue(const GReference *ptr) {
+	AValue::AValue(const AReference *ptr) {
 		if (ptr) {
 			evd.as_bits.tag = ReferenceTag;
-			evd.as_bits.payload = reinterpret_cast<int32_t>(const_cast<GReference *>(ptr));
+			evd.as_bits.payload = reinterpret_cast<int32_t>(const_cast<AReference *>(ptr));
 		} else {
 			evd.as_bits.tag = NilTag;
 			evd.as_bits.payload = 0;
@@ -129,130 +129,130 @@ namespace AVM {
 	}
 
 	inline
-	GValue::GValue(EncodeAsFloat64Tag, float_64 value) {
+	AValue::AValue(EncodeAsFloat64Tag, float_64 value) {
 		assert(!is_impure_NaN(value));
 		evd.as_double = value;
 	}
 
 	inline
 	bool
-	GValue::operator==(const GValue &other) const {
+	AValue::operator==(const AValue &other) const {
 		return evd.as_int_64 == other.evd.as_int_64;
 	}
 
 	inline
 	bool
-	GValue::operator!=(const GValue &other) const {
+	AValue::operator!=(const AValue &other) const {
 		return evd.as_int_64 != other.evd.as_int_64;
 	}
 
 	inline
 	bool
-	GValue::is_number() const {
+	AValue::is_number() const {
 		return is_integer_32() || is_float_64();
 	}
 
 	inline
 	bool
-	GValue::is_integer_32() const {
+	AValue::is_integer_32() const {
 		return tag() == Int32Tag;
 	}
 
 	inline
 	integer_32
-	GValue::as_integer_32() const {
+	AValue::as_integer_32() const {
 		assert(is_integer_32());
 		return payload();
 	}
 
 	inline
 	bool
-	GValue::is_float_64() const {
+	AValue::is_float_64() const {
 		return tag() < LowestTag;
 	}
 
 	inline
 	float_64
-	GValue::as_float_64() const {
+	AValue::as_float_64() const {
 		assert(is_float_64());
 		return evd.as_double;
 	}
 
 	inline
 	bool
-	GValue::is_a_yes() const {
+	AValue::is_a_yes() const {
 		return is_boolean() && as_boolean();
 	}
 
 	inline
 	bool
-	GValue::is_a_no() const {
+	AValue::is_a_no() const {
 		return is_boolean() && !as_boolean();
 	}
 
 	inline
 	bool
-	GValue::is_boolean() const {
+	AValue::is_boolean() const {
 		return tag() == BooleanTag;
 	}
 
 	inline
 	bool
-	GValue::as_boolean() const {
+	AValue::as_boolean() const {
 		assert(is_boolean());
 		return payload();
 	}
 
 	inline
 	bool
-	GValue::is_unit() const {
+	AValue::is_unit() const {
 		return tag() == UnitValueTag;
 	}
 
 	inline
 	bool
-	GValue::is_nil() const {
+	AValue::is_nil() const {
 		return tag() == NilTag;
 	}
 
 	inline
 	bool
-	GValue::is_undefined() const {
+	AValue::is_undefined() const {
 		return tag() == UndefinedTag;
 	}
 
 	inline
 	bool
-	GValue::is_nil_or_undefined() const {
+	AValue::is_nil_or_undefined() const {
 		return is_nil() || is_undefined();
 	}
 
 	inline
 	bool
-	GValue::is_reference() const {
+	AValue::is_reference() const {
 		return tag() == ReferenceTag;
 	}
 
 	inline
-	GReference *
-	GValue::as_reference() const {
+	AReference *
+	AValue::as_reference() const {
 		assert(is_reference());
-		return reinterpret_cast<GReference *>(payload());
+		return reinterpret_cast<AReference *>(payload());
 	}
 
 	inline
 	uint32_t
-	GValue::tag() const {
+	AValue::tag() const {
 		return evd.as_bits.tag;
 	}
 
 	inline
 	int32_t
-	GValue::payload() const {
+	AValue::payload() const {
 		return evd.as_bits.payload;
 	}
 
-#elif USE(CVALUE64)
+#elif USE(AVALUE64)
 
 	inline
 	integer_64
@@ -268,37 +268,37 @@ namespace AVM {
 
 	// 0x0 can never occur naturally because it has a tag of 00, indicating a pointer value, but a payload of 0x0, which is in the (invalid) zero page.
 	inline
-	GValue::GValue() {
+	AValue::AValue() {
 		evd.as_int_64 = ValueUnit;
 	}
 
 	inline
-	GValue::GValue(GNilTag) {
+	AValue::AValue(ANilTag) {
 		evd.as_int_64 = ValueNil;
 	}
 
 	inline
-	GValue::GValue(GUndefinedTag) {
+	AValue::AValue(AUndefinedTag) {
 		evd.as_int_64 = ValueUndefined;
 	}
 
 	inline
-	GValue::GValue(GYesTag) {
+	AValue::AValue(AYesTag) {
 		evd.as_int_64 = ValueYes;
 	}
 
 	inline
-	GValue::GValue(GNoTag) {
+	AValue::AValue(ANoTag) {
 		evd.as_int_64 = ValueNo;
 	}
 
 	inline
-	GValue::GValue(GUnitTag) {
+	AValue::AValue(AUnitTag) {
 		evd.as_int_64 = ValueUnit;
 	}
 
 	inline
-	GValue::GValue(struct GReference *ptr) {
+	AValue::AValue(struct AReference *ptr) {
 		if (ptr) {
 			evd.as_int_64 = reinterpret_cast<uintptr_t>(ptr);
 		} else {
@@ -307,127 +307,127 @@ namespace AVM {
 	}
 
 	inline
-	GValue::GValue(const struct GReference *ptr) {
+	AValue::AValue(const struct AReference *ptr) {
 		if (ptr) {
-			evd.as_int_64 = reinterpret_cast<uintptr_t>(const_cast<GReference *>(ptr));
+			evd.as_int_64 = reinterpret_cast<uintptr_t>(const_cast<AReference *>(ptr));
 		} else {
 			evd.as_int_64 = ValueNil;
 		}
 	}
 
 	inline
-	GValue::GValue(EncodeAsFloat64Tag, float_64 value) {
+	AValue::AValue(EncodeAsFloat64Tag, float_64 value) {
 		assert(!is_impure_NaN(value));
 		evd.as_int_64 = reinterpret_float_64_to_integer_64(value) + DoubleEncodeOffset;
 	}
 
 	inline
 	bool
-	GValue::operator==(const GValue &other) const {
+	AValue::operator==(const AValue &other) const {
 		return evd.as_int_64 == other.evd.as_int_64;
 	}
 
 	inline
 	bool
-	GValue::operator!=(const GValue &other) const {
+	AValue::operator!=(const AValue &other) const {
 		return evd.as_int_64 != other.evd.as_int_64;
 	}
 
 	inline
 	bool
-	GValue::is_number() const {
+	AValue::is_number() const {
 		return evd.as_int_64 & TagTypeNumber;
 	}
 
 	inline
 	bool
-	GValue::is_integer_32() const {
+	AValue::is_integer_32() const {
 		return (evd.as_int_64 & TagTypeNumber) == TagTypeNumber;
 	}
 
 	inline
 	integer_32
-	GValue::as_integer_32() const {
+	AValue::as_integer_32() const {
 		assert(is_integer_32());
 		return static_cast<integer_32>(evd.as_int_64);
 	}
 
 	inline
 	bool
-	GValue::is_float_64() const {
+	AValue::is_float_64() const {
 		return is_number() && !is_integer_32();
 	}
 
 	inline
 	float_64
-	GValue::as_float_64() const {
+	AValue::as_float_64() const {
 		assert(is_float_64());
 		return reinterpret_integer_64_to_float_64(evd.as_int_64 - DoubleEncodeOffset);
 	}
 
 	inline
 	bool
-	GValue::is_a_yes() const {
-		return as_value() == GValue::kYes;
+	AValue::is_a_yes() const {
+		return as_value() == AValue::kYes;
 	}
 
 	inline
 	bool
-	GValue::is_a_no() const {
-		return as_value() == GValue::kNo;
+	AValue::is_a_no() const {
+		return as_value() == AValue::kNo;
 	}
 
 	inline
 	bool
-	GValue::is_boolean() const {
+	AValue::is_boolean() const {
 		return (evd.as_int_64 & ~1) == ValueNo;
 	}
 
 	inline
 	bool
-	GValue::as_boolean() const {
+	AValue::as_boolean() const {
 		assert(is_boolean());
-		return as_value() == GValue::kYes;
+		return as_value() == AValue::kYes;
 	}
 
 	inline
 	bool
-	GValue::is_unit() const {
+	AValue::is_unit() const {
 		return evd.as_int_64 == ValueUnit;
 	}
 
 	inline
 	bool
-	GValue::is_nil() const {
-		return as_value() == GValue::kNil;
+	AValue::is_nil() const {
+		return as_value() == AValue::kNil;
 	}
 
 	inline
 	bool
-	GValue::is_undefined() const {
-		return as_value() == GValue::kUndefined;
+	AValue::is_undefined() const {
+		return as_value() == AValue::kUndefined;
 	}
 
 	inline
 	bool
-	GValue::is_nil_or_undefined() const {
+	AValue::is_nil_or_undefined() const {
 		return is_nil() || is_undefined();
 	}
 
 	inline
 	bool
-	GValue::is_reference() const {
+	AValue::is_reference() const {
 		return !(evd.as_int_64 & TagMask);
 	}
 
 	inline
-	GReference *
-	GValue::as_reference() const {
+	AReference *
+	AValue::as_reference() const {
 		assert(is_reference());
 		return evd.as_pointer;
 	}
 
-#endif /* USE(CVALUE64) */
+#endif /* USE(AVALUE64) */
 	
 }
 

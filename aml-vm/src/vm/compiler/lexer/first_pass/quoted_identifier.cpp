@@ -85,7 +85,7 @@ namespace AVM {
 							machine.changeState(new FirstPassStartState);
 							machine.handle(inputChar);
 						} else {
-							/* TODO: if GFR-0 would restrict further the possible Unicode character classes here,
+							/* TODO: if AFR-0 would restrict further the possible Unicode character classes here,
 								 update this code to reflect that */
 							accept(inputChar);
 						}

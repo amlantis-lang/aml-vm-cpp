@@ -31,7 +31,7 @@
 namespace AVM {
 
 	/* NaN (not-a-number) float_64 values are central to how AVM encodes AVM
-	 * values (GValues). All values, including integers and non-numeric values, are always
+	 * values (AValues). All values, including integers and non-numeric values, are always
 	 * encoded using the IEEE 754 binary float_64 format. Non-float_64 values are encoded using
 	 * a NaN with the sign bit set. The 51-bit payload is then used for encoding the actual
 	 * value - be it an integer or a pointer to an object, or something else. But we only
@@ -80,7 +80,7 @@ namespace AVM {
 
 # define PNaN (pure_NaN())
 
-	/* Tests if the float_64 value would break CVALUE64 encoding, which is the most
+	/* Tests if the float_64 value would break AVALUE64 encoding, which is the most
 	 * aggressive kind of encoding that we currently use.
 	 */
 	inline

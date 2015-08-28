@@ -8,7 +8,7 @@
 namespace AVM {
 
 	inline
-	GReference::GReference(union GReferenceValue *ref_value)
+	AReference::AReference(union AReferenceValue *ref_value)
 		:	referenced_value(ref_value),
 			strong_reference_count(1),
 			/* all strong references share one implicit weak reference, 
@@ -16,20 +16,20 @@ namespace AVM {
 			weak_reference_count(1) {}
 
 	inline
-	GReference::~GReference() noexcept {
+	AReference::~AReference() noexcept {
 		assert(strong_reference_count.load(std::memory_order_seq_cst) == 0);
 		assert(weak_reference_count.load(std::memory_order_seq_cst) == 0);
 	}
 
 	inline
 	void
-	GReference::retain(void *env) {
+	AReference::retain(void *env) {
 		strong_reference_count.fetch_add(1, std::memory_order_relaxed);
 	}
 
 	inline
 	void
-	GReference::release(void *env) {
+	AReference::release(void *env) {
 		if (referenced_value.load(std::memory_order_relaxed) == nullptr) {
 			// TODO: call sth. like env->signal_over_released()
 			return; /* prevent over-release */
@@ -43,66 +43,66 @@ namespace AVM {
 	}
 
 	inline
-	GValue
-	GReference::downgrade(void *env) {
-		GWeakPointer *weak_pointer = new(std::nothrow) GWeakPointer(this);
+	AValue
+	AReference::downgrade(void *env) {
+		AWeakPointer *weak_pointer = new(std::nothrow) AWeakPointer(this);
 		if (weak_pointer != nullptr) {
-			const GReference *weak_pointer_reference
-				= new(std::nothrow) GReference(reinterpret_cast<GReferenceValue *>(weak_pointer));
+			const AReference *weak_pointer_reference
+				= new(std::nothrow) AReference(reinterpret_cast<AReferenceValue *>(weak_pointer));
 			if (weak_pointer_reference != nullptr) {
 				weak_reference_count.fetch_add(1, std::memory_order_relaxed);
-				return GValue(weak_pointer_reference);
+				return AValue(weak_pointer_reference);
 			} else {
 				delete weak_pointer; /* we failed to allocate the reference */
 			}
 		}
 		// TODO: call sth. like env->signal_out_of_memory()
-		return GValue::kNil; /* we failed to allocate the whole weak pointer, or just the ref. */
+		return AValue::kNil; /* we failed to allocate the whole weak pointer, or just the ref. */
 	}
 
 	inline
 	STRONG_REFERENCE_COUNT_TYPE
-	GReference::strong_count() const noexcept {
+	AReference::strong_count() const noexcept {
 		return strong_reference_count.load(std::memory_order_seq_cst);
 	}
 
 	inline
 	WEAK_REFERENCE_COUNT_TYPE
-	GReference::weak_count() const noexcept {
+	AReference::weak_count() const noexcept {
 		/* we subtract 1 to hide the implicit weak reference held by all strong references */
 		return weak_reference_count.load(std::memory_order_seq_cst) - 1;
 	}
 
 	inline
-	GReferenceCommon::GReferenceCommon(GReferenceType ref_type)
+	AReferenceCommon::AReferenceCommon(AReferenceType ref_type)
 		: reference_type(ref_type) { }
 
 	inline
-	GObject::GObject(PsiElement *psi_type, unsigned_integer_8 ivars_count)
-		:	common(GReferenceTypeObject),
+	AObject::AObject(PsiElement *psi_type, unsigned_integer_8 ivars_count)
+		:	common(AReferenceTypeObject),
 			psi_type(psi_type),
 			dynamic_ivars(nullptr),
 			ivars_count(ivars_count),
-			ivars(ivars_count >= 1 ? new GVariable[ivars_count] : nullptr)
+			ivars(ivars_count >= 1 ? new AVariable[ivars_count] : nullptr)
 	{
 		for (unsigned_integer_16 i = 0; i < ivars_count; i += 1) {
-			ivars[i] = GValue::kUndefined;
+			ivars[i] = AValue::kUndefined;
 		}
 	}
 
 	inline
-	GObject::~GObject() {
+	AObject::~AObject() {
 		// TODO: delete dynamic_ivars
 	}
 
 	inline
-	GUnmanagedUnsafe::GUnmanagedUnsafe(void *pointer, void (*deallocator)(void *))
-		:	common(GReferenceTypeUnmanagedUnsafe),
+	AUnmanagedUnsafe::AUnmanagedUnsafe(void *pointer, void (*deallocator)(void *))
+		:	common(AReferenceTypeUnmanagedUnsafe),
 			pointer(pointer),
 			deallocator(deallocator) {};
 
 	inline
-	GUnmanagedUnsafe::~GUnmanagedUnsafe() {
+	AUnmanagedUnsafe::~AUnmanagedUnsafe() {
 		if (deallocator != nullptr) {
 			/* the deallocator function is supposed to determine whether or not to deallocate the value */
 			deallocator(pointer);
@@ -110,72 +110,72 @@ namespace AVM {
 	}
 
 	inline
-	GInteger64::GInteger64(const integer_64 value) noexcept
-		:	common(GReferenceTypeInteger64),
+	AInteger64::AInteger64(const integer_64 value) noexcept
+		:	common(AReferenceTypeInteger64),
 			value(value) {};
 
 	inline
-	GInteger64Unsigned::GInteger64Unsigned(const unsigned_integer_64 value) noexcept
-		:	common(GReferenceTypeUnsignedInteger64),
+	AInteger64Unsigned::AInteger64Unsigned(const unsigned_integer_64 value) noexcept
+		:	common(AReferenceTypeUnsignedInteger64),
 			value(value) {};
 
 	inline
-	GInteger128::GInteger128(const integer_128 value) noexcept
-		:	common(GReferenceTypeInteger128),
+	AInteger128::AInteger128(const integer_128 value) noexcept
+		:	common(AReferenceTypeInteger128),
 			value(value) {};
 
 	inline
-	GInteger128Unsigned::GInteger128Unsigned(const unsigned_integer_128 value) noexcept
-		:	common(GReferenceTypeUnsignedInteger128),
+	AInteger128Unsigned::AInteger128Unsigned(const unsigned_integer_128 value) noexcept
+		:	common(AReferenceTypeUnsignedInteger128),
 			value(value) {};
 
 	inline
-	GFloat128::GFloat128(const float_128 value) noexcept
-		:	common(GReferenceTypeFloat128),
+	AFloat128::AFloat128(const float_128 value) noexcept
+		:	common(AReferenceTypeFloat128),
 			value(value) {};
 
 	inline
-	GComplex::GComplex(const GValue real, const GValue imaginary) noexcept
-		:	common(GReferenceTypeComplex),
+	AComplex::AComplex(const AValue real, const AValue imaginary) noexcept
+		:	common(AReferenceTypeComplex),
 			real(real),
 			imaginary(imaginary) {};
 
 	inline
-	GRational::GRational(const GValue numerator, const GValue denominator) noexcept
-		:	common(GReferenceTypeRational),
+	ARational::ARational(const AValue numerator, const AValue denominator) noexcept
+		:	common(AReferenceTypeRational),
 			numerator(numerator),
 			denominator(denominator) {};
 
 	inline
-	GDecimalLimited::GDecimalLimited(const unsigned_integer_128 value,
+	ADecimalLimited::ADecimalLimited(const unsigned_integer_128 value,
 	                                 const unsigned_integer_8 decimal_digits) noexcept
-		:	common(GReferenceTypeDecimalLimited),
+		:	common(AReferenceTypeDecimalLimited),
 			value(value),
 			decimal_digits(decimal_digits) {}
 
 	inline
-	GDecimalUnlimited::GDecimalUnlimited(unsigned_integer_8 *const individual_digits,
+	ADecimalUnlimited::ADecimalUnlimited(unsigned_integer_8 *const individual_digits,
 	                                     const size_t digits_count,
 	                                     const unsigned_integer_64 decimal_digits) noexcept
-		:	common(GReferenceTypeDecimalUnlimited),
+		:	common(AReferenceTypeDecimalUnlimited),
 			individual_digits(individual_digits), /* here we take over ownership of the digits */
 			digits_count(digits_count),
 			decimal_digits(decimal_digits) {}
 
 	inline
-	GDecimalUnlimited::~GDecimalUnlimited() noexcept {
+	ADecimalUnlimited::~ADecimalUnlimited() noexcept {
 		delete[] individual_digits;
 	}
 
 	inline
-	GWeakPointer::GWeakPointer(GReference *ptr)
-		:	common(GReferenceTypeWeakPointer),
+	AWeakPointer::AWeakPointer(AReference *ptr)
+		:	common(AReferenceTypeWeakPointer),
 			pointer(ptr) {}
 
 	inline
 	void
-	GWeakPointer::on_release() noexcept {
-		GReference *ptr = pointer.load(std::memory_order_seq_cst);
+	AWeakPointer::on_release() noexcept {
+		AReference *ptr = pointer.load(std::memory_order_seq_cst);
 		assert(ptr != nullptr);
 		if (ptr->weak_reference_count.fetch_sub(1, std::memory_order_release) == 1) {
 			/* this only happens when this is the last weak reference */
@@ -185,18 +185,18 @@ namespace AVM {
 	}
 
 	inline
-	GValue
-	GWeakPointer::upgrade(void *env) {
-		GReference *ptr = pointer.load(std::memory_order_seq_cst);
+	AValue
+	AWeakPointer::upgrade(void *env) {
+		AReference *ptr = pointer.load(std::memory_order_seq_cst);
 		assert(ptr != nullptr);
 		while (true) {
 			STRONG_REFERENCE_COUNT_TYPE ref_count
 				= ptr->strong_reference_count.load(std::memory_order_seq_cst);
 			if (ref_count == 0) {
-				return GValue::kNil;
+				return AValue::kNil;
 			} else if (ptr->strong_reference_count
 					.compare_exchange_weak(ref_count, ref_count + 1, std::memory_order_seq_cst)) {
-				return GValue(ptr);
+				return AValue(ptr);
 			}
 		}
 	}

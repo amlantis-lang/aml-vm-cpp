@@ -42,7 +42,7 @@ namespace AVM {
 
 	private:
 		unsigned_integer_32 version;
-		GValue associated_value;
+		AValue associated_value;
 		PsiElement *replaced_by;
 
 		struct PsiElementChild {

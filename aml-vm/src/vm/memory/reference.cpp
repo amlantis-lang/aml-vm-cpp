@@ -6,96 +6,96 @@
 #include <cassert>
 
 namespace AVM {
-	static GReferenceLock ReferenceLocks[REFERENCE_LOCKS_COUNT];
+	static AReferenceLock ReferenceLocks[REFERENCE_LOCKS_COUNT];
 
-	GReferenceLock &
-	lock_for_reference(union GReferenceValue *reference) noexcept {
+	AReferenceLock &
+	lock_for_reference(union AReferenceValue *reference) noexcept {
 		return ReferenceLocks[REFERENCE_LOCK_INDEX(reference)];
 	}
 
 	void
-	GReference::release_slow(void *env) {
+	AReference::release_slow(void *env) {
 		assert(strong_reference_count.load(std::memory_order_seq_cst) == 0);
 		/* since the release has come to this point, there are no more strong references */
-		GReferenceValue *pointer = referenced_value.load(std::memory_order_relaxed);
+		AReferenceValue *pointer = referenced_value.load(std::memory_order_relaxed);
 
 		/* TODO: call sth. like env->destruct(pointer); !!! (maybe better in each switch case, to save a check) */
 
 		switch (pointer->common.reference_type) {
-			case GReferenceTypeObject: {
-				GObject *real_pointer = reinterpret_cast<GObject *>(pointer);
+			case AReferenceTypeObject: {
+				AObject *real_pointer = reinterpret_cast<AObject *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeUnmanagedUnsafe: {
-				GUnmanagedUnsafe *real_pointer = reinterpret_cast<GUnmanagedUnsafe *>(pointer);
+			case AReferenceTypeUnmanagedUnsafe: {
+				AUnmanagedUnsafe *real_pointer = reinterpret_cast<AUnmanagedUnsafe *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeInteger64: {
-				GInteger64 *real_pointer = reinterpret_cast<GInteger64 *>(pointer);
+			case AReferenceTypeInteger64: {
+				AInteger64 *real_pointer = reinterpret_cast<AInteger64 *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeUnsignedInteger64: {
-				GInteger64Unsigned *real_pointer = reinterpret_cast<GInteger64Unsigned *>(pointer);
+			case AReferenceTypeUnsignedInteger64: {
+				AInteger64Unsigned *real_pointer = reinterpret_cast<AInteger64Unsigned *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeInteger128: {
-				GInteger128 *real_pointer = reinterpret_cast<GInteger128 *>(pointer);
+			case AReferenceTypeInteger128: {
+				AInteger128 *real_pointer = reinterpret_cast<AInteger128 *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeUnsignedInteger128: {
-				GInteger128Unsigned *real_pointer = reinterpret_cast<GInteger128Unsigned *>(pointer);
+			case AReferenceTypeUnsignedInteger128: {
+				AInteger128Unsigned *real_pointer = reinterpret_cast<AInteger128Unsigned *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeFloat128: {
-				GFloat128 *real_pointer = reinterpret_cast<GFloat128 *>(pointer);
+			case AReferenceTypeFloat128: {
+				AFloat128 *real_pointer = reinterpret_cast<AFloat128 *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeComplex: {
-				GComplex *real_pointer = reinterpret_cast<GComplex *>(pointer);
+			case AReferenceTypeComplex: {
+				AComplex *real_pointer = reinterpret_cast<AComplex *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeRational: {
-				GRational *real_pointer = reinterpret_cast<GRational *>(pointer);
+			case AReferenceTypeRational: {
+				ARational *real_pointer = reinterpret_cast<ARational *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeDecimalLimited: {
-				GDecimalLimited *real_pointer = reinterpret_cast<GDecimalLimited *>(pointer);
+			case AReferenceTypeDecimalLimited: {
+				ADecimalLimited *real_pointer = reinterpret_cast<ADecimalLimited *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeDecimalUnlimited: {
-				GDecimalUnlimited *real_pointer = reinterpret_cast<GDecimalUnlimited *>(pointer);
+			case AReferenceTypeDecimalUnlimited: {
+				ADecimalUnlimited *real_pointer = reinterpret_cast<ADecimalUnlimited *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeArray: {
-				GArray *real_pointer = reinterpret_cast<GArray *>(pointer);
+			case AReferenceTypeArray: {
+				AArray *real_pointer = reinterpret_cast<AArray *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeNestedPointer: {
-				GNestedPointer *real_pointer = reinterpret_cast<GNestedPointer *>(pointer);
+			case AReferenceTypeNestedPointer: {
+				ANestedPointer *real_pointer = reinterpret_cast<ANestedPointer *>(pointer);
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypeWeakPointer: {
-				GWeakPointer *real_pointer = reinterpret_cast<GWeakPointer *>(pointer);
+			case AReferenceTypeWeakPointer: {
+				AWeakPointer *real_pointer = reinterpret_cast<AWeakPointer *>(pointer);
 				/* maybe move this to destructor from *env */
 				real_pointer->on_release();
 				delete real_pointer;
 				break;
 			}
-			case GReferenceTypePsiBearer: {
-				GPsiBearer *real_pointer = reinterpret_cast<GPsiBearer *>(pointer);
+			case AReferenceTypePsiBearer: {
+				APsiBearer *real_pointer = reinterpret_cast<APsiBearer *>(pointer);
 				delete real_pointer;
 				break;
 			}
@@ -110,69 +110,69 @@ namespace AVM {
 		}
 	}
 
-	GValue
-	GObject::allocate(PsiElement *psi_type, void *env) noexcept {
+	AValue
+	AObject::allocate(PsiElement *psi_type, void *env) noexcept {
 		/* TODO: read number of ivars from psi_type */
-		GObject *object = new(std::nothrow) GObject(psi_type, 0);
+		AObject *object = new(std::nothrow) AObject(psi_type, 0);
 		if (object != nullptr) {
-			GReference *object_reference
-				= new(std::nothrow) GReference(reinterpret_cast<GReferenceValue *>(object));
+			AReference *object_reference
+				= new(std::nothrow) AReference(reinterpret_cast<AReferenceValue *>(object));
 			if (object_reference != nullptr) {
-				return GValue(object_reference);
+				return AValue(object_reference);
 			} else {
 				delete object; /* we failed to allocate the reference */
 			}
 		}
 		// TODO: call sth. like env->signal_out_of_memory()
-		return GValue::kNil; /* we failed to allocate the whole object, or just the ref. */
+		return AValue::kNil; /* we failed to allocate the whole object, or just the ref. */
 	}
 
-	GValue
-	GUnmanagedUnsafe::allocate(void *pointer, void (*deallocator)(void *), void *env) noexcept {
-		GUnmanagedUnsafe *unmanaged = new(std::nothrow) GUnmanagedUnsafe(pointer, deallocator);
+	AValue
+	AUnmanagedUnsafe::allocate(void *pointer, void (*deallocator)(void *), void *env) noexcept {
+		AUnmanagedUnsafe *unmanaged = new(std::nothrow) AUnmanagedUnsafe(pointer, deallocator);
 		if (unmanaged != nullptr) {
-			GReference *unmanaged_reference
-				= new(std::nothrow) GReference(reinterpret_cast<GReferenceValue *>(unmanaged));
+			AReference *unmanaged_reference
+				= new(std::nothrow) AReference(reinterpret_cast<AReferenceValue *>(unmanaged));
 			if (unmanaged_reference != nullptr) {
-				return GValue(unmanaged_reference);
+				return AValue(unmanaged_reference);
 			} else {
 				delete unmanaged; /* we failed to allocate the reference */
 			}
 		}
 		// TODO: call sth. like env->signal_out_of_memory()
-		return GValue::kNil; /* we failed to allocate the whole unmanaged object, or just the ref. */
+		return AValue::kNil; /* we failed to allocate the whole unmanaged object, or just the ref. */
 	}
 
-	GValue
-	GInteger64::allocate(const integer_64 value, void *env) noexcept {
-		GInteger64 *object = new(std::nothrow) GInteger64(value);
+	AValue
+	AInteger64::allocate(const integer_64 value, void *env) noexcept {
+		AInteger64 *object = new(std::nothrow) AInteger64(value);
 		if (object != nullptr) {
-			GReference *object_reference
-				= new(std::nothrow) GReference(reinterpret_cast<GReferenceValue *>(object));
+			AReference *object_reference
+				= new(std::nothrow) AReference(reinterpret_cast<AReferenceValue *>(object));
 			if (object_reference != nullptr) {
-				return GValue(object_reference);
+				return AValue(object_reference);
 			} else {
 				delete object; /* we failed to allocate the reference */
 			}
 		}
 		// TODO: call sth. like env->signal_out_of_memory()
-		return GValue::kNil; /* we failed to allocate the whole object, or just the ref. */
+		return AValue::kNil; /* we failed to allocate the whole object, or just the ref. */
 	}
 
-	GValue
-	GInteger64Unsigned::allocate(const unsigned_integer_64 value, void *env) noexcept {
-		GInteger64Unsigned *object = new(std::nothrow) GInteger64Unsigned(value);
+	AValue
+	AInteger64Unsigned::allocate(const unsigned_integer_64 value, void *env) noexcept {
+		AInteger64Unsigned *object = new(std::nothrow) AInteger64Unsigned(value);
 		if (object != nullptr) {
-			GReference *object_reference
-				= new(std::nothrow) GReference(reinterpret_cast<GReferenceValue *>(object));
+			AReference *object_reference
+				= new(std::nothrow) AReference(reinterpret_cast<AReferenceValue *>(object));
 			if (object_reference != nullptr) {
-				return GValue(object_reference);
+				return AValue(object_reference);
 			} else {
 				delete object; /* we failed to allocate the reference */
 			}
 		}
 		// TODO: call sth. like env->signal_out_of_memory()
-		return GValue::kNil; /* we failed to allocate the whole object, or just the ref. */
+		return AValue::kNil; /* we failed to allocate the whole object, or just the ref. */
 	}
 
 }

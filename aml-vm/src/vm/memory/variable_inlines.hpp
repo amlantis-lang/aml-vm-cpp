@@ -6,7 +6,7 @@
 namespace AVM {
 
 	inline
-	GTypedVariable::GTypedVariable(GValue value, PsiElement *psi_type)
+	ATypedVariable::ATypedVariable(AValue value, PsiElement *psi_type)
 		:	value(value),
  			psi_type(psi_type) {};
 

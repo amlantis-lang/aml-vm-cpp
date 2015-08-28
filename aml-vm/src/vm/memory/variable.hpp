@@ -7,14 +7,14 @@
 #include <atomic>
 
 namespace AVM {
-	typedef struct std::atomic<GValue> GVariable;
+	typedef struct std::atomic<AValue> AVariable;
 
-	struct GTypedVariable {
+	struct ATypedVariable {
 	public:
-		GVariable value;
+		AVariable value;
 		PsiElement *const psi_type;
 
-		GTypedVariable(GValue, PsiElement * /* psi_type */);
+		ATypedVariable(AValue, PsiElement * /* psi_type */);
 	};
 }
 

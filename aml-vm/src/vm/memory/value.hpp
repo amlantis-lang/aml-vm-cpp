@@ -29,15 +29,15 @@
 #include "../../lib/predef.hpp"
 
 namespace AVM {
-	typedef int64_t GValueLink;
-	struct GReference;
+	typedef int64_t AValueLink;
+	struct AReference;
 
 	union EncodedValueDescriptor {
 		int64_t as_int_64;
-# if USE(CVALUE32_64)
+# if USE(AVALUE32_64)
 		double as_double;
-# elif USE(CVALUE64)
-		struct GReference *as_pointer;
+# elif USE(AVALUE64)
+		struct AReference *as_pointer;
 # endif
 # if CPU(BIG_ENDIAN)
 		struct {
@@ -52,10 +52,10 @@ namespace AVM {
 # endif
 	};
 
-	class GValue {
+	class AValue {
 	public:
 
-#  if USE(CVALUE32_64)
+#  if USE(AVALUE32_64)
 		enum { Int32Tag =        0xffffffff };
 		enum { BooleanTag =      0xfffffffe };
 		enum { NilTag =          0xfffffffd };
@@ -66,39 +66,39 @@ namespace AVM {
 		enum { LowestTag =     UnitValueTag };
 #  endif
 
-		static GValueLink
-		encode(GValue);
+		static AValueLink
+		encode(AValue);
 
-		static GValue
-		decode(GValueLink);
+		static AValue
+		decode(AValueLink);
 
-		enum GNilTag { GNil };
-		enum GUndefinedTag { GUndefined };
-		enum GYesTag { GYes };
-		enum GNoTag { GNo };
-		enum GUnitTag { GUnit };
+		enum ANilTag { ANil };
+		enum AUndefinedTag { AUndefined };
+		enum AYesTag { AYes };
+		enum ANoTag { ANo };
+		enum AUnitTag { AUnit };
 		enum EncodeAsFloat64Tag { EncodeAsFloat64 };
 
 		/* non-numeric values */
-		GValue();
-		GValue(GNilTag);
-		GValue(GUndefinedTag);
-		GValue(GYesTag);
-		GValue(GNoTag);
-		GValue(GUnitTag);
-		GValue(struct GReference *ptr);
-		GValue(const struct GReference *ptr);
+		AValue();
+		AValue(ANilTag);
+		AValue(AUndefinedTag);
+		AValue(AYesTag);
+		AValue(ANoTag);
+		AValue(AUnitTag);
+		AValue(struct AReference *ptr);
+		AValue(const struct AReference *ptr);
 
 		/* numeric values */
-		GValue(EncodeAsFloat64Tag, float_64);
+		AValue(EncodeAsFloat64Tag, float_64);
 
 		// TODO: add more constructors, per each reference subtype
 
 		bool
-		operator==(const GValue &other) const;
+		operator==(const AValue &other) const;
 
 		bool
-		operator!=(const GValue &other) const;
+		operator!=(const AValue &other) const;
 
 		bool
 		is_number() const;
@@ -151,11 +151,11 @@ namespace AVM {
 		bool
 		is_reference() const;
 
-		struct GReference *
+		struct AReference *
 		as_reference() const;
 
-#  if USE(CVALUE32_64)
-		/* On 32-bit platforms USE(CVALUE32_64) should be defined, and we use a NaN-encoded
+#  if USE(AVALUE32_64)
+		/* On 32-bit platforms USE(AVALUE32_64) should be defined, and we use a NaN-encoded
 		 * form for immediates.
 		 *
 		 * The encoding makes use of unused NaN space in the IEEE754 representation. Any value
@@ -167,7 +167,7 @@ namespace AVM {
 		 * ranges to encode other values (however there are also other ranges of NaN space that
 		 * could have been selected - let's ignore these for now).
 		 *
-		 * For GValues that do not contain a double value, the high 32 bits contain the tag
+		 * For AValues that do not contain a double value, the high 32 bits contain the tag
 		 * values listed in the enums below, which all correspond to NaN-space. In the case of
 		 * reference, integer and boolean values, the lower 32 bits (the 'payload') contain the pointer,
 		 * integer or boolean value; in the case of all other tags the payload is 0.
@@ -175,8 +175,8 @@ namespace AVM {
 		uint32_t tag() const;
 		int32_t payload() const;
 
-#  elif USE(CVALUE64)
-		/* On 64-bit platforms USE(CVALUE64) should be defined, and we use a NaN-encoded
+#  elif USE(AVALUE64)
+		/* On 64-bit platforms USE(AVALUE64) should be defined, and we use a NaN-encoded
 		 * form for immediates.
 		 *
 		 * The encoding makes use of unused NaN space in the IEEE754 representation. Any value
@@ -192,7 +192,7 @@ namespace AVM {
 		 * hex patterns 0xFFFE and 0xFFFF - we rely on the fact that no valid double-precision
 		 * numbers will fall in these ranges.
 		 *
-		 * The top 16-bits denote the type of the encoded GValue:
+		 * The top 16-bits denote the type of the encoded AValue:
 		 *
 		 *     Pointer {  0000:PPPP:PPPP:PPPP
 		 *              / 0001:****:****:****
@@ -222,8 +222,8 @@ namespace AVM {
 		 * - With bit 3 is masked out (TagBitUndefined) Undefined and Nil share the
 		 *   same value, allowing null & undefined to be quickly detected.
 		 *
-		 * No valid GValue will have the bit pattern 0x0, this is used to represent Unit, 
-		 * and as a C++ 'no value' result (e.g. GValue() has an internal value of 0).
+		 * No valid AValue will have the bit pattern 0x0, this is used to represent Unit, 
+		 * and as a C++ 'no value' result (e.g. AValue() has an internal value of 0).
 		 */
 
 		// These values are #defines since using static const integers here is a ~1% regression!
@@ -252,24 +252,24 @@ namespace AVM {
 #  endif
 
 	private:
-		inline const GValue as_value() const {
+		inline const AValue as_value() const {
 			return *this;
 		}
 
 		EncodedValueDescriptor evd;
 
 	public:
-		static const GValueLink kNilLink;
-		static const GValueLink kUndefinedLink;
-		static const GValueLink kYesLink;
-		static const GValueLink kNoLink;
-		static const GValueLink kUnitLink;
+		static const AValueLink kNilLink;
+		static const AValueLink kUndefinedLink;
+		static const AValueLink kYesLink;
+		static const AValueLink kNoLink;
+		static const AValueLink kUnitLink;
 
-		static const GValue kNil;
-		static const GValue kUndefined;
-		static const GValue kYes;
-		static const GValue kNo;
-		static const GValue kUnit;
+		static const AValue kNil;
+		static const AValue kUndefined;
+		static const AValue kYes;
+		static const AValue kNo;
+		static const AValue kUnit;
 	};
 }
 

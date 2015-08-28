@@ -9,61 +9,61 @@
 #include <mutex>
 
 namespace AVM {
-	enum GReferenceType : unsigned_integer_8 {
+	enum AReferenceType : unsigned_integer_8 {
 
 		/* main point of interest */
-		GReferenceTypeObject =             0x00,
+		AReferenceTypeObject =             0x00,
 
 		/* type for native extensions and libraries */
-		GReferenceTypeUnmanagedUnsafe =    0x01,
+		AReferenceTypeUnmanagedUnsafe =    0x01,
 
-		/* extended numeric types that do not fit into GValue */
-		GReferenceTypeInteger64 =          0x02,
-		GReferenceTypeUnsignedInteger64 =  0x03,
-		GReferenceTypeInteger128 =         0x04,
-		GReferenceTypeUnsignedInteger128 = 0x05,
-		GReferenceTypeFloat128 =           0x06,
+		/* extended numeric types that do not fit into AValue */
+		AReferenceTypeInteger64 =          0x02,
+		AReferenceTypeUnsignedInteger64 =  0x03,
+		AReferenceTypeInteger128 =         0x04,
+		AReferenceTypeUnsignedInteger128 = 0x05,
+		AReferenceTypeFloat128 =           0x06,
 
 		/* composite numeric types */
-		GReferenceTypeComplex =            0x07,
-		GReferenceTypeRational =           0x08,
-		GReferenceTypeDecimalLimited =     0x09,
-		GReferenceTypeDecimalUnlimited =   0x0a,
+		AReferenceTypeComplex =            0x07,
+		AReferenceTypeRational =           0x08,
+		AReferenceTypeDecimalLimited =     0x09,
+		AReferenceTypeDecimalUnlimited =   0x0a,
 
 		/* array type */
-		GReferenceTypeArray =              0x0b,
+		AReferenceTypeArray =              0x0b,
 
-		/* when a GValue pointer did not fit into 48 bits, the future is upon us, or more likely Solaris */
-		GReferenceTypeNestedPointer =      0x0c,
+		/* when a AValue pointer did not fit into 48 bits, the future is upon us, or more likely Solaris */
+		AReferenceTypeNestedPointer =      0x0c,
 
 		/* to break strong reference cycles */
-		GReferenceTypeWeakPointer =        0x0d,
+		AReferenceTypeWeakPointer =        0x0d,
 
 		/* an object associated with a PSI element */
-		GReferenceTypePsiBearer =          0x0e
+		AReferenceTypePsiBearer =          0x0e
 	};
 
-	union GReferenceValue;
+	union AReferenceValue;
 
-	struct GTypedVariableLink {
+	struct ATypedVariableLink {
 	public:
 		const char *name;
-		struct GTypedVariable variable;
-		struct GTypedVariableLink *next;
+		struct ATypedVariable variable;
+		struct ATypedVariableLink *next;
 	};
 
-	/* Here's an optimization idea: pre-allocate an array of GReferences to be used whenever a new one
-	 * would be needed, automatically grow it etc. (like std::vector<GReference> or something), to prevent
+	/* Here's an optimization idea: pre-allocate an array of AReferences to be used whenever a new one
+	 * would be needed, automatically grow it etc. (like std::vector<AReference> or something), to prevent
 	 * some random memory accesses (also that could open the possibility of garbage collection...)
 	 */
-	struct GReference {
+	struct AReference {
 	public:
-		struct std::atomic<union GReferenceValue *> const referenced_value;
+		struct std::atomic<union AReferenceValue *> const referenced_value;
 		struct std::atomic<STRONG_REFERENCE_COUNT_TYPE> strong_reference_count;
 		struct std::atomic<WEAK_REFERENCE_COUNT_TYPE> weak_reference_count;
 
-		GReference(union GReferenceValue *);
-		~GReference() noexcept;
+		AReference(union AReferenceValue *);
+		~AReference() noexcept;
 
 		void
 		retain(void * /* env */);
@@ -71,7 +71,7 @@ namespace AVM {
 		void
 		release(void * /* env */);
 
-		GValue /* tagged pointer to GReference to CWeakReference */
+		AValue /* tagged pointer to AReference to CWeakReference */
 		downgrade(void * /* env */);
 
 		STRONG_REFERENCE_COUNT_TYPE
@@ -85,132 +85,132 @@ namespace AVM {
 		release_slow(void * /* env */);
 	};
 
-	struct GReferenceCommon {
-		const GReferenceType reference_type;
+	struct AReferenceCommon {
+		const AReferenceType reference_type;
 
-		GReferenceCommon(GReferenceType);
+		AReferenceCommon(AReferenceType);
 	};
 
-	struct GObject {
+	struct AObject {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		/* non-const psi_type, because hot code loading may upgrade it to new version */
 		PsiElement *psi_type;
-		struct GTypedVariableLink *dynamic_ivars;
+		struct ATypedVariableLink *dynamic_ivars;
 		unsigned_integer_8 ivars_count;
-		GVariable *ivars;
+		AVariable *ivars;
 
 		static
-		GValue
+		AValue
 		allocate(PsiElement * /* psi_type */, void * /* env */) noexcept;
 
-		GObject(PsiElement * /* psi_type */, unsigned_integer_8 /* ivars_count */);
-		~GObject();
+		AObject(PsiElement * /* psi_type */, unsigned_integer_8 /* ivars_count */);
+		~AObject();
 	};
 
-	struct GUnmanagedUnsafe {
+	struct AUnmanagedUnsafe {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		void *pointer;
 		void (*deallocator)(void *);
 
-		GUnmanagedUnsafe(void * /* pointer */, void (*)(void *) /* deallocator */);
-		~GUnmanagedUnsafe();
+		AUnmanagedUnsafe(void * /* pointer */, void (*)(void *) /* deallocator */);
+		~AUnmanagedUnsafe();
 
 		static
-		GValue
+		AValue
 		allocate(void * /* pointer */, void (*)(void *) /* deallocator */, void * /* env */) noexcept;
 	};
 
-	struct GInteger64 {
+	struct AInteger64 {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		const integer_64 value;
 
-		GInteger64(const integer_64) noexcept;
+		AInteger64(const integer_64) noexcept;
 
 		static
-		GValue
+		AValue
 		allocate(const integer_64, void * /* env */) noexcept;
 	};
 
-	struct GInteger64Unsigned {
+	struct AInteger64Unsigned {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		const unsigned_integer_64 value;
 
-		GInteger64Unsigned(const unsigned_integer_64) noexcept;
+		AInteger64Unsigned(const unsigned_integer_64) noexcept;
 
 		static
-		GValue
+		AValue
 		allocate(const unsigned_integer_64, void * /* env */) noexcept;
 	};
 
-	struct GInteger128 {
+	struct AInteger128 {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		const integer_128 value;
 
-		GInteger128(const integer_128) noexcept;
+		AInteger128(const integer_128) noexcept;
 
 		static
-		GValue
+		AValue
 		allocate(const integer_128, void * /* env */) noexcept;
 	};
 
-	struct GInteger128Unsigned {
+	struct AInteger128Unsigned {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		const unsigned_integer_128 value;
 
-		GInteger128Unsigned(const unsigned_integer_128) noexcept;
+		AInteger128Unsigned(const unsigned_integer_128) noexcept;
 
 		static
-		GValue
+		AValue
 		allocate(const unsigned_integer_128, void * /* env */) noexcept;
 	};
 
-	struct GFloat128 {
+	struct AFloat128 {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		const float_128 value;
 
-		GFloat128(const float_128) noexcept;
+		AFloat128(const float_128) noexcept;
 
 		static
-		GValue
+		AValue
 		allocate(const float_128, void * /* env */) noexcept;
 	};
 
-	struct GComplex {
+	struct AComplex {
 	public:
-		struct GReferenceCommon common;
-		const GValue real;
-		const GValue imaginary;
+		struct AReferenceCommon common;
+		const AValue real;
+		const AValue imaginary;
 
-		GComplex(const GValue, const GValue) noexcept;
+		AComplex(const AValue, const AValue) noexcept;
 
 		static
-		GValue
-		allocate(const GValue /* real */, const GValue /* imaginary, obviously */, void * /* env */) noexcept;
+		AValue
+		allocate(const AValue /* real */, const AValue /* imaginary, obviously */, void * /* env */) noexcept;
 	};
 
-	struct GRational {
+	struct ARational {
 	public:
-		struct GReferenceCommon common;
-		const GValue numerator;
-		const GValue denominator;
+		struct AReferenceCommon common;
+		const AValue numerator;
+		const AValue denominator;
 
-		GRational(const GValue, const GValue) noexcept;
+		ARational(const AValue, const AValue) noexcept;
 
 		static
-		GValue
-		allocate(const GValue /* numerator */, const GValue /* denominator, obviously */, void * /* env */) noexcept;
+		AValue
+		allocate(const AValue /* numerator */, const AValue /* denominator, obviously */, void * /* env */) noexcept;
 	};
 
-	struct GDecimalLimited {
+	struct ADecimalLimited {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		const unsigned_integer_128 value;
 		/* Here's the idea: unsigned 128bit integer has at most 39 total digits,
 		 * thus that should fit easily into max 2^7 - 1 decimal digits of them, thus we can safely use
@@ -218,111 +218,111 @@ namespace AVM {
 		/** the number of digits *after* the decimal point; first bit is the sign */
 		const unsigned_integer_8 decimal_digits;
 
-		GDecimalLimited(const unsigned_integer_128, const unsigned_integer_8) noexcept;
+		ADecimalLimited(const unsigned_integer_128, const unsigned_integer_8) noexcept;
 
 		static
-		GValue
+		AValue
 		allocate(const unsigned_integer_128, const unsigned_integer_8, void * /* env */) noexcept;
 	};
 
-	/* Stop right there for a moment: GDecimalLimited has the ability to save a number as big as
+	/* Stop right there for a moment: ADecimalLimited has the ability to save a number as big as
 	 * 340 undecillion (340_282_366_920_938_463_463_374_607_431_768_211_455), which is more than 
 	 * memory addressable in the full 64bit range (16 EiB), which is A LOT, are you 100% sure
 	 * you need more? */
-	struct GDecimalUnlimited {
+	struct ADecimalUnlimited {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		/* Discussion: each unsigned_integer_8 can hold two base-10 digits without bits interleaving */
 		unsigned_integer_8 *const individual_digits;
 		const size_t digits_count;
 		/** the number of digits *after* the decimal point; first bit is the sign */
 		const unsigned_integer_64 decimal_digits; /* we say "unlimited", but 63bit decimal digits is the limit */
 
-		GDecimalUnlimited(unsigned_integer_8 *const, const size_t, const unsigned_integer_64) noexcept;
-		~GDecimalUnlimited() noexcept;
+		ADecimalUnlimited(unsigned_integer_8 *const, const size_t, const unsigned_integer_64) noexcept;
+		~ADecimalUnlimited() noexcept;
 
 		static
-		GValue
+		AValue
 		allocate(unsigned_integer_8 *const, const size_t, const unsigned_integer_64, void * /* env */) noexcept;
 	};
 
-	struct GArray {
+	struct AArray {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		unsigned_integer_64 elements_count;
-		GValue *elements;
+		AValue *elements;
 
 		static
-		GValue
+		AValue
 		allocate(const unsigned_integer_64 /* elements_count */, void * /* env */) noexcept;
 	};
 
 	/* just do not use this yet */
-	struct GNestedPointer {
+	struct ANestedPointer {
 	public:
-		struct GReferenceCommon common;
-		union GReferenceValue *pointer;
+		struct AReferenceCommon common;
+		union AReferenceValue *pointer;
 
 		static
-		GValue
-		allocate(union GReferenceValue * /* pointer */, void * /* env */) = delete;
+		AValue
+		allocate(union AReferenceValue * /* pointer */, void * /* env */) = delete;
 	};
 
-	/* only allocate from an existing strong reference, using downgrade() on GReference */
-	struct GWeakPointer {
+	/* only allocate from an existing strong reference, using downgrade() on AReference */
+	struct AWeakPointer {
 	public:
-		struct GReferenceCommon common;
-		std::atomic<GReference *> const pointer;
+		struct AReferenceCommon common;
+		std::atomic<AReference *> const pointer;
 
-		GWeakPointer(GReference *);
+		AWeakPointer(AReference *);
 
-		GValue
+		AValue
 		upgrade(void * /* env */);
 
 		void
 		on_release() noexcept;
 	};
 
-	struct GPsiBearer {
+	struct APsiBearer {
 	public:
-		struct GReferenceCommon common;
+		struct AReferenceCommon common;
 		/* non-const psi_type, because hot code loading may upgrade it to new version */
 		PsiElement *psi_element;
-		struct GTypedVariableLink *dynamic_ivars;
+		struct ATypedVariableLink *dynamic_ivars;
 		unsigned_integer_8 ivars_count;
-		GVariable *ivars;
+		AVariable *ivars;
 
 		static
-		GValue
+		AValue
 		allocate(PsiElement * /* psi_element */, void * /* env */) noexcept;
 
-		GPsiBearer(PsiElement * /* psi_element */, unsigned_integer_8 /* ivars_count */);
-		~GPsiBearer();
+		APsiBearer(PsiElement * /* psi_element */, unsigned_integer_8 /* ivars_count */);
+		~APsiBearer();
 	};
 
-	union GReferenceValue {
-		struct GReferenceCommon common;
-		struct GObject object;
-		struct GUnmanagedUnsafe unmanaged_unsafe;
-		struct GInteger64 integer_64;
-		struct GInteger64Unsigned integer_64_unsigned;
-		struct GInteger128 integer_128;
-		struct GInteger128Unsigned integer_128_unsigned;
-		struct GFloat128 float_128;
-		struct GComplex complex;
-		struct GRational rational;
-		struct GDecimalLimited decimal_limited;
-		struct GDecimalUnlimited decimal_unlimited;
-		struct GArray array;
-		struct GNestedPointer nested_pointer;
-		struct GWeakPointer weak_pointer;
-		struct GPsiBearer psi_bearer;
+	union AReferenceValue {
+		struct AReferenceCommon common;
+		struct AObject object;
+		struct AUnmanagedUnsafe unmanaged_unsafe;
+		struct AInteger64 integer_64;
+		struct AInteger64Unsigned integer_64_unsigned;
+		struct AInteger128 integer_128;
+		struct AInteger128Unsigned integer_128_unsigned;
+		struct AFloat128 float_128;
+		struct AComplex complex;
+		struct ARational rational;
+		struct ADecimalLimited decimal_limited;
+		struct ADecimalUnlimited decimal_unlimited;
+		struct AArray array;
+		struct ANestedPointer nested_pointer;
+		struct AWeakPointer weak_pointer;
+		struct APsiBearer psi_bearer;
 	};
 
-	typedef struct std::mutex GReferenceLock;
+	typedef struct std::mutex AReferenceLock;
 
-	GReferenceLock &
-	lock_for_reference(union GReferenceValue *) noexcept;
+	AReferenceLock &
+	lock_for_reference(union AReferenceValue *) noexcept;
 }
 
 #endif /* defined(__aml_vm__reference__) */

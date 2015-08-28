@@ -385,9 +385,9 @@
 
 /* *** */
 
-/* CVALUE64, CVALUE32_64 */
+/* AVALUE64, AVALUE32_64 */
 
-#if !defined(AVM_USE_CVALUE64) && !defined(AVM_USE_CVALUE32_64)
+#if !defined(AVM_USE_AVALUE64) && !defined(AVM_USE_AVALUE32_64)
 #  if (CPU(X86_64) && (OS(UNIX) || OS(WINDOWS))) \
       || (CPU(IA64) && !CPU(IA64_32)) \
       || CPU(ALPHA)    \
@@ -396,9 +396,9 @@
       || CPU(MIPS64)   \
       || CPU(PPC64)    \
       || CPU(PPC64LE)
-#    define AVM_USE_CVALUE64 1
+#    define AVM_USE_AVALUE64 1
 #  else
-#    define AVM_USE_CVALUE32_64 1
+#    define AVM_USE_AVALUE32_64 1
 #  endif
 #endif
 
