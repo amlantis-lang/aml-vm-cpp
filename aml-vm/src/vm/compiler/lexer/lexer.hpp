@@ -503,6 +503,8 @@ namespace AVM {
 		public:
 			FirstPassHexadecimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			FloatingOrFixedPointFlavour flavour;
 		};
 
 		class FirstPassOctalNumberState : public FirstPassState {
@@ -515,6 +517,8 @@ namespace AVM {
 		public:
 			FirstPassOctalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			FloatingOrFixedPointFlavour flavour;
 		};
 
 		class FirstPassBinaryNumberState : public FirstPassState {
@@ -527,6 +531,8 @@ namespace AVM {
 		public:
 			FirstPassBinaryFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			FloatingOrFixedPointFlavour flavour;
 		};
 
 		class FirstPassSexagesimalNumberState : public FirstPassState {
@@ -539,6 +545,8 @@ namespace AVM {
 		public:
 			FirstPassSexagesimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			FloatingOrFixedPointFlavour flavour;
 		};
 
 		class FirstPassDuodecimalNumberState : public FirstPassState {
@@ -551,6 +559,8 @@ namespace AVM {
 		public:
 			FirstPassDuodecimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken);
 			void handle(FirstPassMachine &machine, UChar32 inputChar);
+		private:
+			FloatingOrFixedPointFlavour flavour;
 		};
 
 		class FirstPassIntegerSuffixState : public FirstPassState {

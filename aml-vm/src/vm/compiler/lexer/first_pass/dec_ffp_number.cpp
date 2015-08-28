@@ -63,7 +63,7 @@ namespace AVM {
 					}
 				} else if (lastChar == Underscore || lastChar == Dot) {
 					if (Lexer::isDigitChar(inputChar)) {
-						/* ###.###_ or ###.# */
+						/* ###.###_ or ###. */
 						accept(inputChar);
 
 					} else {

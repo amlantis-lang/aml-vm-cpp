@@ -1,7 +1,7 @@
 #include "../lexer.hpp"
 
 namespace AVM {
-  
+
 	Lexer::
 	FirstPassSexagesimalFloatingOrFixedPointNumberState::
 	FirstPassSexagesimalFloatingOrFixedPointNumberState(RawLexicalToken rawToken)
