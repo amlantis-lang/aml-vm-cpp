@@ -300,8 +300,9 @@ namespace AVM {
 	bool
 	Lexer::isAmlOperatorChar(UChar32 inputChar) {
 		const UCharCategory category = (UCharCategory) u_charType_55(inputChar);
-		return (category == U_MATH_SYMBOL
-				|| category == U_OTHER_SYMBOL
+		return ((category == U_MATH_SYMBOL
+						|| category == U_OTHER_SYMBOL)
+					&& inputChar != Backtick)
 				|| inputChar == ExclamationMark
 				|| inputChar == HashSign
 				|| inputChar == PercentSign
@@ -319,10 +320,9 @@ namespace AVM {
 				|| inputChar == QuestionMark
 				|| inputChar == AtSign
 				|| inputChar == ReverseSolidus
-				|| inputChar == GraveAccent
 				|| inputChar == VerticalLine
-				|| inputChar == Tilde)
-			&& inputChar != Backtick;
+				|| inputChar == Tilde
+				|| inputChar == Apostrophe;
 	}
 
 	bool
