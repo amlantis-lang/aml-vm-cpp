@@ -6,6 +6,7 @@
 namespace AVM {
 	class InputStream {
 	public:
+		virtual bool canReadInput() = 0;
 		virtual bool moveToNextUChar32() = 0;
 		virtual UChar32 getCurrentUChar32() = 0;
 	};

@@ -11,6 +11,7 @@ namespace AVM {
 		FileInputStream(const char *filename, const char *codepage);
 		~FileInputStream();
 
+		bool canReadInput();
 		bool moveToNextUChar32();
 		UChar32 getCurrentUChar32();
 

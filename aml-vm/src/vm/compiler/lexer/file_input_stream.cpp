@@ -14,10 +14,19 @@ namespace AVM {
 	}
 
 	bool
+	FileInputStream::canReadInput() {
+		return file != nullptr;
+	}
+	
+	bool
 	FileInputStream::moveToNextUChar32() {
-		current = u_fgetcx_55(file);
-		return current != U_EOF
-			&& current != 0xffffffff;
+		if (canReadInput()) {
+			current = u_fgetcx_55(file);
+			return current != U_EOF
+				&& current != 0xffffffff;
+		} else {
+			return false;
+		}
 	}
 
 	UChar32
